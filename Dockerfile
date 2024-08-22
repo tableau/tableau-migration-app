@@ -29,7 +29,9 @@ COPY . .
 RUN dotnet restore
 
 # # Build the project
-RUN dotnet build --configuration Release
+RUN dotnet build --configuration Release --no-restore
+
+RUN dotnet test --no-build --configuration Release --verbosity normal
 
 # # Default command to run when the container starts
 CMD ["dotnet", "run"]

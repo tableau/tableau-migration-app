@@ -34,3 +34,6 @@ Desktop.ini
 
 # Third Party Libs
 CommandLineParser.2.9.1
+
+# Test Results
+TestResults/

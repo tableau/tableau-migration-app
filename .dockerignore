@@ -1,6 +1,7 @@
 ﻿# Ignore the .git directory
 .git
 .gitignore
+.github
 
 # Docker build ignores
 Dockerfile
