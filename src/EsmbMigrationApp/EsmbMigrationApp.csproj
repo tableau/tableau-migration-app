@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Tableau.Migration" Version="4.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EsmbMigrationApp.Core\EsmbMigrationApp.Core.csproj" />
+    <ProjectReference Include="..\EsmbMigrationApp.Console\EsmbMigrationApp.Console.csproj" />
+    <ProjectReference Include="..\EsmbMigrationApp.GUI\EsmbMigrationApp.GUI.csproj" />
+  </ItemGroup>
+</Project>

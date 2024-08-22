@@ -1,0 +1,41 @@
+﻿# Ignore the .git directory
+.git
+.gitignore
+
+# Docker build ignores
+Dockerfile
+docker-compose.yml
+
+# Ignore build artifacts
+bin/
+obj/
+out/
+
+# Ignore Visual Studio Code directories and files
+.vscode/
+.vscode/*
+.history/
+
+# Ignore NuGet packages
+packages/
+*.nupkg
+*.snupkg
+
+# Ignore .NET-specific files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore compiled binaries
+*.dll
+*.exe
+*.app
+*.iso
+
+# Ignore OS-generated files/macOS
+.DS_Store
+
+# Ignore Windows-generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
