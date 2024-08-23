@@ -6,6 +6,7 @@ obj/
 .vscode/
 .vscode/*
 .history/
+.vs/
 
 # Ignore NuGet packages
 packages/

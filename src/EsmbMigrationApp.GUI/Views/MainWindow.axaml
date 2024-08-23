@@ -1,20 +1,68 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:EsmbMigration.GUI.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:vm="clr-namespace:EsmbMigration.GUI.ViewModels"
+        mc:Ignorable="d"
         x:Class="EsmbMigration.GUI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="EsmbMigration.GUI">
+        Title="EsmbMigration.GUI"
+        Width="800" Height="600">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="1*"/>
+		</Grid.ColumnDefinitions>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="0,10,0,20" Text="Migration Application"/>
 
+		<StackPanel Grid.Row="1" Grid.Column="0" Margin="20,0" Spacing="30">
+			<TextBlock Text="Tableau Server" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+			<StackPanel Spacing="5">
+				<TextBlock Text="Input Server URL" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding ServerUrl, Mode=TwoWay}" Watermark="Ex: http://server"/>
+			</StackPanel>
+
+			<StackPanel Spacing="5">
+				<TextBlock Text="Input Admin User Name" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding AdminUserName, Mode=TwoWay}" Watermark="Ex: johndoe"/>
+			</StackPanel>
+
+			<StackPanel Spacing="5">
+				<TextBlock Text="Input Admin User Personal Access Token" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding PersonalAccessToken, Mode=TwoWay}" Watermark="Personal Access Token"/>
+			</StackPanel>
+		</StackPanel>
+
+		<StackPanel Grid.Row="1" Grid.Column="1" Margin="20,0" Spacing="30">
+			<TextBlock Text="Tableau Cloud" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+			<StackPanel Spacing="5">
+				<TextBlock Text="Input Cloud URL" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding CloudUrl, Mode=TwoWay}" Watermark="Ex: https://online.tableau.com/#/site/sitename/home"/>
+			</StackPanel>
+
+			<StackPanel Spacing="5">
+				<TextBlock Text="Input Admin User Email" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding AdminUserEmail, Mode=TwoWay}" Watermark="Ex: johndoe@work.com"/>
+			</StackPanel>
+
+			<StackPanel Spacing="5">
+				<TextBlock Text="Input Admin User Personal Access Token" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding CloudPersonalAccessToken, Mode=TwoWay}" Watermark="Personal Access Token"/>
+			</StackPanel>
+		</StackPanel>
+
+		<Button Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Run Migration"
+                Command="{Binding RunMigrationCommand}" VerticalAlignment="Bottom" Margin="0,20"/>
+
+		<TextBlock Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Foreground="Red" Text="Please fill in all variables"/>
+	</Grid>
 </Window>
