@@ -11,8 +11,8 @@
     <PackageReference Include="Tableau.Migration" Version="4.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EsmbMigrationApp.Core\EsmbMigrationApp.Core.csproj" />
-    <ProjectReference Include="..\EsmbMigrationApp.Console\EsmbMigrationApp.Console.csproj" />
-    <ProjectReference Include="..\EsmbMigrationApp.GUI\EsmbMigrationApp.GUI.csproj" />
+    <ProjectReference Include="..\MigrationApp.Core\MigrationApp.Core.csproj" />
+    <ProjectReference Include="..\MigrationApp.Console\MigrationApp.Console.csproj" />
+    <ProjectReference Include="..\MigrationApp.GUI\MigrationApp.GUI.csproj" />
   </ItemGroup>
 </Project>

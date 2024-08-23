@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\EsmbMigrationApp.Core\EsmbMigrationApp.Core.csproj" />
+    <ProjectReference Include="..\MigrationApp.Core\MigrationApp.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

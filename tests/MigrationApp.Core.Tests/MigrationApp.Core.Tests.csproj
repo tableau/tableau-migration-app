@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\EsmbMigrationApp.Core\EsmbMigrationApp.Core.csproj" />
+    <ProjectReference Include="..\..\src\MigrationApp.Core\MigrationApp.Core.csproj" />
   </ItemGroup>
 
 </Project>

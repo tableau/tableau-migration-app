@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="362c2f4d-773b-42ce-ba08-ebf048d1e28d" name="@Lesters-MacBook-Pro 2024-08-23 12:02:51" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2024-08-23T12:02:51.7179500-07:00" queuing="2024-08-23T12:02:51.7179500-07:00" start="2024-08-23T12:02:49.3117150-07:00" finish="2024-08-23T12:02:51.7323490-07:00" />
+  <TestSettings name="default" id="729d3d82-d445-4e70-9ff7-ad89d09e1f17">
+    <Deployment runDeploymentRoot="_Lesters-MacBook-Pro_2024-08-23_12_02_51" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="26f375d0-c408-4ae7-826d-85e1d2691679" testId="b7673947-f88a-7927-fb3c-f92bbdc5b785" testName="EsmbMigrationApp.Core.Tests.UnitTest1.Test1" computerName="Lesters-MacBook-Pro" duration="00:00:00.0028925" startTime="2024-08-23T12:02:51.5057940-07:00" endTime="2024-08-23T12:02:51.5058440-07:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="26f375d0-c408-4ae7-826d-85e1d2691679" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="EsmbMigrationApp.Core.Tests.UnitTest1.Test1" storage="/users/lester.szeto/git/tableau-emsb-migration-app/tests/esmbmigrationapp.core.tests/bin/release/net8.0/esmbmigrationapp.core.tests.dll" id="b7673947-f88a-7927-fb3c-f92bbdc5b785">
+      <Execution id="26f375d0-c408-4ae7-826d-85e1d2691679" />
+      <TestMethod codeBase="/Users/lester.szeto/git/tableau-emsb-migration-app/tests/EsmbMigrationApp.Core.Tests/bin/Release/net8.0/EsmbMigrationApp.Core.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="EsmbMigrationApp.Core.Tests.UnitTest1" name="Test1" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b7673947-f88a-7927-fb3c-f92bbdc5b785" executionId="26f375d0-c408-4ae7-826d-85e1d2691679" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.4.5+1caef2f33e (64-bit .NET 8.0.4)
+[xUnit.net 00:00:01.17]   Discovering: EsmbMigrationApp.Core.Tests
+[xUnit.net 00:00:01.21]   Discovered:  EsmbMigrationApp.Core.Tests
+[xUnit.net 00:00:01.21]   Starting:    EsmbMigrationApp.Core.Tests
+[xUnit.net 00:00:01.29]   Finished:    EsmbMigrationApp.Core.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
