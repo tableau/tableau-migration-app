@@ -37,3 +37,6 @@ CommandLineParser.2.9.1
 
 # Test Results
 TestResults/
+
+# Ignore local configurations
+.env.vars.local

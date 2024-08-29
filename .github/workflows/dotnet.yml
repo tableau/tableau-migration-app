@@ -26,3 +26,12 @@ jobs:
 
       - name: Test
         run: dotnet test --no-build --configuration Release --verbosity normal
+        env:
+          TABLEAU_CLOUD_URL: ${{ secrets.TABLEAU_CLOUD_URL }}
+          TABLEAU_CLOUD_SITE: ${{ secrets.TABLEAU_CLOUD_SITE }}
+          TABLEAU_CLOUD_TOKEN_NAME: ${{ secrets.TABLEAU_CLOUD_TOKEN_NAME }}
+          TABLEAU_CLOUD_TOKEN: ${{ secrets.TABLEAU_CLOUD_TOKEN }}
+          TABLEAU_SERVER_URL: ${{ secrets.TABLEAU_SERVER_URL }}
+          TABLEAU_SERVER_SITE: ""
+          TABLEAU_SERVER_TOKEN_NAME: ${{ secrets.TABLEAU_SERVER_TOKEN_NAME }}
+          TABLEAU_SERVER_TOKEN: ${{ secrets.TABLEAU_SERVER_TOKEN }}
