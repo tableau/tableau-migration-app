@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace EsmbMigration.GUI;
+namespace MigrationApp.GUI;
 
 sealed class Program
 {

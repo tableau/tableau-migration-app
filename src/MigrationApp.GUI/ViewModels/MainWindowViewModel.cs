@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System;
 using System.Collections;
 
-namespace EsmbMigration.GUI.ViewModels
+namespace MigrationApp.GUI.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     {

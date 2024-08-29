@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace EsmbMigration.GUI.ViewModels;
+namespace MigrationApp.GUI.ViewModels;
 
 public class ViewModelBase : ObservableObject
 {

@@ -1,9 +1,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using EsmbMigration.GUI.ViewModels;
+using MigrationApp.GUI.ViewModels;
 
-namespace EsmbMigration.GUI;
+namespace MigrationApp.GUI;
 
 public class ViewLocator : IDataTemplate
 {

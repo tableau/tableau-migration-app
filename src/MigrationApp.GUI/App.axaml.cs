@@ -3,10 +3,10 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using EsmbMigration.GUI.ViewModels;
-using EsmbMigration.GUI.Views;
+using MigrationApp.GUI.ViewModels;
+using MigrationApp.GUI.Views;
 
-namespace EsmbMigration.GUI;
+namespace MigrationApp.GUI;
 
 public partial class App : Application
 {

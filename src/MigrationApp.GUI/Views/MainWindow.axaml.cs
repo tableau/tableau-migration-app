@@ -1,7 +1,7 @@
 using Avalonia.Controls;
-using EsmbMigration.GUI.ViewModels;
+using MigrationApp.GUI.ViewModels;
 
-namespace EsmbMigration.GUI.Views;
+namespace MigrationApp.GUI.Views;
 
 public partial class MainWindow : Window
 {

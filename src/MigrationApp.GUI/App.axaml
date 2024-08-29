@@ -1,7 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="EsmbMigration.GUI.App"
-             xmlns:local="using:EsmbMigration.GUI"
+             x:Class="MigrationApp.GUI.App"
+             xmlns:local="using:MigrationApp.GUI"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
