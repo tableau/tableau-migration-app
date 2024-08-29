@@ -28,6 +28,7 @@ namespace MigrationApp.GUI.ViewModels
             {
                 SetProperty(ref _serverUri, value);
                 ValidateRequiredField(value, nameof(ServerUri), "Tableau Server URI is required.");
+                ValidateUriFormat(value, nameof(ServerUri), "Invalid URI format for Tableau Server URI.");
             }
         }
 
@@ -68,6 +69,7 @@ namespace MigrationApp.GUI.ViewModels
             {
                 SetProperty(ref _cloudUri, value);
                 ValidateRequiredField(value, nameof(CloudUri), "Tableau Cloud URI is required.");
+                ValidateUriFormat(value, nameof(CloudUri), "Invalid URI format for Tableau Cloud URI.");
             }
         }
 
@@ -121,10 +123,12 @@ namespace MigrationApp.GUI.ViewModels
         private void RunMigration()
         {
             ValidateRequiredField(ServerUri, nameof(ServerUri), "Tableau Server URI is required.");
+            ValidateUriFormat(ServerUri, nameof(ServerUri), "Invalid URI format for Tableau Server URI.");
+            ValidateRequiredField(CloudUri, nameof(CloudUri), "Tableau Cloud URI is required.");
+            ValidateUriFormat(CloudUri, nameof(CloudUri), "Invalid URI format for Tableau Cloud URI.");
             ValidateRequiredField(ServerSiteContent, nameof(ServerSiteContent), "Tableau Server Site Content is required.");
             ValidateRequiredField(ServerAccessTokenName, nameof(ServerAccessTokenName), "Tableau Server Access Token Name is required.");
             ValidateRequiredField(ServerAccessToken, nameof(ServerAccessToken), "Tableau Server Access Token is required.");
-            ValidateRequiredField(CloudUri, nameof(CloudUri), "Tableau Cloud URI is required.");
             ValidateRequiredField(CloudSiteContent, nameof(CloudSiteContent), "Tableau Cloud Site Content is required.");
             ValidateRequiredField(CloudAccessTokenName, nameof(CloudAccessTokenName), "Tableau Cloud Access Token Name is required.");
             ValidateRequiredField(CloudAccessToken, nameof(CloudAccessToken), "Tableau Cloud Access Token is required.");
@@ -143,6 +147,18 @@ namespace MigrationApp.GUI.ViewModels
         private void ValidateRequiredField(string value, string propertyName, string errorMessage)
         {
             if (string.IsNullOrWhiteSpace(value))
+            {
+                AddError(propertyName, errorMessage);
+            }
+            else
+            {
+                RemoveError(propertyName, errorMessage);
+            }
+        }
+
+        private void ValidateUriFormat(string value, string propertyName, string errorMessage)
+        {
+            if (!Uri.TryCreate(value, UriKind.Absolute, out _))
             {
                 AddError(propertyName, errorMessage);
             }
