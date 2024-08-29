@@ -7,12 +7,17 @@
         x:Class="MigrationApp.GUI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="MigrationApp.GUI"
-        Width="800" Height="600">
+		Width="800" Height="650"
+        MinWidth="800" MinHeight="650"
+        MaxWidth="1200" MaxHeight="900"
+        SizeToContent="Height">
 
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
@@ -20,49 +25,66 @@
 			<ColumnDefinition Width="1*"/>
 		</Grid.ColumnDefinitions>
 
-		<TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="0,10,0,20" Text="Migration Application"/>
+		<TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Margin="0,10,0,20" Text="Migration Application"/>
 
-		<StackPanel Grid.Row="1" Grid.Column="0" Margin="20,0" Spacing="30">
+		<StackPanel Grid.Row="1" Grid.Column="0" Margin="20,30" Spacing="30" VerticalAlignment="Top">
 			<TextBlock Text="Tableau Server" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
 
 			<StackPanel Spacing="5">
-				<TextBlock Text="Input Server URL" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerUrl, Mode=TwoWay}" Watermark="Ex: http://server"/>
+				<TextBlock Text="Tableau Server URI" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding ServerUri, Mode=TwoWay}" Watermark="Ex: http://server"/>
 			</StackPanel>
 
 			<StackPanel Spacing="5">
-				<TextBlock Text="Input Admin User Name" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding AdminUserName, Mode=TwoWay}" Watermark="Ex: johndoe"/>
+				<TextBlock Text="Tableau Server Site Content" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding ServerSiteContent, Mode=TwoWay}" Watermark="Site Content"/>
 			</StackPanel>
 
 			<StackPanel Spacing="5">
-				<TextBlock Text="Input Admin User Personal Access Token" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding PersonalAccessToken, Mode=TwoWay}" Watermark="Personal Access Token"/>
+				<TextBlock Text="Tableau Server Access Token Name" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding ServerAccessTokenName, Mode=TwoWay}" Watermark="Access Token Name"/>
+			</StackPanel>
+
+			<StackPanel Spacing="5">
+				<TextBlock Text="Tableau Server Access Token" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding ServerAccessToken, Mode=TwoWay}" Watermark="Access Token"/>
 			</StackPanel>
 		</StackPanel>
 
-		<StackPanel Grid.Row="1" Grid.Column="1" Margin="20,0" Spacing="30">
+		<StackPanel Grid.Row="1" Grid.Column="1" Margin="20,30" Spacing="30" VerticalAlignment="Top">
 			<TextBlock Text="Tableau Cloud" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
 
 			<StackPanel Spacing="5">
-				<TextBlock Text="Input Cloud URL" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudUrl, Mode=TwoWay}" Watermark="Ex: https://online.tableau.com/#/site/sitename/home"/>
+				<TextBlock Text="Tableau Cloud URI" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding CloudUri, Mode=TwoWay}" Watermark="Ex: https://online.tableau.com/#/site/sitename/home"/>
 			</StackPanel>
 
 			<StackPanel Spacing="5">
-				<TextBlock Text="Input Admin User Email" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding AdminUserEmail, Mode=TwoWay}" Watermark="Ex: johndoe@work.com"/>
+				<TextBlock Text="Tableau Cloud Site Content" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding CloudSiteContent, Mode=TwoWay}" Watermark="Site Content"/>
 			</StackPanel>
 
 			<StackPanel Spacing="5">
-				<TextBlock Text="Input Admin User Personal Access Token" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudPersonalAccessToken, Mode=TwoWay}" Watermark="Personal Access Token"/>
+				<TextBlock Text="Tableau Cloud Access Token Name" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding CloudAccessTokenName, Mode=TwoWay}" Watermark="Access Token Name"/>
+			</StackPanel>
+
+			<StackPanel Spacing="5">
+				<TextBlock Text="Tableau Cloud Access Token" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding CloudAccessToken, Mode=TwoWay}" Watermark="Access Token"/>
 			</StackPanel>
 		</StackPanel>
 
-		<Button Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Run Migration"
+		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="20,0" Spacing="30">
+			<StackPanel Spacing="5">
+				<TextBlock Text="Tableau Server to Cloud User Domain Map" VerticalAlignment="Bottom" />
+				<TextBox Text="{Binding ServerToCloudUserDomainMap, Mode=TwoWay}" Watermark="User Domain Map"/>
+			</StackPanel>
+		</StackPanel>
+
+		<Button Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Run Migration"
                 Command="{Binding RunMigrationCommand}" VerticalAlignment="Bottom" Margin="0,20"/>
 
-		<TextBlock Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Foreground="Red" Text="Please fill in all variables"/>
+		<TextBlock Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" Foreground="Red" VerticalAlignment="Bottom" Text="Please fill in all variables"/>
 	</Grid>
 </Window>
