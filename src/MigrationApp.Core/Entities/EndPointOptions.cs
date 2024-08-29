@@ -13,9 +13,13 @@ namespace MigrationApp.Core.Entities
         // Access token configuration should use a secure configuration system.
         public string AccessToken { get; set; } = string.Empty;
 
-        public EndpointOptions(string cloudUrl, string siteContentUrl, string accessTokenName, string accessToken)
+        public EndpointOptions()
         {
-            Url = new Uri(cloudUrl);
+        }
+
+        public EndpointOptions(string url, string siteContentUrl, string accessTokenName, string accessToken)
+        {
+            Url = new Uri(url);
             SiteContentUrl = siteContentUrl;
             AccessTokenName = accessTokenName;
             AccessToken = accessToken;

@@ -4,6 +4,10 @@ using System.Linq;
 using System.Windows.Input;
 using System;
 using System.Collections;
+using MigrationApp.Core.Interfaces;
+using MigrationApp.Core.Entities;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace MigrationApp.GUI.ViewModels
 {
@@ -20,6 +24,55 @@ namespace MigrationApp.GUI.ViewModels
         private string _serverToCloudUserDomainMap = string.Empty;
 
         private readonly Dictionary<string, List<string>> _errors = new();
+
+        private readonly ITableauMigrationService _migrationService;
+
+
+        public MainWindowViewModel(ITableauMigrationService migrationService)
+        {
+            _migrationService = migrationService;
+            RunMigrationCommand = new RelayCommand(async () => await RunMigrationAsync(), CanExecuteRunMigration);
+        }
+
+        private async Task RunMigrationAsync()
+        {
+            // Build the migration plan first
+            var serverCreds = new EndpointOptions
+            {
+                Url = new Uri(ServerUri),
+                SiteContentUrl = ServerSiteContent,
+                AccessTokenName = ServerAccessTokenName,
+                AccessToken = ServerAccessToken
+            };
+
+            var cloudCreds = new EndpointOptions
+            {
+                Url = new Uri(CloudUri),
+                SiteContentUrl = CloudSiteContent,
+                AccessTokenName = CloudAccessTokenName,
+                AccessToken = CloudAccessToken
+            };
+
+            bool planBuilt = _migrationService.BuildMigrationPlan(serverCreds, cloudCreds);
+
+            if (planBuilt)
+            {
+                bool success = await _migrationService.StartMigrationTaskAsync(CancellationToken.None);
+
+                if (success)
+                {
+                    // TODO: show a success message)
+                }
+                else
+                {
+                    // TODO: show an error message)
+                }
+            }
+            else
+            {
+                // Handle failure to build the plan
+            }
+        }
 
         public string ServerUri
         {
@@ -139,7 +192,7 @@ namespace MigrationApp.GUI.ViewModels
                 return;
             }
 
-            // Proceed with the migration process
+            RunMigrationAsync().ConfigureAwait(false);
         }
 
         private bool CanExecuteRunMigration() => !HasErrors;
