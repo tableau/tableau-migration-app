@@ -4,11 +4,11 @@ using MigrationApp.Core.Interfaces;
 using Tableau.Migration;
 namespace MigrationApp.Core.Services
 {
-    public class TableauMigrationService(IMigrationPlanBuilder planBuilder, IMigrator migrator, ILogger logger) : ITableauMigrationService
+    public class TableauMigrationService(IMigrationPlanBuilder planBuilder, IMigrator migrator, ILogger<TableauMigrationService> logger) : ITableauMigrationService
     {
         private readonly IMigrationPlanBuilder _planBuilder = planBuilder;
         private readonly IMigrator _migrator = migrator;
-        private readonly ILogger _logger = logger;
+        private readonly ILogger<TableauMigrationService> _logger = logger;
         private IMigrationPlan? _plan;
 
         public bool BuildMigrationPlan(EndpointOptions serverEndpoints, EndpointOptions cloudEndpoints)
