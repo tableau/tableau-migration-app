@@ -1,37 +1,3 @@
-//using Avalonia;
-//using Avalonia.Controls.ApplicationLifetimes;
-//using Avalonia.Data.Core;
-//using Avalonia.Data.Core.Plugins;
-//using Avalonia.Markup.Xaml;
-//using MigrationApp.GUI.ViewModels;
-//using MigrationApp.GUI.Views;
-
-//namespace MigrationApp.GUI;
-
-//public partial class App : Application
-//{
-//    public override void Initialize()
-//    {
-//        AvaloniaXamlLoader.Load(this);
-//    }
-
-//    public override void OnFrameworkInitializationCompleted()
-//    {
-//        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-//        {
-//            // Line below is needed to remove Avalonia data validation.
-//            // Without this line you will get duplicate validations from both Avalonia and CT
-//            BindingPlugins.DataValidators.RemoveAt(0);
-//            desktop.MainWindow = new MainWindow
-//            {
-//                DataContext = new MainWindowViewModel(),
-//            };
-//        }
-
-//        base.OnFrameworkInitializationCompleted();
-//    }
-//}
-
 using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -48,7 +14,7 @@ namespace MigrationApp.GUI;
 
 public partial class App : Application
 {
-    private IServiceProvider _serviceProvider;
+    private IServiceProvider? _serviceProvider;
 
     public override void Initialize()
     {
@@ -74,42 +40,16 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    //private void ConfigureServices(IServiceCollection services)
-    //{
-
-    //    services.AddLogging(configure =>
-    //    {
-    //        configure.AddConsole(); 
-    //        // Add other providers as needed, like AddDebug() for debugging or AddFile() for file logging
-    //    });
-
-    //    // Register core services
-    //    services.AddMigrationAppCore();
-
-    //    // Register ViewModels and Views
-    //    services.AddTransient<MainWindowViewModel>();
-    //    services.AddTransient<MainWindow>(provider =>
-    //    {
-    //        return new MainWindow
-    //        {
-    //            DataContext = provider.GetRequiredService<MainWindowViewModel>()
-    //        };
-    //    });
-    //}
-
     private void ConfigureServices(IServiceCollection services)
     {
-        // Add logging services
         services.AddLogging(configure =>
         {
-            configure.AddConsole(); // Use Console as the logging provider
-                                    // Add other providers as needed, like AddDebug() for debugging or AddFile() for file logging
+            configure.AddConsole(); 
+        // Add other logging providers
         });
 
-        // Register core services
         services.AddMigrationAppCore();
 
-        // Register ViewModels and Views
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<MainWindow>(provider =>
         {

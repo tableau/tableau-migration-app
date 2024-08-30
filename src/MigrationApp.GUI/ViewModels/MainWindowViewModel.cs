@@ -8,6 +8,7 @@ using MigrationApp.Core.Interfaces;
 using MigrationApp.Core.Entities;
 using System.Threading.Tasks;
 using System.Threading;
+using Avalonia.Media;
 
 namespace MigrationApp.GUI.ViewModels
 {
@@ -27,16 +28,16 @@ namespace MigrationApp.GUI.ViewModels
 
         private readonly ITableauMigrationService _migrationService;
 
+        public ICommand RunMigrationCommand { get; }
 
         public MainWindowViewModel(ITableauMigrationService migrationService)
         {
             _migrationService = migrationService;
-            RunMigrationCommand = new RelayCommand(async () => await RunMigrationAsync(), CanExecuteRunMigration);
+            RunMigrationCommand = new RelayCommand(RunMigration, CanExecuteRunMigration);
         }
 
         private async Task RunMigrationAsync()
         {
-            // Build the migration plan first
             var serverCreds = new EndpointOptions
             {
                 Url = new Uri(ServerUri),
@@ -61,18 +62,23 @@ namespace MigrationApp.GUI.ViewModels
 
                 if (success)
                 {
-                    // TODO: show a success message)
+                    NotificationMessage = "Migration succeeded.";
+                    NotificationColor = Brushes.Green;
                 }
                 else
                 {
-                    // TODO: show an error message)
+                    NotificationMessage = "Migration failed.";
+                    NotificationColor = Brushes.Red;
                 }
             }
             else
             {
-                // Handle failure to build the plan
+                NotificationMessage = "Migration plan building failed.";
+                NotificationColor = Brushes.Red;
             }
         }
+
+        #region Properties
 
         public string ServerUri
         {
@@ -166,12 +172,22 @@ namespace MigrationApp.GUI.ViewModels
             }
         }
 
-        public ICommand RunMigrationCommand { get; }
+        private string _notificationMessage = string.Empty;
+        private IImmutableSolidColorBrush _notificationColor = Brushes.Black;
 
-        public MainWindowViewModel()
+        public string NotificationMessage
         {
-            RunMigrationCommand = new RelayCommand(RunMigration, CanExecuteRunMigration);
+            get => _notificationMessage;
+            set => SetProperty(ref _notificationMessage, value);
         }
+
+        public IImmutableSolidColorBrush NotificationColor
+        {
+            get => _notificationColor;
+            set => SetProperty(ref _notificationColor, value);
+        }
+        #endregion
+
 
         private void RunMigration()
         {

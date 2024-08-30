@@ -85,6 +85,6 @@
 		<Button Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Run Migration"
                 Command="{Binding RunMigrationCommand}" VerticalAlignment="Bottom" Margin="0,20"/>
 
-		<TextBlock Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" Foreground="Red" VerticalAlignment="Bottom" Text="Please fill in all variables"/>
+		<TextBlock Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding NotificationMessage}" Foreground="{Binding NotificationColor}"/>
 	</Grid>
 </Window>
