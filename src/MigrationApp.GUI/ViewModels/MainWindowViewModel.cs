@@ -97,7 +97,6 @@ namespace MigrationApp.GUI.ViewModels
             set
             {
                 SetProperty(ref _serverSiteContent, value);
-                ValidateRequiredField(value, nameof(ServerSiteContent), "Tableau Server Site Content is required.");
             }
         }
 
@@ -138,7 +137,6 @@ namespace MigrationApp.GUI.ViewModels
             set
             {
                 SetProperty(ref _cloudSiteContent, value);
-                ValidateRequiredField(value, nameof(CloudSiteContent), "Tableau Cloud Site Content is required.");
             }
         }
 
@@ -195,10 +193,8 @@ namespace MigrationApp.GUI.ViewModels
             ValidateUriFormat(ServerUri, nameof(ServerUri), "Invalid URI format for Tableau Server URI.");
             ValidateRequiredField(CloudUri, nameof(CloudUri), "Tableau Cloud URI is required.");
             ValidateUriFormat(CloudUri, nameof(CloudUri), "Invalid URI format for Tableau Cloud URI.");
-            ValidateRequiredField(ServerSiteContent, nameof(ServerSiteContent), "Tableau Server Site Content is required.");
             ValidateRequiredField(ServerAccessTokenName, nameof(ServerAccessTokenName), "Tableau Server Access Token Name is required.");
             ValidateRequiredField(ServerAccessToken, nameof(ServerAccessToken), "Tableau Server Access Token is required.");
-            ValidateRequiredField(CloudSiteContent, nameof(CloudSiteContent), "Tableau Cloud Site Content is required.");
             ValidateRequiredField(CloudAccessTokenName, nameof(CloudAccessTokenName), "Tableau Cloud Access Token Name is required.");
             ValidateRequiredField(CloudAccessToken, nameof(CloudAccessToken), "Tableau Cloud Access Token is required.");
             ValidateRequiredField(ServerToCloudUserDomainMap, nameof(ServerToCloudUserDomainMap), "Tableau Server to Cloud User Domain Map is required.");
