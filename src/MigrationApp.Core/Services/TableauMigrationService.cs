@@ -16,7 +16,8 @@ namespace MigrationApp.Core.Services
             _planBuilder
                 .FromSourceTableauServer(serverEndpoints.Url, serverEndpoints.SiteContentUrl, serverEndpoints.AccessTokenName, serverEndpoints.AccessToken)
                 .ToDestinationTableauCloud(cloudEndpoints.Url, cloudEndpoints.SiteContentUrl, cloudEndpoints.AccessTokenName, cloudEndpoints.AccessToken)
-                .ForServerToCloud();
+                .ForServerToCloud()
+                .WithTableauIdAuthenticationType();
 
             var validationResult = _planBuilder.Validate();
 

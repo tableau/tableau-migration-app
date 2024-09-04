@@ -36,8 +36,8 @@ public class ConnectionTests
                                      config["TABLEAU_SERVER_TOKEN"] ?? "",
                                      true) // use simulator to avoid failing the tests on PRs
             .ToDestinationTableauCloud(new Uri(config["TABLEAU_CLOUD_URL"] ?? ""),
-                                       config["TABLEAU_SERVER_SITE"] ?? "",
-                                       config["TABLEAU_SERVER_TOKEN_NAME"] ?? "",
+                                       config["TABLEAU_CLOUD_SITE"] ?? "",
+                                       config["TABLEAU_CLOUD_TOKEN_NAME"] ?? "",
                                        config["TABLEAU_CLOUD_TOKEN"] ?? "",
                                        true)
             .ForServerToCloud()
