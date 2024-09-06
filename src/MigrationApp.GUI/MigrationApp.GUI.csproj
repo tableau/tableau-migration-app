@@ -28,4 +28,10 @@
   <ItemGroup>
     <ProjectReference Include="..\MigrationApp.Core\MigrationApp.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="$(MSBuildProjectDirectory)\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
