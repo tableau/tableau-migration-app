@@ -7,7 +7,7 @@ namespace MigrationApp.Core.Services
     public class TableauMigrationService(IMigrationPlanBuilder planBuilder, IMigrator migrator, ILogger<TableauMigrationService> logger, AppSettings appSettings) : ITableauMigrationService
     {
         private IMigrationPlan? _plan;
-        private readonly AppSettings _appSettings;
+        private readonly AppSettings _appSettings = appSettings;
         private readonly IMigrationPlanBuilder _planBuilder = planBuilder;
         private readonly IMigrator _migrator = migrator;
         private readonly ILogger<TableauMigrationService> _logger = logger;

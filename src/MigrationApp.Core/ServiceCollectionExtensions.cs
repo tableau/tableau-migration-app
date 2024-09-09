@@ -22,7 +22,7 @@ namespace MigrationApp.Core
         public static IConfiguration BuildConfiguration()
         {
             var configurationBuilder = new ConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string>
+                .AddInMemoryCollection(new Dictionary<string, string?>
                 {
                     { "AppSettings:useSimulator", "false" } // Default value
                 })
