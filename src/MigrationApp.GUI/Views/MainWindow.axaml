@@ -47,7 +47,7 @@
 
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Server Access Token" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerAccessToken, Mode=TwoWay}" Watermark="Access Token"/>
+				<TextBox Text="{Binding ServerAccessToken, Mode=TwoWay}" Classes="revealPasswordButton" PasswordChar="*" Watermark="Access Token"/>
 			</StackPanel>
 		</StackPanel>
 
@@ -71,7 +71,7 @@
 
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Cloud Access Token" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudAccessToken, Mode=TwoWay}" Watermark="Access Token"/>
+				<TextBox Text="{Binding CloudAccessToken, Mode=TwoWay}" Classes="revealPasswordButton" PasswordChar="*" Watermark="Access Token"/>
 			</StackPanel>
 		</StackPanel>
 
