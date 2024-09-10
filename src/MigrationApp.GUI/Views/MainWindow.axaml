@@ -32,22 +32,24 @@
 
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Server URI" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerUri, Mode=TwoWay}" Watermark="Ex: http://server"/>
+				<TextBox Text="{Binding ServerUri, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Ex: http://server"/>
 			</StackPanel>
 
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Server Site Content" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerSiteContent, Mode=TwoWay}" Watermark="Site Content"/>
+				<TextBox Text="{Binding ServerSiteContent, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Site Content"/>
 			</StackPanel>
 
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Server Access Token Name" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerAccessTokenName, Mode=TwoWay}" Watermark="Access Token Name"/>
+				<TextBox Text="{Binding ServerAccessTokenName, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Access Token Name"/>
 			</StackPanel>
 
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Server Access Token" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerAccessToken, Mode=TwoWay}" Classes="revealPasswordButton" PasswordChar="*" Watermark="Access Token"/>
+				<TextBox Text="{Binding ServerAccessToken, Mode=TwoWay}" 
+						 Classes="revealPasswordButton" PasswordChar="*"
+						 IsEnabled="{Binding !IsMigrating}" Watermark="Access Token"/>
 			</StackPanel>
 		</StackPanel>
 
@@ -56,34 +58,36 @@
 
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Cloud URI" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudUri, Mode=TwoWay}" Watermark="Ex: https://online.tableau.com/#/site/sitename/home"/>
+				<TextBox Text="{Binding CloudUri, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Ex: https://online.tableau.com/#/site/sitename/home"/>
 			</StackPanel>
 
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Cloud Site Content" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudSiteContent, Mode=TwoWay}" Watermark="Site Content"/>
+				<TextBox Text="{Binding CloudSiteContent, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Site Content"/>
 			</StackPanel>
 
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Cloud Access Token Name" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudAccessTokenName, Mode=TwoWay}" Watermark="Access Token Name"/>
+				<TextBox Text="{Binding CloudAccessTokenName, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Access Token Name"/>
 			</StackPanel>
 
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Cloud Access Token" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudAccessToken, Mode=TwoWay}" Classes="revealPasswordButton" PasswordChar="*" Watermark="Access Token"/>
+				<TextBox Text="{Binding CloudAccessToken, Mode=TwoWay}"
+						 Classes="revealPasswordButton" PasswordChar="*"
+						 IsEnabled="{Binding !IsMigrating}" Watermark="Access Token"/>
 			</StackPanel>
 		</StackPanel>
 
 		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="20,0" Spacing="30">
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Server to Cloud User Domain Map" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerToCloudUserDomainMap, Mode=TwoWay}" Watermark="User Domain Map"/>
+				<TextBox Text="{Binding ServerToCloudUserDomainMap, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="User Domain Map"/>
 			</StackPanel>
 		</StackPanel>
 
 		<Button Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Run Migration"
-                Command="{Binding RunMigrationCommand}" VerticalAlignment="Bottom" Margin="0,20"/>
+                Command="{Binding RunMigrationCommand}" IsEnabled="{Binding !IsMigrating}" VerticalAlignment="Bottom" Margin="0,20"/>
 
 		<TextBlock Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding NotificationMessage}" Foreground="{Binding NotificationColor}"/>
 	</Grid>

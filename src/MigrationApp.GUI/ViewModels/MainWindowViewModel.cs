@@ -23,12 +23,23 @@ namespace MigrationApp.GUI.ViewModels
         private string _cloudAccessTokenName = string.Empty;
         private string _cloudAccessToken = string.Empty;
         private string _serverToCloudUserDomainMap = string.Empty;
+        private bool _isMigrating = false;
 
         private readonly Dictionary<string, List<string>> _errors = new();
 
         private readonly ITableauMigrationService _migrationService;
 
         public ICommand RunMigrationCommand { get; }
+        public bool IsMigrating { get => _isMigrating;
+            set
+            {
+                if (_isMigrating != value)
+                {
+                    _isMigrating = value;
+                    OnPropertyChanged(nameof(IsMigrating)); // Notify UI about the change
+                }
+            }
+        }
 
         public MainWindowViewModel(ITableauMigrationService migrationService)
         {
@@ -76,6 +87,7 @@ namespace MigrationApp.GUI.ViewModels
                 NotificationMessage = "Migration plan building failed.";
                 NotificationColor = Brushes.Red;
             }
+            IsMigrating = false;
         }
 
         #region Properties
@@ -203,7 +215,7 @@ namespace MigrationApp.GUI.ViewModels
             {
                 return;
             }
-
+            IsMigrating = true;
             RunMigrationAsync().ConfigureAwait(false);
         }
 
