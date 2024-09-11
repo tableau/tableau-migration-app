@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MigrationApp.Core.Entities
+﻿namespace MigrationApp.Core.Entities
 {
     public class EndpointOptions
     {

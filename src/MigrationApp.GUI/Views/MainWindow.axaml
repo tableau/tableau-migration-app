@@ -82,7 +82,7 @@
 		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="20,0" Spacing="30">
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Server to Cloud User Domain Map" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerToCloudUserDomainMap, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="User Domain Map"/>
+				<TextBox Text="{Binding CloudUserDomain, Mode=TwoWay}" Watermark="User Cloud Domain"/>
 			</StackPanel>
 		</StackPanel>
 

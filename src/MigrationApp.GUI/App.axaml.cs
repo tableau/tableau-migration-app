@@ -1,15 +1,15 @@
+using System;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
-using Avalonia.Data.Core;
 using Avalonia.Markup.Xaml;
-using Avalonia;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MigrationApp.Core;
+using MigrationApp.Core.Hooks.Mappings;
 using MigrationApp.GUI.ViewModels;
 using MigrationApp.GUI.Views;
-using System;
 
 namespace MigrationApp.GUI;
 
@@ -46,10 +46,15 @@ public partial class App : Application
         services.AddLogging(configure =>
         {
             configure.AddConsole();
-        // Add other logging providers
+            // Add other logging providers
         });
         IConfiguration configuration = ServiceCollectionExtensions.BuildConfiguration();
         services.AddMigrationAppCore(configuration);
+
+        services.Configure<EmailDomainMappingOptions>(options =>
+        {
+            options.EmailDomain = string.Empty;
+        });
 
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<MainWindow>(provider =>
@@ -59,5 +64,6 @@ public partial class App : Application
                 DataContext = provider.GetRequiredService<MainWindowViewModel>()
             };
         });
+
     }
 }

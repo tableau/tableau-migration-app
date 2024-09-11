@@ -9,6 +9,8 @@ using MigrationApp.Core.Entities;
 using System.Threading.Tasks;
 using System.Threading;
 using Avalonia.Media;
+using Microsoft.Extensions.Options;
+using MigrationApp.Core.Hooks.Mappings;
 
 namespace MigrationApp.GUI.ViewModels
 {
@@ -22,12 +24,14 @@ namespace MigrationApp.GUI.ViewModels
         private string _cloudSiteContent = string.Empty;
         private string _cloudAccessTokenName = string.Empty;
         private string _cloudAccessToken = string.Empty;
-        private string _serverToCloudUserDomainMap = string.Empty;
+        private string _cloudUserDomain = string.Empty;
         private bool _isMigrating = false;
 
         private readonly Dictionary<string, List<string>> _errors = new();
 
         private readonly ITableauMigrationService _migrationService;
+
+        private readonly IOptions<EmailDomainMappingOptions> _emailDomainOptions;
 
         public ICommand RunMigrationCommand { get; }
         public bool IsMigrating { get => _isMigrating;
@@ -41,10 +45,11 @@ namespace MigrationApp.GUI.ViewModels
             }
         }
 
-        public MainWindowViewModel(ITableauMigrationService migrationService)
+        public MainWindowViewModel(ITableauMigrationService migrationService, IOptions<EmailDomainMappingOptions> emailDomainOptions)
         {
             _migrationService = migrationService;
             RunMigrationCommand = new RelayCommand(RunMigration, CanExecuteRunMigration);
+            _emailDomainOptions = emailDomainOptions;
         }
 
         private async Task RunMigrationAsync()
@@ -172,13 +177,14 @@ namespace MigrationApp.GUI.ViewModels
             }
         }
 
-        public string ServerToCloudUserDomainMap
+        public string CloudUserDomain
         {
-            get => _serverToCloudUserDomainMap;
+            get => _cloudUserDomain;
             set
             {
-                SetProperty(ref _serverToCloudUserDomainMap, value);
-                ValidateRequiredField(value, nameof(ServerToCloudUserDomainMap), "Tableau Server to Cloud User Domain Map is required.");
+                SetProperty(ref _cloudUserDomain, value);
+                ValidateRequiredField(value, nameof(CloudUserDomain), "Tableau Server to Cloud User Domain Map is required.");
+                _emailDomainOptions.Value.EmailDomain = value;
             }
         }
 
@@ -209,7 +215,7 @@ namespace MigrationApp.GUI.ViewModels
             ValidateRequiredField(ServerAccessToken, nameof(ServerAccessToken), "Tableau Server Access Token is required.");
             ValidateRequiredField(CloudAccessTokenName, nameof(CloudAccessTokenName), "Tableau Cloud Access Token Name is required.");
             ValidateRequiredField(CloudAccessToken, nameof(CloudAccessToken), "Tableau Cloud Access Token is required.");
-            ValidateRequiredField(ServerToCloudUserDomainMap, nameof(ServerToCloudUserDomainMap), "Tableau Server to Cloud User Domain Map is required.");
+            ValidateRequiredField(CloudUserDomain, nameof(CloudUserDomain), "Tableau Server to Cloud User Domain Map is required.");
 
             if (HasErrors)
             {

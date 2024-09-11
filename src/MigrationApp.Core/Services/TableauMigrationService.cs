@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using MigrationApp.Core.Entities;
+using MigrationApp.Core.Hooks.Mappings;
 using MigrationApp.Core.Interfaces;
 using Tableau.Migration;
+
 namespace MigrationApp.Core.Services
 {
     public class TableauMigrationService(IMigrationPlanBuilder planBuilder, IMigrator migrator, ILogger<TableauMigrationService> logger, AppSettings appSettings) : ITableauMigrationService
@@ -26,7 +28,8 @@ namespace MigrationApp.Core.Services
                                            cloudEndpoints.AccessToken,
                                            _appSettings.UseSimulator)
                 .ForServerToCloud()
-                .WithTableauIdAuthenticationType();
+                .WithTableauIdAuthenticationType()
+                .WithTableauCloudUsernames<EmailDomainMapping>();
 
             var validationResult = _planBuilder.Validate();
 

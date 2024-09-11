@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using MigrationApp.Core.Interfaces;
 using MigrationApp.Core.Services;
+using MigrationApp.Core.Hooks.Mappings;
 using Tableau.Migration;
 using MigrationApp.Core.Entities;
 namespace MigrationApp.Core
@@ -16,6 +17,7 @@ namespace MigrationApp.Core
 
             services.AddTableauMigrationSdk();
             services.AddScoped<ITableauMigrationService, TableauMigrationService>();
+            services.AddScoped<EmailDomainMapping>();
             return services;
         }
 
