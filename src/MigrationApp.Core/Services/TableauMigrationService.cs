@@ -1,21 +1,25 @@
 ﻿using Microsoft.Extensions.Logging;
 using MigrationApp.Core.Entities;
 using MigrationApp.Core.Hooks.Mappings;
+using MigrationApp.Core.Hooks.Progression;
 using MigrationApp.Core.Interfaces;
 using Tableau.Migration;
 
 namespace MigrationApp.Core.Services
 {
-    public class TableauMigrationService(IMigrationPlanBuilder planBuilder, IMigrator migrator, ILogger<TableauMigrationService> logger, AppSettings appSettings) : ITableauMigrationService
+    public class TableauMigrationService(
+        IMigrationPlanBuilder planBuilder, IMigrator migrator, ILogger<TableauMigrationService> logger,
+        AppSettings appSettings, IProgressUpdater? progressUpdater = null) : ITableauMigrationService
     {
         private IMigrationPlan? _plan;
         private readonly AppSettings _appSettings = appSettings;
         private readonly IMigrationPlanBuilder _planBuilder = planBuilder;
         private readonly IMigrator _migrator = migrator;
         private readonly ILogger<TableauMigrationService> _logger = logger;
-
+        private readonly IProgressUpdater? _progressUpdater = progressUpdater;
         public bool BuildMigrationPlan(EndpointOptions serverEndpoints, EndpointOptions cloudEndpoints)
         {
+            _progressUpdater?.Update();
             _planBuilder
                 .FromSourceTableauServer(serverEndpoints.Url,
                                          serverEndpoints.SiteContentUrl,
@@ -31,6 +35,7 @@ namespace MigrationApp.Core.Services
                 .WithTableauIdAuthenticationType()
                 .WithTableauCloudUsernames<EmailDomainMapping>();
 
+
             var validationResult = _planBuilder.Validate();
 
             if (!validationResult.Success)
@@ -39,6 +44,7 @@ namespace MigrationApp.Core.Services
                 return false;
             }
 
+            _planBuilder.Hooks.Add<MigrationActionProgressHook>();
             _plan = _planBuilder.Build();
 
             return true;

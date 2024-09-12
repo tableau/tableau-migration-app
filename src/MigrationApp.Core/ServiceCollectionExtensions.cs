@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MigrationApp.Core.Hooks.Mappings;
+using MigrationApp.Core.Hooks.Progression;
 using MigrationApp.Core.Interfaces;
 using MigrationApp.Core.Services;
-using MigrationApp.Core.Hooks.Mappings;
 using Tableau.Migration;
-using MigrationApp.Core.Entities;
 namespace MigrationApp.Core
 {
     public static class ServiceCollectionExtensions
@@ -18,6 +18,7 @@ namespace MigrationApp.Core
             services.AddTableauMigrationSdk();
             services.AddScoped<ITableauMigrationService, TableauMigrationService>();
             services.AddScoped<EmailDomainMapping>();
+            services.AddScoped<MigrationActionProgressHook>();
             return services;
         }
 

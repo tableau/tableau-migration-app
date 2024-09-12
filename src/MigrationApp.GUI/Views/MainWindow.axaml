@@ -12,7 +12,7 @@
         MaxWidth="1200" MaxHeight="900"
         SizeToContent="Height">
 
-	<Grid>
+	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
@@ -82,13 +82,29 @@
 		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="20,0" Spacing="30">
 			<StackPanel Spacing="5">
 				<TextBlock Text="Tableau Server to Cloud User Domain Map" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudUserDomain, Mode=TwoWay}" Watermark="User Cloud Domain"/>
+				<TextBox Text="{Binding CloudUserDomain, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="User Cloud Domain"/>
 			</StackPanel>
 		</StackPanel>
 
 		<Button Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Run Migration"
                 Command="{Binding RunMigrationCommand}" IsEnabled="{Binding !IsMigrating}" VerticalAlignment="Bottom" Margin="0,20"/>
 
-		<TextBlock Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{Binding NotificationMessage}" Foreground="{Binding NotificationColor}"/>
+		<TextBlock Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" IsVisible="{Binding !IsMigrating}"
+				   Text="{Binding NotificationMessage}" Foreground="{Binding NotificationColor}"/>
+
+		<Grid Grid.Row="4" Grid.ColumnSpan="2" IsVisible="{Binding IsMigrating}">
+			<ProgressBar Name="progressBar" Minimum="0" Maximum="{Binding NumMigrationStates}"
+						 Height="20" Width="300" Value="{Binding CurrentMigrationStateIndex}"/>
+
+			<!-- TextBlock overlay on the progress bar to display current state -->
+			<TextBlock Name="progressStateText"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"
+					   Text="{Binding CurrentMigrationMessage}"
+					   FontSize="16"
+					   Foreground="Black" />
+		</Grid>
+		
 	</Grid>
+	
 </Window>

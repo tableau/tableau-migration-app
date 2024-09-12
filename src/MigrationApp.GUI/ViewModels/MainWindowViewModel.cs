@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Input;
+﻿using Avalonia.Media;
+using Avalonia.Threading;
+using Microsoft.Extensions.Options;
+using MigrationApp.Core.Entities;
+using MigrationApp.Core.Hooks.Mappings;
+using MigrationApp.Core.Interfaces;
+using MigrationApp.GUI.Models;
 using System;
 using System.Collections;
-using MigrationApp.Core.Interfaces;
-using MigrationApp.Core.Entities;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading;
-using Avalonia.Media;
-using Microsoft.Extensions.Options;
-using MigrationApp.Core.Hooks.Mappings;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace MigrationApp.GUI.ViewModels
 {
@@ -26,7 +28,7 @@ namespace MigrationApp.GUI.ViewModels
         private string _cloudAccessToken = string.Empty;
         private string _cloudUserDomain = string.Empty;
         private bool _isMigrating = false;
-
+        private IProgressUpdater _progressUpdater;
         private readonly Dictionary<string, List<string>> _errors = new();
 
         private readonly ITableauMigrationService _migrationService;
@@ -34,7 +36,9 @@ namespace MigrationApp.GUI.ViewModels
         private readonly IOptions<EmailDomainMappingOptions> _emailDomainOptions;
 
         public ICommand RunMigrationCommand { get; }
-        public bool IsMigrating { get => _isMigrating;
+        public bool IsMigrating
+        {
+            get => _isMigrating;
             set
             {
                 if (_isMigrating != value)
@@ -44,12 +48,32 @@ namespace MigrationApp.GUI.ViewModels
                 }
             }
         }
+        #region Migration Progress bar
 
-        public MainWindowViewModel(ITableauMigrationService migrationService, IOptions<EmailDomainMappingOptions> emailDomainOptions)
+        public int CurrentMigrationStateIndex => _progressUpdater.CurrentMigrationStateIndex;
+        public string CurrentMigrationMessage => _progressUpdater.CurrentMigrationMessage;
+        public static int NumMigrationStates => ProgressUpdater.NumMigrationStates;
+
+
+        #endregion
+
+        public MainWindowViewModel(ITableauMigrationService migrationService, IOptions<EmailDomainMappingOptions> emailDomainOptions,
+            IProgressUpdater progressUpdater)
         {
             _migrationService = migrationService;
-            RunMigrationCommand = new RelayCommand(RunMigration, CanExecuteRunMigration);
             _emailDomainOptions = emailDomainOptions;
+            _progressUpdater = progressUpdater;
+            RunMigrationCommand = new RelayCommand(RunMigration, CanExecuteRunMigration);
+
+            // Subscribe to the progress updater event and retrigger UI rendering on update
+            _progressUpdater.OnProgressChanged += async (sender, args) =>
+            {
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    OnPropertyChanged(nameof(CurrentMigrationStateIndex));
+                    OnPropertyChanged(nameof(CurrentMigrationMessage));
+                });
+            };
         }
 
         private async Task RunMigrationAsync()
@@ -69,6 +93,7 @@ namespace MigrationApp.GUI.ViewModels
                 AccessTokenName = CloudAccessTokenName,
                 AccessToken = CloudAccessToken
             };
+
 
             bool planBuilt = _migrationService.BuildMigrationPlan(serverCreds, cloudCreds);
 
@@ -93,6 +118,7 @@ namespace MigrationApp.GUI.ViewModels
                 NotificationColor = Brushes.Red;
             }
             IsMigrating = false;
+            _progressUpdater.Reset();
         }
 
         #region Properties

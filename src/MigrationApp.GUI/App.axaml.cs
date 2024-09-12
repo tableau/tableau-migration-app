@@ -1,4 +1,3 @@
-using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
@@ -8,8 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MigrationApp.Core;
 using MigrationApp.Core.Hooks.Mappings;
+using MigrationApp.Core.Interfaces;
+using MigrationApp.GUI.Models;
 using MigrationApp.GUI.ViewModels;
 using MigrationApp.GUI.Views;
+using System;
 
 namespace MigrationApp.GUI;
 
@@ -55,7 +57,7 @@ public partial class App : Application
         {
             options.EmailDomain = string.Empty;
         });
-
+        services.AddSingleton<IProgressUpdater, ProgressUpdater>();
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<MainWindow>(provider =>
         {

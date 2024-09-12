@@ -1,9 +1,9 @@
-using Xunit;
-using Moq;
 using Microsoft.Extensions.Options;
 using MigrationApp.Core.Hooks.Mappings;
-using MigrationApp.GUI.ViewModels;
 using MigrationApp.Core.Interfaces;
+using MigrationApp.GUI.Models;
+using MigrationApp.GUI.ViewModels;
+using Moq;
 
 namespace MigrationApp.GUI.Tests.ViewModels
 {
@@ -17,8 +17,8 @@ namespace MigrationApp.GUI.Tests.ViewModels
             emailDomainOptionsMock.Setup(o => o.Value).Returns(optionsValue);
 
             var migrationServiceMock = new Mock<ITableauMigrationService>();
-
-            var viewModel = new MainWindowViewModel(migrationServiceMock.Object, emailDomainOptionsMock.Object);
+            var progressUpdaterMock = new Mock<ProgressUpdater>();
+            var viewModel = new MainWindowViewModel(migrationServiceMock.Object, emailDomainOptionsMock.Object, progressUpdaterMock.Object);
 
             viewModel.CloudUserDomain = "testdomain.com";
 
@@ -33,8 +33,9 @@ namespace MigrationApp.GUI.Tests.ViewModels
             emailDomainOptionsMock.Setup(o => o.Value).Returns(optionsValue);
 
             var migrationServiceMock = new Mock<ITableauMigrationService>();
+            var progressUpdaterMock = new Mock<ProgressUpdater>();
 
-            var viewModel = new MainWindowViewModel(migrationServiceMock.Object, emailDomainOptionsMock.Object);
+            var viewModel = new MainWindowViewModel(migrationServiceMock.Object, emailDomainOptionsMock.Object, progressUpdaterMock.Object);
 
             viewModel.CloudUserDomain = "";
 
