@@ -30,6 +30,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\HelpButton.axaml.cs">
+      <DependentUpon>HelpButton.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="$(MSBuildProjectDirectory)\appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

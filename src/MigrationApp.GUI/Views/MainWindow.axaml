@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:MigrationApp.GUI.ViewModels"
+		xmlns:local="clr-namespace:MigrationApp.GUI.Views"
         mc:Ignorable="d"
         x:Class="MigrationApp.GUI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -30,60 +31,214 @@
 		<StackPanel Grid.Row="1" Grid.Column="0" Margin="20,30" Spacing="30" VerticalAlignment="Top">
 			<TextBlock Text="Tableau Server" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
 
-			<StackPanel Spacing="5">
-				<TextBlock Text="Tableau Server URI" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerUri, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Ex: http://server"/>
-			</StackPanel>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				
+				<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server URI" VerticalAlignment="Center" />
 
-			<StackPanel Spacing="5">
-				<TextBlock Text="Tableau Server Site Content" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerSiteContent, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Site Content"/>
-			</StackPanel>
+				<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+					<local:HelpButton
+						HelpText="The URL for your Tableau server."
+						DetailsUrl="https://help.tableau.com/"/>
+				</StackPanel>
 
-			<StackPanel Spacing="5">
-				<TextBlock Text="Tableau Server Access Token Name" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerAccessTokenName, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Access Token Name"/>
-			</StackPanel>
+				<TextBox Grid.Column="0" Grid.Row="1" Text="{Binding ServerUri, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Ex: http://server" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" />
 
-			<StackPanel Spacing="5">
-				<TextBlock Text="Tableau Server Access Token" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding ServerAccessToken, Mode=TwoWay}" 
+				
+			</Grid>
+
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server Site Content" VerticalAlignment="Center" />
+				<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+					<local:HelpButton
+						HelpText="Tableau Server Site Content."
+						DetailsUrl="https://help.tableau.com/"/>
+				</StackPanel>
+				<TextBox Grid.Column="0" Grid.Row="1" Text="{Binding ServerSiteContent, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Site Content" Grid.ColumnSpan="2" />
+				
+			</Grid>
+
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server Access Token Name" VerticalAlignment="Center" />
+				<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+					<local:HelpButton
+						HelpText="Tableau Server Access Token Name."
+						DetailsUrl="http://google.com/"/>
+				</StackPanel>
+				<TextBox Grid.Column="0" Grid.Row="1" Text="{Binding ServerAccessTokenName, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Access Token Name" Grid.ColumnSpan="2" />
+				
+			</Grid>
+
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server Access Token" VerticalAlignment="Center" />
+				<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+					<local:HelpButton
+						HelpText="Tableau Server Access Token."
+						DetailsUrl="http://google.com/"/>
+				</StackPanel>
+				<TextBox Grid.Column="0" 
+						 Grid.Row="1" 
+						 Text="{Binding ServerAccessToken, Mode=TwoWay}"
 						 Classes="revealPasswordButton" PasswordChar="*"
-						 IsEnabled="{Binding !IsMigrating}" Watermark="Access Token"/>
-			</StackPanel>
+						 IsEnabled="{Binding !IsMigrating}" Watermark="Access Token" Grid.ColumnSpan="2" />
+				
+			</Grid>
 		</StackPanel>
 
 		<StackPanel Grid.Row="1" Grid.Column="1" Margin="20,30" Spacing="30" VerticalAlignment="Top">
 			<TextBlock Text="Tableau Cloud" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
 
-			<StackPanel Spacing="5">
-				<TextBlock Text="Tableau Cloud URI" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudUri, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Ex: https://online.tableau.com/#/site/sitename/home"/>
-			</StackPanel>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud URI" VerticalAlignment="Center"  />
+				<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+					<local:HelpButton
+						HelpText="Tableau Cloud URI."
+						DetailsUrl="https://help.tableau.com/"/>
+				</StackPanel>
+				<TextBox Grid.Column="0"
+						 Grid.Row="1"
+						 Text="{Binding CloudUri, Mode=TwoWay}" 
+						 IsEnabled="{Binding !IsMigrating}" 
+						 Watermark="Ex: https://prod.online.tableau.com/"
+						 Grid.ColumnSpan="2"/>
+				
+			</Grid>
 
-			<StackPanel Spacing="5">
-				<TextBlock Text="Tableau Cloud Site Content" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudSiteContent, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Site Content"/>
-			</StackPanel>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud Site Content" VerticalAlignment="Center" />
+				<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+					<local:HelpButton
+						HelpText="Tableau Cloud Site Content."
+						DetailsUrl="https://help.tableau.com/"/>
+				</StackPanel>
+				<TextBox Grid.Column="0"
+						 Grid.Row="1"
+						 Text="{Binding CloudSiteContent, Mode=TwoWay}"
+						 IsEnabled="{Binding !IsMigrating}"
+						 Watermark="Site Content"
+						 Grid.ColumnSpan="2"/>
+				
+			</Grid>
+			
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud Access Token Name" VerticalAlignment="Center" />
+				<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+					<local:HelpButton
+						HelpText="Tableau Cloud Access Token Name"
+						DetailsUrl="https://help.tableau.com/"/>
+				</StackPanel>
+				<TextBox Grid.Column="0"
+						 Grid.Row="1"
+						 Text="{Binding CloudAccessTokenName, Mode=TwoWay}"
+						 IsEnabled="{Binding !IsMigrating}"
+						 Watermark="Access Token Name"
+						 Grid.ColumnSpan="2"/>
+				
+			</Grid>
 
-			<StackPanel Spacing="5">
-				<TextBlock Text="Tableau Cloud Access Token Name" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudAccessTokenName, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Access Token Name"/>
-			</StackPanel>
-
-			<StackPanel Spacing="5">
-				<TextBlock Text="Tableau Cloud Access Token" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudAccessToken, Mode=TwoWay}"
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud Access Token" VerticalAlignment="Center"  />
+				<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+					<local:HelpButton
+						HelpText="Tableau Cloud Access Token"
+						DetailsUrl="https://help.tableau.com/"/>
+				</StackPanel>
+				<TextBox Grid.Column="0"
+						 Grid.Row="1"
+						 Text="{Binding CloudAccessToken, Mode=TwoWay}"
 						 Classes="revealPasswordButton" PasswordChar="*"
-						 IsEnabled="{Binding !IsMigrating}" Watermark="Access Token"/>
-			</StackPanel>
+						 IsEnabled="{Binding !IsMigrating}" Watermark="Access Token"
+						 Grid.ColumnSpan="2"/>
+				
+			</Grid>
 		</StackPanel>
 
 		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="20,0" Spacing="30">
-			<StackPanel Spacing="5">
-				<TextBlock Text="Tableau Server to Cloud User Domain Map" VerticalAlignment="Bottom" />
-				<TextBox Text="{Binding CloudUserDomain, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="User Cloud Domain"/>
-			</StackPanel>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server to Cloud User Domain Map" VerticalAlignment="Center" />
+				<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+					<local:HelpButton
+						HelpText="Tableau Server to Cloud User Domain Map"
+						DetailsUrl="https://help.tableau.com/"/>
+				</StackPanel>
+				<TextBox Grid.Column="0"
+						 Grid.Row="1"
+						 Text="{Binding CloudUserDomain, Mode=TwoWay}"
+						 IsEnabled="{Binding !IsMigrating}" Watermark="User Cloud Domain" 
+						 Grid.ColumnSpan="2"/>
+				
+			</Grid>
 		</StackPanel>
 
 		<Button Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Run Migration"
