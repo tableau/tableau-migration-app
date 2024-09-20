@@ -35,3 +35,10 @@ jobs:
           TABLEAU_SERVER_SITE: ""
           TABLEAU_SERVER_TOKEN_NAME: ${{ secrets.TABLEAU_SERVER_TOKEN_NAME }}
           TABLEAU_SERVER_TOKEN: ${{ secrets.TABLEAU_SERVER_TOKEN }}
+
+      - name: Run dotnet format
+        run: dotnet format --verbosity diagnostic
+
+      - name: Check format results
+        if: failure()
+        run: echo "Formatting issues found. Please run 'dotnet format' locally and fix the issues."

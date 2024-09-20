@@ -1,70 +1,93 @@
-﻿using MigrationApp.Core.Interfaces;
+// <copyright file="ProgressUpdater.cs" company="Salesforce, inc.">
+// Copyright (c) Salesforce, inc.. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+namespace MigrationApp.GUI.Models;
+
+using MigrationApp.Core.Interfaces;
 using System;
 
-namespace MigrationApp.GUI.Models
+/// <summary>
+/// Class to track ongoing progress of a migration.
+/// </summary>
+public class ProgressUpdater : IProgressUpdater
 {
-    public class ProgressUpdater : IProgressUpdater
+    private static readonly string[] MigrationStates = { "Users", "Groups", "Projects", "DataSources", "Workbooks", "ServerExtractRefreshTasks", "CustomViews" };
+
+    private int currentMigrationStateIndex = -1;
+
+    /// <summary>
+    /// Occurs when changes occur that affect the action of the current migration.
+    /// </summary>
+    public event EventHandler? OnProgressChanged;
+
+    /// <summary>
+    /// Gets the total number of migration states available.
+    /// </summary>
+    public static int NumMigrationStates { get; } = MigrationStates.Length;
+
+    /// <summary>
+    /// Gets or sets the current migration state index.
+    /// </summary>
+    public int CurrentMigrationStateIndex
     {
-        private static readonly string[] _migrationStates = { "Users", "Groups", "Projects", "DataSources", "Workbooks", "ServerExtractRefreshTasks", "CustomViews" };
-        private int _currentMigrationStateIndex = -1;
-        public event EventHandler? OnProgressChanged;
-        public int CurrentMigrationStateIndex
+        get => this.currentMigrationStateIndex;
+        set
         {
-            get => _currentMigrationStateIndex;
-            set
+            if (this.currentMigrationStateIndex != value && value <= MigrationStates.Length)
             {
-                if (_currentMigrationStateIndex != value && value <= _migrationStates.Length)
-                {
-                    _currentMigrationStateIndex = value;
-                    OnProgressChanged?.Invoke(this, EventArgs.Empty);
-                }
+                this.currentMigrationStateIndex = value;
+                this.OnProgressChanged?.Invoke(this, EventArgs.Empty);
             }
         }
+    }
 
+    /// <summary>
+    /// Gets the name asssociated with the current migration state.
+    /// </summary>
+    public string CurrentMigrationStateName
+    {
+        get => this.CurrentMigrationStateIndex < 0 || this.CurrentMigrationStateIndex >= MigrationStates.Length ?
+            string.Empty : MigrationStates[this.CurrentMigrationStateIndex];
+    }
 
-        public string CurrentMigrationStateName
+    /// <summary>
+    /// Gets the migration message associated with the current migration state.
+    /// </summary>
+    public string CurrentMigrationMessage
+    {
+        get
         {
-            get => CurrentMigrationStateIndex < 0 || CurrentMigrationStateIndex >= _migrationStates.Length ?
-                string.Empty : _migrationStates[CurrentMigrationStateIndex];
-        }
-
-        public string CurrentMigrationMessage
-        {
-            get
+            if (this.CurrentMigrationStateIndex < 0)
             {
-                if (CurrentMigrationStateIndex < 0)
-                {
-                    return String.Empty;
-                }
-                else if (CurrentMigrationStateIndex >= NumMigrationStates)
-                {
-                    return "Migration Finished.";
-                }
-
-                return $"Migrating {CurrentMigrationStateName}";
-
+                return string.Empty;
             }
-        }
+            else if (this.CurrentMigrationStateIndex >= NumMigrationStates)
+            {
+                return "Migration Finished.";
+            }
 
-        public static int NumMigrationStates { get; } = _migrationStates.Length;
-
-        /// <summary>
-        /// Increases the current migration state to the next action.
-        /// </summary>
-        /// <remarks>
-        /// This function exists for increased legibility when ProgressUpdater is nullable.
-        /// </remarks>
-        public void Update()
-        {
-            CurrentMigrationStateIndex++;
+            return $"Migrating {this.CurrentMigrationStateName}";
         }
+    }
 
-        /// <summary>
-        /// Resets the migration progress back to initial state.
-        /// </summary>
-        public void Reset()
-        {
-            CurrentMigrationStateIndex = -1;
-        }
+    /// <summary>
+    /// Increases the current migration state to the next action.
+    /// </summary>
+    /// <remarks>
+    /// This function exists for increased legibility when ProgressUpdater is nullable.
+    /// </remarks>
+    public void Update()
+    {
+        this.CurrentMigrationStateIndex++;
+    }
+
+    /// <summary>
+    /// Resets the migration progress back to initial state.
+    /// </summary>
+    public void Reset()
+    {
+        this.CurrentMigrationStateIndex = -1;
     }
 }

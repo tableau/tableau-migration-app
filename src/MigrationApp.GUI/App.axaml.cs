@@ -1,3 +1,10 @@
+// <copyright file="App.axaml.cs" company="Salesforce, inc.">
+// Copyright (c) Salesforce, inc.. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+namespace MigrationApp.GUI;
+
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
@@ -13,31 +20,38 @@ using MigrationApp.GUI.ViewModels;
 using MigrationApp.GUI.Views;
 using System;
 
-namespace MigrationApp.GUI;
-
+/// <summary>
+/// Main application definition.
+/// </summary>
 public partial class App : Application
 {
-    private IServiceProvider? _serviceProvider;
+    private IServiceProvider? serviceProvider;
 
+    /// <summary>
+    /// Initializes the app.
+    /// </summary>
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
 
+    /// <summary>
+    /// Callback to trigger in Avalonia framework initialization.
+    /// </summary>
     public override void OnFrameworkInitializationCompleted()
     {
         var serviceCollection = new ServiceCollection();
-        ConfigureServices(serviceCollection);
-        _serviceProvider = serviceCollection.BuildServiceProvider();
+        this.ConfigureServices(serviceCollection);
+        this.serviceProvider = serviceCollection.BuildServiceProvider();
 
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
 
             // Set MainWindow and DataContext via DI
-            desktop.MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            desktop.MainWindow = this.serviceProvider.GetRequiredService<MainWindow>();
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -48,6 +62,7 @@ public partial class App : Application
         services.AddLogging(configure =>
         {
             configure.AddConsole();
+
             // Add other logging providers
         });
         IConfiguration configuration = ServiceCollectionExtensions.BuildConfiguration();
@@ -63,9 +78,8 @@ public partial class App : Application
         {
             return new MainWindow
             {
-                DataContext = provider.GetRequiredService<MainWindowViewModel>()
+                DataContext = provider.GetRequiredService<MainWindowViewModel>(),
             };
         });
-
     }
 }
