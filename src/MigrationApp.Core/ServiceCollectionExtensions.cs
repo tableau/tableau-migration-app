@@ -29,7 +29,7 @@ public static class ServiceCollectionExtensions
         configuration.GetSection("AppSettings").Bind(appSettings);
         services.AddSingleton(appSettings);
 
-        services.AddTableauMigrationSdk();
+        services.AddTableauMigrationSdk(configuration.GetSection("tableau:migrationSdk"));
         services.AddScoped<ITableauMigrationService, TableauMigrationService>();
         services.AddScoped<EmailDomainMapping>();
         services.AddScoped<MigrationActionProgressHook>();
@@ -42,13 +42,23 @@ public static class ServiceCollectionExtensions
     /// <returns>The configuration for the migration app service.</returns>
     public static IConfiguration BuildConfiguration()
     {
-        var configurationBuilder = new ConfigurationBuilder()
+        var baseConfig = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "AppSettings:useSimulator", "false" }, // Default value
             })
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .Build();
 
-        return configurationBuilder.Build();
+        // Set a new config to make sure that the UserAgent string isn't being set through the json file
+        var finalConfig = new ConfigurationBuilder()
+            .AddConfiguration(baseConfig)
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                { "tableau:migrationSdk:network:UserAgentComment", "TableauMigrationApp" }, // Fixed User Agent for the SDK
+            })
+            .Build();
+
+        return finalConfig;
     }
 }
