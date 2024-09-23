@@ -20,7 +20,9 @@ namespace MigrationApp.Core.Hooks.Mappings
         /// <summary>
         /// Creates a new <see cref="EmailDomainMapping"/> object.
         /// </summary>
-        /// <param name="optionsProvider">The options for this Mapping.</param>
+        /// <param name="options">The options for this Mapping.</param>
+        /// <param name="localizer">The localizer for this Mapping.</param>
+        /// <param name="logger">The logger for this Mapping.</param>
         public EmailDomainMapping(
            IOptions<EmailDomainMappingOptions> options,
            ISharedResourcesLocalizer localizer,

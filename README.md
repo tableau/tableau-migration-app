@@ -29,6 +29,14 @@ docker build .
 ```
 dotnet build EsmbMigrationApp.sln
 ```
+
+## Documentation
+```
+cd docs
+docfx # Build
+docfx --serve # Host the docs locally
+```
+
 ##  Sub Project Build
 Individual sub projects can be built from their respective folders.
 ```

@@ -1,0 +1,700 @@
+### YamlMime:ManagedReference
+items:
+- uid: MigrationApp.GUI.Models.ProgressUpdater
+  commentId: T:MigrationApp.GUI.Models.ProgressUpdater
+  id: ProgressUpdater
+  parent: MigrationApp.GUI.Models
+  children:
+  - MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationMessage
+  - MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateIndex
+  - MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateName
+  - MigrationApp.GUI.Models.ProgressUpdater.NumMigrationStates
+  - MigrationApp.GUI.Models.ProgressUpdater.OnProgressChanged
+  - MigrationApp.GUI.Models.ProgressUpdater.Reset
+  - MigrationApp.GUI.Models.ProgressUpdater.Update
+  langs:
+  - csharp
+  - vb
+  name: ProgressUpdater
+  nameWithType: ProgressUpdater
+  fullName: MigrationApp.GUI.Models.ProgressUpdater
+  type: Class
+  source:
+    remote:
+      path: src/MigrationApp.GUI/Models/ProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: ProgressUpdater
+    path: ../src/MigrationApp.GUI/Models/ProgressUpdater.cs
+    startLine: 5
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.Models
+  syntax:
+    content: 'public class ProgressUpdater : IProgressUpdater'
+    content.vb: Public Class ProgressUpdater Implements IProgressUpdater
+  inheritance:
+  - System.Object
+  implements:
+  - MigrationApp.Core.Interfaces.IProgressUpdater
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MigrationApp.GUI.Models.ProgressUpdater.OnProgressChanged
+  commentId: E:MigrationApp.GUI.Models.ProgressUpdater.OnProgressChanged
+  id: OnProgressChanged
+  parent: MigrationApp.GUI.Models.ProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: OnProgressChanged
+  nameWithType: ProgressUpdater.OnProgressChanged
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.OnProgressChanged
+  type: Event
+  source:
+    remote:
+      path: src/MigrationApp.GUI/Models/ProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: OnProgressChanged
+    path: ../src/MigrationApp.GUI/Models/ProgressUpdater.cs
+    startLine: 9
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.Models
+  example: []
+  syntax:
+    content: public event EventHandler? OnProgressChanged
+    return:
+      type: System.EventHandler
+    content.vb: Public Event OnProgressChanged As EventHandler
+  implements:
+  - MigrationApp.Core.Interfaces.IProgressUpdater.OnProgressChanged
+- uid: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateIndex
+  commentId: P:MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateIndex
+  id: CurrentMigrationStateIndex
+  parent: MigrationApp.GUI.Models.ProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: CurrentMigrationStateIndex
+  nameWithType: ProgressUpdater.CurrentMigrationStateIndex
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateIndex
+  type: Property
+  source:
+    remote:
+      path: src/MigrationApp.GUI/Models/ProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: CurrentMigrationStateIndex
+    path: ../src/MigrationApp.GUI/Models/ProgressUpdater.cs
+    startLine: 10
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.Models
+  example: []
+  syntax:
+    content: public int CurrentMigrationStateIndex { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CurrentMigrationStateIndex As Integer
+  overload: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateIndex*
+  implements:
+  - MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex
+- uid: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateName
+  commentId: P:MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateName
+  id: CurrentMigrationStateName
+  parent: MigrationApp.GUI.Models.ProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: CurrentMigrationStateName
+  nameWithType: ProgressUpdater.CurrentMigrationStateName
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateName
+  type: Property
+  source:
+    remote:
+      path: src/MigrationApp.GUI/Models/ProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: CurrentMigrationStateName
+    path: ../src/MigrationApp.GUI/Models/ProgressUpdater.cs
+    startLine: 24
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.Models
+  example: []
+  syntax:
+    content: public string CurrentMigrationStateName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property CurrentMigrationStateName As String
+  overload: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateName*
+  implements:
+  - MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName
+- uid: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationMessage
+  commentId: P:MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationMessage
+  id: CurrentMigrationMessage
+  parent: MigrationApp.GUI.Models.ProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: CurrentMigrationMessage
+  nameWithType: ProgressUpdater.CurrentMigrationMessage
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationMessage
+  type: Property
+  source:
+    remote:
+      path: src/MigrationApp.GUI/Models/ProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: CurrentMigrationMessage
+    path: ../src/MigrationApp.GUI/Models/ProgressUpdater.cs
+    startLine: 30
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.Models
+  example: []
+  syntax:
+    content: public string CurrentMigrationMessage { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property CurrentMigrationMessage As String
+  overload: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationMessage*
+  implements:
+  - MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage
+- uid: MigrationApp.GUI.Models.ProgressUpdater.NumMigrationStates
+  commentId: P:MigrationApp.GUI.Models.ProgressUpdater.NumMigrationStates
+  id: NumMigrationStates
+  parent: MigrationApp.GUI.Models.ProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: NumMigrationStates
+  nameWithType: ProgressUpdater.NumMigrationStates
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.NumMigrationStates
+  type: Property
+  source:
+    remote:
+      path: src/MigrationApp.GUI/Models/ProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: NumMigrationStates
+    path: ../src/MigrationApp.GUI/Models/ProgressUpdater.cs
+    startLine: 48
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.Models
+  syntax:
+    content: public static int NumMigrationStates { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared ReadOnly Property NumMigrationStates As Integer
+  overload: MigrationApp.GUI.Models.ProgressUpdater.NumMigrationStates*
+- uid: MigrationApp.GUI.Models.ProgressUpdater.Update
+  commentId: M:MigrationApp.GUI.Models.ProgressUpdater.Update
+  id: Update
+  parent: MigrationApp.GUI.Models.ProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: Update()
+  nameWithType: ProgressUpdater.Update()
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.Update()
+  type: Method
+  source:
+    remote:
+      path: src/MigrationApp.GUI/Models/ProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: Update
+    path: ../src/MigrationApp.GUI/Models/ProgressUpdater.cs
+    startLine: 56
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.Models
+  summary: Increases the current migration state to the next action.
+  remarks: This function exists for increased legibility when ProgressUpdater is nullable.
+  example: []
+  syntax:
+    content: public void Update()
+    content.vb: Public Sub Update()
+  overload: MigrationApp.GUI.Models.ProgressUpdater.Update*
+  implements:
+  - MigrationApp.Core.Interfaces.IProgressUpdater.Update
+- uid: MigrationApp.GUI.Models.ProgressUpdater.Reset
+  commentId: M:MigrationApp.GUI.Models.ProgressUpdater.Reset
+  id: Reset
+  parent: MigrationApp.GUI.Models.ProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: Reset()
+  nameWithType: ProgressUpdater.Reset()
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.Reset()
+  type: Method
+  source:
+    remote:
+      path: src/MigrationApp.GUI/Models/ProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: Reset
+    path: ../src/MigrationApp.GUI/Models/ProgressUpdater.cs
+    startLine: 64
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.Models
+  summary: Resets the migration progress back to initial state.
+  example: []
+  syntax:
+    content: public void Reset()
+    content.vb: Public Sub Reset()
+  overload: MigrationApp.GUI.Models.ProgressUpdater.Reset*
+  implements:
+  - MigrationApp.Core.Interfaces.IProgressUpdater.Reset
+references:
+- uid: MigrationApp.GUI.Models
+  commentId: N:MigrationApp.GUI.Models
+  href: MigrationApp.html
+  name: MigrationApp.GUI.Models
+  nameWithType: MigrationApp.GUI.Models
+  fullName: MigrationApp.GUI.Models
+  spec.csharp:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.GUI
+    name: GUI
+    href: MigrationApp.GUI.html
+  - name: .
+  - uid: MigrationApp.GUI.Models
+    name: Models
+    href: MigrationApp.GUI.Models.html
+  spec.vb:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.GUI
+    name: GUI
+    href: MigrationApp.GUI.html
+  - name: .
+  - uid: MigrationApp.GUI.Models
+    name: Models
+    href: MigrationApp.GUI.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater
+  commentId: T:MigrationApp.Core.Interfaces.IProgressUpdater
+  parent: MigrationApp.Core.Interfaces
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html
+  name: IProgressUpdater
+  nameWithType: IProgressUpdater
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MigrationApp.Core.Interfaces
+  commentId: N:MigrationApp.Core.Interfaces
+  href: MigrationApp.html
+  name: MigrationApp.Core.Interfaces
+  nameWithType: MigrationApp.Core.Interfaces
+  fullName: MigrationApp.Core.Interfaces
+  spec.csharp:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.Core
+    name: Core
+    href: MigrationApp.Core.html
+  - name: .
+  - uid: MigrationApp.Core.Interfaces
+    name: Interfaces
+    href: MigrationApp.Core.Interfaces.html
+  spec.vb:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.Core
+    name: Core
+    href: MigrationApp.Core.html
+  - name: .
+  - uid: MigrationApp.Core.Interfaces
+    name: Interfaces
+    href: MigrationApp.Core.Interfaces.html
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.OnProgressChanged
+  commentId: E:MigrationApp.Core.Interfaces.IProgressUpdater.OnProgressChanged
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_OnProgressChanged
+  name: OnProgressChanged
+  nameWithType: IProgressUpdater.OnProgressChanged
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.OnProgressChanged
+- uid: System.EventHandler
+  commentId: T:System.EventHandler
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler
+  name: EventHandler
+  nameWithType: EventHandler
+  fullName: System.EventHandler
+- uid: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateIndex*
+  commentId: Overload:MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateIndex
+  href: MigrationApp.GUI.Models.ProgressUpdater.html#MigrationApp_GUI_Models_ProgressUpdater_CurrentMigrationStateIndex
+  name: CurrentMigrationStateIndex
+  nameWithType: ProgressUpdater.CurrentMigrationStateIndex
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateIndex
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex
+  commentId: P:MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_CurrentMigrationStateIndex
+  name: CurrentMigrationStateIndex
+  nameWithType: IProgressUpdater.CurrentMigrationStateIndex
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateName*
+  commentId: Overload:MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateName
+  href: MigrationApp.GUI.Models.ProgressUpdater.html#MigrationApp_GUI_Models_ProgressUpdater_CurrentMigrationStateName
+  name: CurrentMigrationStateName
+  nameWithType: ProgressUpdater.CurrentMigrationStateName
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationStateName
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName
+  commentId: P:MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_CurrentMigrationStateName
+  name: CurrentMigrationStateName
+  nameWithType: IProgressUpdater.CurrentMigrationStateName
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationMessage*
+  commentId: Overload:MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationMessage
+  href: MigrationApp.GUI.Models.ProgressUpdater.html#MigrationApp_GUI_Models_ProgressUpdater_CurrentMigrationMessage
+  name: CurrentMigrationMessage
+  nameWithType: ProgressUpdater.CurrentMigrationMessage
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.CurrentMigrationMessage
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage
+  commentId: P:MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_CurrentMigrationMessage
+  name: CurrentMigrationMessage
+  nameWithType: IProgressUpdater.CurrentMigrationMessage
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage
+- uid: MigrationApp.GUI.Models.ProgressUpdater.NumMigrationStates*
+  commentId: Overload:MigrationApp.GUI.Models.ProgressUpdater.NumMigrationStates
+  href: MigrationApp.GUI.Models.ProgressUpdater.html#MigrationApp_GUI_Models_ProgressUpdater_NumMigrationStates
+  name: NumMigrationStates
+  nameWithType: ProgressUpdater.NumMigrationStates
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.NumMigrationStates
+- uid: MigrationApp.GUI.Models.ProgressUpdater.Update*
+  commentId: Overload:MigrationApp.GUI.Models.ProgressUpdater.Update
+  href: MigrationApp.GUI.Models.ProgressUpdater.html#MigrationApp_GUI_Models_ProgressUpdater_Update
+  name: Update
+  nameWithType: ProgressUpdater.Update
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.Update
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.Update
+  commentId: M:MigrationApp.Core.Interfaces.IProgressUpdater.Update
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_Update
+  name: Update()
+  nameWithType: IProgressUpdater.Update()
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.Update()
+  spec.csharp:
+  - uid: MigrationApp.Core.Interfaces.IProgressUpdater.Update
+    name: Update
+    href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_Update
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MigrationApp.Core.Interfaces.IProgressUpdater.Update
+    name: Update
+    href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_Update
+  - name: (
+  - name: )
+- uid: MigrationApp.GUI.Models.ProgressUpdater.Reset*
+  commentId: Overload:MigrationApp.GUI.Models.ProgressUpdater.Reset
+  href: MigrationApp.GUI.Models.ProgressUpdater.html#MigrationApp_GUI_Models_ProgressUpdater_Reset
+  name: Reset
+  nameWithType: ProgressUpdater.Reset
+  fullName: MigrationApp.GUI.Models.ProgressUpdater.Reset
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.Reset
+  commentId: M:MigrationApp.Core.Interfaces.IProgressUpdater.Reset
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_Reset
+  name: Reset()
+  nameWithType: IProgressUpdater.Reset()
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.Reset()
+  spec.csharp:
+  - uid: MigrationApp.Core.Interfaces.IProgressUpdater.Reset
+    name: Reset
+    href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_Reset
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MigrationApp.Core.Interfaces.IProgressUpdater.Reset
+    name: Reset
+    href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_Reset
+  - name: (
+  - name: )

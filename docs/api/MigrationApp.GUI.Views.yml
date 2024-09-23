@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MigrationApp.GUI.Views
+  commentId: N:MigrationApp.GUI.Views
+  id: MigrationApp.GUI.Views
+  children:
+  - MigrationApp.GUI.Views.HelpButton
+  - MigrationApp.GUI.Views.MainWindow
+  langs:
+  - csharp
+  - vb
+  name: MigrationApp.GUI.Views
+  nameWithType: MigrationApp.GUI.Views
+  fullName: MigrationApp.GUI.Views
+  type: Namespace
+  assemblies:
+  - MigrationApp.GUI
+references:
+- uid: MigrationApp.GUI.Views.HelpButton
+  commentId: T:MigrationApp.GUI.Views.HelpButton
+  href: MigrationApp.GUI.Views.HelpButton.html
+  name: HelpButton
+  nameWithType: HelpButton
+  fullName: MigrationApp.GUI.Views.HelpButton
+- uid: MigrationApp.GUI.Views.MainWindow
+  commentId: T:MigrationApp.GUI.Views.MainWindow
+  href: MigrationApp.GUI.Views.MainWindow.html
+  name: MainWindow
+  nameWithType: MainWindow
+  fullName: MigrationApp.GUI.Views.MainWindow

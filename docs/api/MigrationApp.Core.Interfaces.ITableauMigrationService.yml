@@ -1,0 +1,362 @@
+### YamlMime:ManagedReference
+items:
+- uid: MigrationApp.Core.Interfaces.ITableauMigrationService
+  commentId: T:MigrationApp.Core.Interfaces.ITableauMigrationService
+  id: ITableauMigrationService
+  parent: MigrationApp.Core.Interfaces
+  children:
+  - MigrationApp.Core.Interfaces.ITableauMigrationService.BuildMigrationPlan(MigrationApp.Core.Entities.EndpointOptions,MigrationApp.Core.Entities.EndpointOptions)
+  - MigrationApp.Core.Interfaces.ITableauMigrationService.IsMigrationPlanBuilt
+  - MigrationApp.Core.Interfaces.ITableauMigrationService.StartMigrationTaskAsync(System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: ITableauMigrationService
+  nameWithType: ITableauMigrationService
+  fullName: MigrationApp.Core.Interfaces.ITableauMigrationService
+  type: Interface
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/ITableauMigrationService.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: ITableauMigrationService
+    path: ../src/MigrationApp.Core/Interfaces/ITableauMigrationService.cs
+    startLine: 4
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: public interface ITableauMigrationService
+    content.vb: Public Interface ITableauMigrationService
+- uid: MigrationApp.Core.Interfaces.ITableauMigrationService.BuildMigrationPlan(MigrationApp.Core.Entities.EndpointOptions,MigrationApp.Core.Entities.EndpointOptions)
+  commentId: M:MigrationApp.Core.Interfaces.ITableauMigrationService.BuildMigrationPlan(MigrationApp.Core.Entities.EndpointOptions,MigrationApp.Core.Entities.EndpointOptions)
+  id: BuildMigrationPlan(MigrationApp.Core.Entities.EndpointOptions,MigrationApp.Core.Entities.EndpointOptions)
+  parent: MigrationApp.Core.Interfaces.ITableauMigrationService
+  langs:
+  - csharp
+  - vb
+  name: BuildMigrationPlan(EndpointOptions, EndpointOptions)
+  nameWithType: ITableauMigrationService.BuildMigrationPlan(EndpointOptions, EndpointOptions)
+  fullName: MigrationApp.Core.Interfaces.ITableauMigrationService.BuildMigrationPlan(MigrationApp.Core.Entities.EndpointOptions, MigrationApp.Core.Entities.EndpointOptions)
+  type: Method
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/ITableauMigrationService.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: BuildMigrationPlan
+    path: ../src/MigrationApp.Core/Interfaces/ITableauMigrationService.cs
+    startLine: 6
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: bool BuildMigrationPlan(EndpointOptions serverCreds, EndpointOptions cloudCreds)
+    parameters:
+    - id: serverCreds
+      type: MigrationApp.Core.Entities.EndpointOptions
+    - id: cloudCreds
+      type: MigrationApp.Core.Entities.EndpointOptions
+    return:
+      type: System.Boolean
+    content.vb: Function BuildMigrationPlan(serverCreds As EndpointOptions, cloudCreds As EndpointOptions) As Boolean
+  overload: MigrationApp.Core.Interfaces.ITableauMigrationService.BuildMigrationPlan*
+- uid: MigrationApp.Core.Interfaces.ITableauMigrationService.StartMigrationTaskAsync(System.Threading.CancellationToken)
+  commentId: M:MigrationApp.Core.Interfaces.ITableauMigrationService.StartMigrationTaskAsync(System.Threading.CancellationToken)
+  id: StartMigrationTaskAsync(System.Threading.CancellationToken)
+  parent: MigrationApp.Core.Interfaces.ITableauMigrationService
+  langs:
+  - csharp
+  - vb
+  name: StartMigrationTaskAsync(CancellationToken)
+  nameWithType: ITableauMigrationService.StartMigrationTaskAsync(CancellationToken)
+  fullName: MigrationApp.Core.Interfaces.ITableauMigrationService.StartMigrationTaskAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/ITableauMigrationService.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: StartMigrationTaskAsync
+    path: ../src/MigrationApp.Core/Interfaces/ITableauMigrationService.cs
+    startLine: 8
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: Task<bool> StartMigrationTaskAsync(CancellationToken cancel)
+    parameters:
+    - id: cancel
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function StartMigrationTaskAsync(cancel As CancellationToken) As Task(Of Boolean)
+  overload: MigrationApp.Core.Interfaces.ITableauMigrationService.StartMigrationTaskAsync*
+- uid: MigrationApp.Core.Interfaces.ITableauMigrationService.IsMigrationPlanBuilt
+  commentId: M:MigrationApp.Core.Interfaces.ITableauMigrationService.IsMigrationPlanBuilt
+  id: IsMigrationPlanBuilt
+  parent: MigrationApp.Core.Interfaces.ITableauMigrationService
+  langs:
+  - csharp
+  - vb
+  name: IsMigrationPlanBuilt()
+  nameWithType: ITableauMigrationService.IsMigrationPlanBuilt()
+  fullName: MigrationApp.Core.Interfaces.ITableauMigrationService.IsMigrationPlanBuilt()
+  type: Method
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/ITableauMigrationService.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: IsMigrationPlanBuilt
+    path: ../src/MigrationApp.Core/Interfaces/ITableauMigrationService.cs
+    startLine: 10
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: bool IsMigrationPlanBuilt()
+    return:
+      type: System.Boolean
+    content.vb: Function IsMigrationPlanBuilt() As Boolean
+  overload: MigrationApp.Core.Interfaces.ITableauMigrationService.IsMigrationPlanBuilt*
+references:
+- uid: MigrationApp.Core.Interfaces
+  commentId: N:MigrationApp.Core.Interfaces
+  href: MigrationApp.html
+  name: MigrationApp.Core.Interfaces
+  nameWithType: MigrationApp.Core.Interfaces
+  fullName: MigrationApp.Core.Interfaces
+  spec.csharp:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.Core
+    name: Core
+    href: MigrationApp.Core.html
+  - name: .
+  - uid: MigrationApp.Core.Interfaces
+    name: Interfaces
+    href: MigrationApp.Core.Interfaces.html
+  spec.vb:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.Core
+    name: Core
+    href: MigrationApp.Core.html
+  - name: .
+  - uid: MigrationApp.Core.Interfaces
+    name: Interfaces
+    href: MigrationApp.Core.Interfaces.html
+- uid: MigrationApp.Core.Interfaces.ITableauMigrationService.BuildMigrationPlan*
+  commentId: Overload:MigrationApp.Core.Interfaces.ITableauMigrationService.BuildMigrationPlan
+  href: MigrationApp.Core.Interfaces.ITableauMigrationService.html#MigrationApp_Core_Interfaces_ITableauMigrationService_BuildMigrationPlan_MigrationApp_Core_Entities_EndpointOptions_MigrationApp_Core_Entities_EndpointOptions_
+  name: BuildMigrationPlan
+  nameWithType: ITableauMigrationService.BuildMigrationPlan
+  fullName: MigrationApp.Core.Interfaces.ITableauMigrationService.BuildMigrationPlan
+- uid: MigrationApp.Core.Entities.EndpointOptions
+  commentId: T:MigrationApp.Core.Entities.EndpointOptions
+  parent: MigrationApp.Core.Entities
+  href: MigrationApp.Core.Entities.EndpointOptions.html
+  name: EndpointOptions
+  nameWithType: EndpointOptions
+  fullName: MigrationApp.Core.Entities.EndpointOptions
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: MigrationApp.Core.Entities
+  commentId: N:MigrationApp.Core.Entities
+  href: MigrationApp.html
+  name: MigrationApp.Core.Entities
+  nameWithType: MigrationApp.Core.Entities
+  fullName: MigrationApp.Core.Entities
+  spec.csharp:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.Core
+    name: Core
+    href: MigrationApp.Core.html
+  - name: .
+  - uid: MigrationApp.Core.Entities
+    name: Entities
+    href: MigrationApp.Core.Entities.html
+  spec.vb:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.Core
+    name: Core
+    href: MigrationApp.Core.html
+  - name: .
+  - uid: MigrationApp.Core.Entities
+    name: Entities
+    href: MigrationApp.Core.Entities.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MigrationApp.Core.Interfaces.ITableauMigrationService.StartMigrationTaskAsync*
+  commentId: Overload:MigrationApp.Core.Interfaces.ITableauMigrationService.StartMigrationTaskAsync
+  href: MigrationApp.Core.Interfaces.ITableauMigrationService.html#MigrationApp_Core_Interfaces_ITableauMigrationService_StartMigrationTaskAsync_System_Threading_CancellationToken_
+  name: StartMigrationTaskAsync
+  nameWithType: ITableauMigrationService.StartMigrationTaskAsync
+  fullName: MigrationApp.Core.Interfaces.ITableauMigrationService.StartMigrationTaskAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MigrationApp.Core.Interfaces.ITableauMigrationService.IsMigrationPlanBuilt*
+  commentId: Overload:MigrationApp.Core.Interfaces.ITableauMigrationService.IsMigrationPlanBuilt
+  href: MigrationApp.Core.Interfaces.ITableauMigrationService.html#MigrationApp_Core_Interfaces_ITableauMigrationService_IsMigrationPlanBuilt
+  name: IsMigrationPlanBuilt
+  nameWithType: ITableauMigrationService.IsMigrationPlanBuilt
+  fullName: MigrationApp.Core.Interfaces.ITableauMigrationService.IsMigrationPlanBuilt

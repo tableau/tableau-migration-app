@@ -1,0 +1,62 @@
+### YamlMime:ManagedReference
+items:
+- uid: MigrationApp.Core.Interfaces
+  commentId: N:MigrationApp.Core.Interfaces
+  id: MigrationApp.Core.Interfaces
+  children:
+  - MigrationApp.Core.Interfaces.IProgressUpdater
+  - MigrationApp.Core.Interfaces.ITableauMigrationService
+  langs:
+  - csharp
+  - vb
+  name: MigrationApp.Core.Interfaces
+  nameWithType: MigrationApp.Core.Interfaces
+  fullName: MigrationApp.Core.Interfaces
+  type: Namespace
+  assemblies:
+  - MigrationApp.Core
+references:
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater
+  commentId: T:MigrationApp.Core.Interfaces.IProgressUpdater
+  parent: MigrationApp.Core.Interfaces
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html
+  name: IProgressUpdater
+  nameWithType: IProgressUpdater
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater
+- uid: MigrationApp.Core.Interfaces.ITableauMigrationService
+  commentId: T:MigrationApp.Core.Interfaces.ITableauMigrationService
+  parent: MigrationApp.Core.Interfaces
+  href: MigrationApp.Core.Interfaces.ITableauMigrationService.html
+  name: ITableauMigrationService
+  nameWithType: ITableauMigrationService
+  fullName: MigrationApp.Core.Interfaces.ITableauMigrationService
+- uid: MigrationApp.Core.Interfaces
+  commentId: N:MigrationApp.Core.Interfaces
+  href: MigrationApp.html
+  name: MigrationApp.Core.Interfaces
+  nameWithType: MigrationApp.Core.Interfaces
+  fullName: MigrationApp.Core.Interfaces
+  spec.csharp:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.Core
+    name: Core
+    href: MigrationApp.Core.html
+  - name: .
+  - uid: MigrationApp.Core.Interfaces
+    name: Interfaces
+    href: MigrationApp.Core.Interfaces.html
+  spec.vb:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.Core
+    name: Core
+    href: MigrationApp.Core.html
+  - name: .
+  - uid: MigrationApp.Core.Interfaces
+    name: Interfaces
+    href: MigrationApp.Core.Interfaces.html

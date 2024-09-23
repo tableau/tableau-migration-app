@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MigrationApp.GUI.Models
+  commentId: N:MigrationApp.GUI.Models
+  id: MigrationApp.GUI.Models
+  children:
+  - MigrationApp.GUI.Models.ProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: MigrationApp.GUI.Models
+  nameWithType: MigrationApp.GUI.Models
+  fullName: MigrationApp.GUI.Models
+  type: Namespace
+  assemblies:
+  - MigrationApp.GUI
+references:
+- uid: MigrationApp.GUI.Models.ProgressUpdater
+  commentId: T:MigrationApp.GUI.Models.ProgressUpdater
+  href: MigrationApp.GUI.Models.ProgressUpdater.html
+  name: ProgressUpdater
+  nameWithType: ProgressUpdater
+  fullName: MigrationApp.GUI.Models.ProgressUpdater

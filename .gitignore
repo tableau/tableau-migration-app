@@ -1,6 +1,7 @@
 ﻿# Ignore build artifacts
 bin/
 obj/
+build/
 
 # Ignore Visual Studio Code directories and files
 .vscode/
@@ -40,3 +41,6 @@ TestResults/
 
 # Ignore local configurations
 .env.vars.local
+
+# Docs
+_site

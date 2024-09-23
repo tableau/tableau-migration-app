@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MigrationApp.Core.Hooks.Mappings
+  commentId: N:MigrationApp.Core.Hooks.Mappings
+  id: MigrationApp.Core.Hooks.Mappings
+  children:
+  - MigrationApp.Core.Hooks.Mappings.EmailDomainMapping
+  - MigrationApp.Core.Hooks.Mappings.EmailDomainMappingOptions
+  langs:
+  - csharp
+  - vb
+  name: MigrationApp.Core.Hooks.Mappings
+  nameWithType: MigrationApp.Core.Hooks.Mappings
+  fullName: MigrationApp.Core.Hooks.Mappings
+  type: Namespace
+  assemblies:
+  - MigrationApp.Core
+references:
+- uid: MigrationApp.Core.Hooks.Mappings.EmailDomainMapping
+  commentId: T:MigrationApp.Core.Hooks.Mappings.EmailDomainMapping
+  href: MigrationApp.Core.Hooks.Mappings.EmailDomainMapping.html
+  name: EmailDomainMapping
+  nameWithType: EmailDomainMapping
+  fullName: MigrationApp.Core.Hooks.Mappings.EmailDomainMapping
+- uid: MigrationApp.Core.Hooks.Mappings.EmailDomainMappingOptions
+  commentId: T:MigrationApp.Core.Hooks.Mappings.EmailDomainMappingOptions
+  href: MigrationApp.Core.Hooks.Mappings.EmailDomainMappingOptions.html
+  name: EmailDomainMappingOptions
+  nameWithType: EmailDomainMappingOptions
+  fullName: MigrationApp.Core.Hooks.Mappings.EmailDomainMappingOptions
