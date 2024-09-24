@@ -18,11 +18,13 @@ namespace MigrationApp.GUI.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     {
-        private string _serverUri = string.Empty;
+        private string _serverUriFull = string.Empty;
+        private string _serverUriBase = string.Empty;
         private string _serverSiteContent = string.Empty;
         private string _serverAccessTokenName = string.Empty;
         private string _serverAccessToken = string.Empty;
-        private string _cloudUri = string.Empty;
+        private string _cloudUriFull = string.Empty;
+        private string _cloudUriBase = string.Empty;
         private string _cloudSiteContent = string.Empty;
         private string _cloudAccessTokenName = string.Empty;
         private string _cloudAccessToken = string.Empty;
@@ -80,7 +82,7 @@ namespace MigrationApp.GUI.ViewModels
         {
             var serverCreds = new EndpointOptions
             {
-                Url = new Uri(ServerUri),
+                Url = new Uri(ServerUriBase),
                 SiteContentUrl = ServerSiteContent,
                 AccessTokenName = ServerAccessTokenName,
                 AccessToken = ServerAccessToken
@@ -88,7 +90,7 @@ namespace MigrationApp.GUI.ViewModels
 
             var cloudCreds = new EndpointOptions
             {
-                Url = new Uri(CloudUri),
+                Url = new Uri(CloudUriBase),
                 SiteContentUrl = CloudSiteContent,
                 AccessTokenName = CloudAccessTokenName,
                 AccessToken = CloudAccessToken
@@ -123,14 +125,26 @@ namespace MigrationApp.GUI.ViewModels
 
         #region Properties
 
-        public string ServerUri
+        public string ServerUriFull
         {
-            get => _serverUri;
+            get => _serverUriFull;
             set
             {
-                SetProperty(ref _serverUri, value);
-                ValidateRequiredField(value, nameof(ServerUri), "Tableau Server URI is required.");
-                ValidateUriFormat(value, nameof(ServerUri), "Invalid URI format for Tableau Server URI.");
+                SetProperty(ref _serverUriFull, value);
+
+                ValidateRequiredField(value, nameof(ServerUriFull), "Tableau Server URI is required.");
+                ValidateUriFormat(value, nameof(ServerUriFull), "Invalid URI format for Tableau Server URI.");
+
+                ServerUriBase = ExtractBaseUri(value);
+                ServerSiteContent = ExtractSiteContent(value);
+            }
+        }
+        public string ServerUriBase
+        {
+            get => _serverUriBase;
+            set
+            {
+                SetProperty(ref _serverUriBase, value); 
             }
         }
 
@@ -163,14 +177,28 @@ namespace MigrationApp.GUI.ViewModels
             }
         }
 
-        public string CloudUri
+        public string CloudUriFull
         {
-            get => _cloudUri;
+            get => _cloudUriFull;
             set
             {
-                SetProperty(ref _cloudUri, value);
-                ValidateRequiredField(value, nameof(CloudUri), "Tableau Cloud URI is required.");
-                ValidateUriFormat(value, nameof(CloudUri), "Invalid URI format for Tableau Cloud URI.");
+                SetProperty(ref _cloudUriFull, value);
+
+
+                ValidateRequiredField(value, nameof(CloudUriFull), "Tableau Cloud URI is required.");
+                ValidateUriFormat(value, nameof(CloudUriFull), "Invalid URI format for Tableau Cloud URI.");
+
+                CloudUriBase = ExtractBaseUri(value);
+                CloudSiteContent = ExtractSiteContent(value);
+            }
+        }
+
+        public string CloudUriBase
+        {
+            get => _cloudUriBase;
+            set
+            {
+                SetProperty(ref _cloudUriBase, value);
             }
         }
 
@@ -233,10 +261,10 @@ namespace MigrationApp.GUI.ViewModels
 
         private void RunMigration()
         {
-            ValidateRequiredField(ServerUri, nameof(ServerUri), "Tableau Server URI is required.");
-            ValidateUriFormat(ServerUri, nameof(ServerUri), "Invalid URI format for Tableau Server URI.");
-            ValidateRequiredField(CloudUri, nameof(CloudUri), "Tableau Cloud URI is required.");
-            ValidateUriFormat(CloudUri, nameof(CloudUri), "Invalid URI format for Tableau Cloud URI.");
+            ValidateRequiredField(ServerUriFull, nameof(ServerUriFull), "Tableau Server URI is required.");
+            ValidateUriFormat(ServerUriFull, nameof(ServerUriFull), "Invalid URI format for Tableau Server URI.");
+            ValidateRequiredField(CloudUriFull, nameof(CloudUriFull), "Tableau Cloud URI is required.");
+            ValidateUriFormat(CloudUriFull, nameof(CloudUriFull), "Invalid URI format for Tableau Cloud URI.");
             ValidateRequiredField(ServerAccessTokenName, nameof(ServerAccessTokenName), "Tableau Server Access Token Name is required.");
             ValidateRequiredField(ServerAccessToken, nameof(ServerAccessToken), "Tableau Server Access Token is required.");
             ValidateRequiredField(CloudAccessTokenName, nameof(CloudAccessTokenName), "Tableau Cloud Access Token Name is required.");
@@ -276,6 +304,38 @@ namespace MigrationApp.GUI.ViewModels
                 RemoveError(propertyName, errorMessage);
             }
         }
+
+        private string ExtractBaseUri(string uri)
+        {
+            if (Uri.TryCreate(uri, UriKind.Absolute, out var parsedUri))
+            {
+                return $"{parsedUri.Scheme}://{parsedUri.Host}/";
+            }
+            return string.Empty;
+        }
+
+
+        private string ExtractSiteContent(string uri)
+        {
+            if (Uri.TryCreate(uri, UriKind.Absolute, out var parsedUri))
+            {
+                var fragment = parsedUri.Fragment;
+
+                var fragmentSegments = fragment.Split('/', StringSplitOptions.RemoveEmptyEntries);
+
+                for (int i = 0; i < fragmentSegments.Length; i++)
+                {
+                    if (fragmentSegments[i].Equals("site", StringComparison.OrdinalIgnoreCase) && i + 1 < fragmentSegments.Length)
+                    {
+                        return fragmentSegments[i + 1];
+                    }
+                }
+            }
+            return string.Empty;
+        }
+
+
+
 
         #region INotifyDataErrorInfo Implementation
 
