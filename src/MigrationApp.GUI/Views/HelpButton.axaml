@@ -15,11 +15,11 @@
 		<Button.Content>
 			<TextBlock Text="?" FontSize="11" FontWeight="Bold" Foreground="White" Margin="0"/>
 		</Button.Content>
-		<Button.Flyout>
+		<Button.Flyout >
 			<Flyout>
-				<StackPanel>
-					<TextBlock Text="{Binding HelpText}" Margin="0, 0, 0, 5"/>
-					<TextBlock x:Name="LinkTextBlock" Foreground="Blue" TextDecorations="Underline" Cursor="Hand">
+				<StackPanel >
+					<TextBlock Text="{Binding HelpText}" TextWrapping="Wrap" MaxWidth="400" Margin="0, 0, 0, 10"/>
+					<TextBlock x:Name="LinkTextBlock" Foreground="Blue" TextDecorations="Underline" Cursor="Hand" >
 						Click here for more details.
 					</TextBlock>
 				</StackPanel>

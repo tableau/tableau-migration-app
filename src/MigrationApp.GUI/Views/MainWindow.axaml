@@ -12,7 +12,7 @@
 		Width="800" Height="650"
 		SizeToContent="Height"
 		CanResize="False">
-        
+
 
 	<Window.Resources>
 		<converters:StringIsNullOrEmptyConverter x:Key="StringIsNullOrEmptyConverter" />
@@ -48,18 +48,17 @@
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
 
 					<!-- Tableau Server URI Input -->
 					<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server URI" VerticalAlignment="Center" />
 					<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
 						<local:HelpButton
-							HelpText="The URL for your Tableau server."
-							DetailsUrl="https://help.tableau.com/"/>
+							HelpText="Enter the Tableau Server URL in one of the following formats:&#10;- For a single-site: http://&lt;serveraddress&gt;&#10;- For a multi-site: http://&lt;serveraddress&gt;/#/site/&lt;sitename&gt;&#10;The site name is parsed from the URL if provided."
+							DetailsUrl="https://help.tableau.com/current/pro/desktop/en-us/embed_structure.htm"/>
 					</StackPanel>
 					<TextBox Grid.Column="0" Grid.Row="1" Text="{Binding ServerUriFull, Mode=TwoWay}"
-							 IsEnabled="{Binding !IsMigrating}" Watermark="Ex: http://server.com/#/site/sitename/"
+							 IsEnabled="{Binding !IsMigrating}" Watermark="Ex: http://&lt;serveraddress&gt;/#/site/&lt;sitename&gt;"
 							 HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,10,0,5"/>
 
 					<TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="Server Base URI"
@@ -87,36 +86,22 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
-					<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server Access Token Name" VerticalAlignment="Center" />
+					<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server PAT Name" VerticalAlignment="Center" />
 					<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
 						<local:HelpButton
-							HelpText="Tableau Server Access Token Name."
-							DetailsUrl="http://google.com/"/>
+							HelpText="Personal Access Tokens (PATs) are used for authentication.&#10;Enter the Personal Access Token Name.&#10;Then, provide the Personal Access Token.&#10;Tokens can be managed in your Tableau Server account's user settings. "
+
+							DetailsUrl="https://help.tableau.com/current/online/en-us/security_personal_access_tokens.htm"/>
 					</StackPanel>
 					<TextBox Grid.Column="0" Grid.Row="1" Text="{Binding ServerAccessTokenName, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Access Token Name" Grid.ColumnSpan="2" />
 
-				</Grid>
-			</Border>
-
-			<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-					</Grid.RowDefinitions>
-					<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server Access Token" VerticalAlignment="Center" />
-					<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
-						<local:HelpButton
-							HelpText="Tableau Server Access Token."
-							DetailsUrl="http://google.com/"/>
-					</StackPanel>
+				
+					<TextBlock Grid.Column="0" Grid.Row="2" Text="Tableau Server PAT" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,5"/>
 					<TextBox Grid.Column="0"
-							 Grid.Row="1"
+							 Grid.Row="3"
 							 Text="{Binding ServerAccessToken, Mode=TwoWay}"
 							 Classes="revealPasswordButton" PasswordChar="*"
 							 IsEnabled="{Binding !IsMigrating}" Watermark="Access Token" Grid.ColumnSpan="2" />
@@ -141,17 +126,16 @@
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
 
 					<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud URI" VerticalAlignment="Center" />
 					<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
 						<local:HelpButton
-							HelpText="Tableau Cloud URI."
-							DetailsUrl="https://help.tableau.com/"/>
+							HelpText="Enter the Tableau Cloud URL in one of the following formats:&#10;- For a single-site: http://&lt;cloudaddress&gt;&#10;- For a multi-site: http://&lt;cloudaddress&gt;/#/site/&lt;sitename&gt;&#10;The site name is parsed from the URL if provided."
+							DetailsUrl="https://help.tableau.com/current/pro/desktop/en-us/embed_structure.htm"/>
 					</StackPanel>
 					<TextBox Grid.Column="0" Grid.Row="1" Text="{Binding CloudUriFull, Mode=TwoWay}"
-							 IsEnabled="{Binding !IsMigrating}" Watermark="Ex: http://prod.online.tableau.com/#/site/sitename/"
+							 IsEnabled="{Binding !IsMigrating}" Watermark="Ex: http://&lt;cloudaddress&gt;/#/site/&lt;sitename&gt;"
 							 HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,10,0,5"/>
 
 					<TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="Cloud Base URI"
@@ -178,12 +162,15 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
-					<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud Access Token Name" VerticalAlignment="Center" />
-					<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+					<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud PAT Name" VerticalAlignment="Center" />
+					<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5">
 						<local:HelpButton
-							HelpText="Tableau Cloud Access Token Name"
-							DetailsUrl="https://help.tableau.com/"/>
+							HelpText="Personal Access Tokens (PATs) are used for authentication.&#10;Enter the Personal Access Token Name.&#10;Then, provide the Personal Access Token.&#10;Tokens can be managed in your Tableau Cloud account's user settings."
+
+							DetailsUrl="https://help.tableau.com/current/online/en-us/security_personal_access_tokens.htm"/>
 					</StackPanel>
 					<TextBox Grid.Column="0"
 							 Grid.Row="1"
@@ -192,27 +179,10 @@
 							 Watermark="Access Token Name"
 							 Grid.ColumnSpan="2"/>
 
-				</Grid>
-			</Border >
-
-			<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-					</Grid.RowDefinitions>
-					<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud Access Token" VerticalAlignment="Center"  />
-					<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
-						<local:HelpButton
-							HelpText="Tableau Cloud Access Token"
-							DetailsUrl="https://help.tableau.com/"/>
-					</StackPanel>
+			
+					<TextBlock Grid.Column="0" Grid.Row="2" Text="Tableau Cloud PAT" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,5"/>
 					<TextBox Grid.Column="0"
-							 Grid.Row="1"
+							 Grid.Row="3"
 							 Text="{Binding CloudAccessToken, Mode=TwoWay}"
 							 Classes="revealPasswordButton" PasswordChar="*"
 							 IsEnabled="{Binding !IsMigrating}" Watermark="Access Token"
@@ -237,8 +207,10 @@
 					<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server to Cloud User Domain Map" VerticalAlignment="Center" />
 					<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
 						<local:HelpButton
-							HelpText="Tableau Server to Cloud User Domain Map"
-							DetailsUrl="https://help.tableau.com/"/>
+							HelpText="Tableau Cloud usernames must be in an email format. Enter a domain to be appended to usernames when migrating users from Tableau Server to Tableau Cloud if a user does not already have an associated email. The domain will be used to create one in the format: username@&lt;domain&gt;.&#10;&#10;For example:&#10; - 'user1' with domain `domain.com` will become 'user1@domain.com'.&#10; - Users with existing emails, like 'user2@existingdomain.com', will not be affected."
+
+							DetailsUrl="https://help.tableau.com/current/guides/migration/en-us/emg_intro.htm"/>
+
 					</StackPanel>
 					<TextBox Grid.Column="0"
 							 Grid.Row="1"
