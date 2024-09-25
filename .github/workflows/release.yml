@@ -23,7 +23,7 @@ jobs:
       run: dotnet build  ./src/MigrationApp.GUI --configuration Release --no-restore
 
     - name: Publish
-      run: dotnet publish ./src/MigrationApp.GUI --configuration Release --self-contained --runtime win-x64 /p:PublishSingleFile=true /p:DebugType=None /p:GenerateDocumentationFile=false -o ./build
+      run: dotnet publish ./src/MigrationApp.GUI --configuration Release --self-contained --runtime win-x64 /p:PublishSingleFile=true /p:DebugType=None -o ./build
 
     - name: Create ZIP file
       run: zip -j TableauMigrationApp.zip ./build/*

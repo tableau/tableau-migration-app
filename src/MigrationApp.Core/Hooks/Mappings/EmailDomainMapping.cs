@@ -38,8 +38,7 @@ namespace MigrationApp.Core.Hooks.Mappings
         }
 
         /// <summary>
-        /// Adds an email to the user if it doesn't exist.
-        /// This is where the main logic of the mapping should reside.
+        /// Adds an email to the user if it doesn't exist. Migration for user will fail if username contains illegal email characters.
         /// </summary>
         /// <param name="userMappingContext">The context from which to set the user mapping information.</param>
         /// <param name="cancel">The cancellation token to interrupt the mapping process.</param>
@@ -56,6 +55,9 @@ namespace MigrationApp.Core.Hooks.Mappings
 
             // Takes the existing username and appends the domain to build the email
             var email = $"{userMappingContext.ContentItem.Name}@{this.domain}";
+
+            // Replace spaces with `.` to reduce invalid email cases.
+            email = email.Replace(' ', '.');
             return userMappingContext.MapTo(domain.Append(email)).ToTask();
         }
     }
