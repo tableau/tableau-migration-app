@@ -6,7 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -22,18 +21,75 @@ jobs:
     - name: Build
       run: dotnet build  ./src/MigrationApp.GUI --configuration Release --no-restore
 
-    - name: Publish
-      run: dotnet publish ./src/MigrationApp.GUI --configuration Release --self-contained --runtime win-x64 /p:PublishSingleFile=true /p:DebugType=None -o ./build
+    - name: Publish Win-x64
+      run: dotnet publish ./src/MigrationApp.GUI -c Release -r win-x64 --self-contained /p:PublishSingleFile=true /p:DebugType=None /p:GenerateDocumentationFile=false -o ./build/win_x64
 
-    - name: Create ZIP file
-      run: zip -j TableauMigrationApp.zip ./build/*
+    - name: Publish OSX-arm64
+      run: dotnet publish ./src/MigrationApp.GUI -c Release -r osx-arm64 --self-contained -p:PublishSingleFile=true /p:DebugType=None /p:GenerateDocumentationFile=false -o ./build/osx_arm64
 
-    - name: Upload Release Asset
+    - name: Publish OSX-x64
+      run: dotnet publish ./src/MigrationApp.GUI -c Release -r osx-x64 --self-contained -p:PublishSingleFile=true /p:DebugType=None /p:GenerateDocumentationFile=false -o ./build/osx_x64
+
+    - name: Publish Linux-arm64
+      run: dotnet publish ./src/MigrationApp.GUI -c Release -r linux-arm64 --self-contained -p:PublishSingleFile=true /p:DebugType=None /p:GenerateDocumentationFile=false -o ./build/linux_arm64
+
+    - name: Publish Linux-x64
+      run: dotnet publish ./src/MigrationApp.GUI -c Release -r linux-arm64 --self-contained -p:PublishSingleFile=true /p:DebugType=None /p:GenerateDocumentationFile=false -o ./build/linux_x64
+
+    - name: Create ZIP files
+      run: |
+        zip -j TableauMigrationApp_win-x64.zip ./build/win_x64/* &&
+        zip -j TableauMigrationApp_osx-arm64.zip ./build/osx_arm64/* &&
+        zip -j TableauMigrationApp_osx-x64.zip ./build/osx_x64/* &&
+        zip -j TableauMigrationApp_linux-arm64.zip ./build/linux_arm64/* &&
+        zip -j TableauMigrationApp_linux-x64.zip ./build/linux_x64/*
+
+    - name: Upload Release Asset Win-x64
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./TableauMigrationApp.zip
-        asset_name: TableauMigrationApp.zip
+        asset_path: ./TableauMigrationApp_win-x64.zip
+        asset_name: TableauMigrationApp_win-x64.zip
+        asset_content_type: application/zip
+
+    - name: Upload Release Asset OSX-arm64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./TableauMigrationApp_osx-arm64.zip
+        asset_name: TableauMigrationApp_osx-arm64.zip
+        asset_content_type: application/zip
+
+    - name: Upload Release Asset OSX-x64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./TableauMigrationApp_osx-x64.zip
+        asset_name: TableauMigrationApp_osx-x64.zip
+        asset_content_type: application/zip
+
+    - name: Upload Release Asset Linux-arm64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./TableauMigrationApp_linux-arm64.zip
+        asset_name: TableauMigrationApp_linux-arm64.zip
+        asset_content_type: application/zip
+
+    - name: Upload Release Asset Linux-x64
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./TableauMigrationApp_linux-x64.zip
+        asset_name: TableauMigrationApp_linux-x64.zip
         asset_content_type: application/zip

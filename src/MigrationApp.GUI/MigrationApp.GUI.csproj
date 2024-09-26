@@ -11,6 +11,11 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(GenerateDocumentationFile)' == 'false'">
+    <!-- Suppress SA0001 error when XML documentation is disabled -->
+    <NoWarn>$(NoWarn);SA0001</NoWarn>
+  </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />

@@ -11,5 +11,5 @@ public class AppSettings
     /// <summary>
     ///  Gets or Sets a value indicating whether the simulator should be used for the Tableau Migration SDK.
     /// </summary>
-    public bool UseSimulator { get; set; }
+    public bool UseSimulator { get; set; } = false;
 }

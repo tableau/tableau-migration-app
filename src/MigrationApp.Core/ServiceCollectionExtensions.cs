@@ -25,10 +25,11 @@ public static class ServiceCollectionExtensions
     /// <returns>The service with the migration app injected.</returns>
     public static IServiceCollection AddMigrationAppCore(this IServiceCollection services, IConfiguration configuration)
     {
-        AppSettings appSettings = new ();
-        configuration.GetSection("AppSettings").Bind(appSettings);
+        AppSettings appSettings = new AppSettings
+        {
+            UseSimulator = configuration.GetValue<bool>("AppSettings:UseSimulator", false),
+        };
         services.AddSingleton(appSettings);
-
         services.AddTableauMigrationSdk(configuration.GetSection("tableau:migrationSdk"));
         services.AddScoped<ITableauMigrationService, TableauMigrationService>();
         services.AddScoped<EmailDomainMapping>();
@@ -43,10 +44,6 @@ public static class ServiceCollectionExtensions
     public static IConfiguration BuildConfiguration()
     {
         var baseConfig = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                { "AppSettings:useSimulator", "false" }, // Default value
-            })
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
             .Build();
 
