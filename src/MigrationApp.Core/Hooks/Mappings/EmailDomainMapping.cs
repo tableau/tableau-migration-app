@@ -5,6 +5,7 @@
 
 namespace MigrationApp.Core.Hooks.Mappings
 {
+    using System.Net.Mail;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Tableau.Migration.Content;
@@ -53,12 +54,30 @@ namespace MigrationApp.Core.Hooks.Mappings
                 return userMappingContext.MapTo(domain.Append(userMappingContext.ContentItem.Email)).ToTask();
             }
 
+            if (this.IsValidEmail(userMappingContext.ContentItem.Name))
+            {
+                return userMappingContext.MapTo(domain.Append(userMappingContext.ContentItem.Name)).ToTask();
+            }
+
             // Takes the existing username and appends the domain to build the email
             var email = $"{userMappingContext.ContentItem.Name}@{this.domain}";
 
             // Replace spaces with `.` to reduce invalid email cases.
             email = email.Replace(' ', '.');
             return userMappingContext.MapTo(domain.Append(email)).ToTask();
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var mailAddress = new MailAddress(email);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
     }
 }

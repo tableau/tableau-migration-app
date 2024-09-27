@@ -98,7 +98,7 @@
 					</StackPanel>
 					<TextBox Grid.Column="0" Grid.Row="1" Text="{Binding ServerAccessTokenName, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Access Token Name" Grid.ColumnSpan="2" />
 
-				
+
 					<TextBlock Grid.Column="0" Grid.Row="2" Text="Tableau Server PAT" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,5"/>
 					<TextBox Grid.Column="0"
 							 Grid.Row="3"
@@ -179,7 +179,7 @@
 							 Watermark="Access Token Name"
 							 Grid.ColumnSpan="2"/>
 
-			
+
 					<TextBlock Grid.Column="0" Grid.Row="2" Text="Tableau Cloud PAT" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,5"/>
 					<TextBox Grid.Column="0"
 							 Grid.Row="3"
@@ -203,20 +203,26 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
 					<TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server to Cloud User Domain Map" VerticalAlignment="Center" />
 					<StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
 						<local:HelpButton
-							HelpText="Tableau Cloud usernames must be in an email format. Enter a domain to be appended to usernames when migrating users from Tableau Server to Tableau Cloud if a user does not already have an associated email. The domain will be used to create one in the format: username@&lt;domain&gt;.&#10;&#10;For example:&#10; - 'user1' with domain `domain.com` will become 'user1@domain.com'.&#10; - Users with existing emails, like 'user2@existingdomain.com', will not be affected."
+							HelpText="Tableau Cloud usernames must be in an email format. Enter a domain to be appended to usernames when migrating users from Tableau Server to Tableau Cloud if a user does not already have an associated email. The domain will be used to create one in the format: username@&lt;domain&gt;.&#10;&#10;For example:&#10; - 'user' with domain `domain.com` will become 'user@domain.com'.&#10; - Users with existing emails, like 'user@existingdomain.com', will not be affected."
 
 							DetailsUrl="https://help.tableau.com/current/guides/migration/en-us/emg_intro.htm"/>
 
 					</StackPanel>
 					<TextBox Grid.Column="0"
-							 Grid.Row="1"
-							 Text="{Binding CloudUserDomain, Mode=TwoWay}"
-							 IsEnabled="{Binding !IsMigrating}" Watermark="User Cloud Domain"
-							 Grid.ColumnSpan="2"/>
+						 Grid.Row="1"
+						 Text="{Binding CloudUserDomain, Mode=TwoWay}"
+						 IsEnabled="{Binding !IsDomainMappingDisabled}"
+						 Watermark="User Cloud Domain"
+						 Grid.ColumnSpan="2"/>
+
+					<CheckBox Grid.Column="0" Grid.Row="2" Content="Disable Domain Mapping"
+							  IsChecked="{Binding IsDomainMappingDisabled, Mode=TwoWay}"
+							  VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
 				</Grid>
 			</Border >

@@ -17,6 +17,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -40,6 +41,7 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     private string serverUriBase = string.Empty;
     private string cloudUriFull = string.Empty;
     private string cloudUriBase = string.Empty;
+    private bool isDomainMappingDisabled = false;
     private bool isMigrating = false;
     private IProgressUpdater progressUpdater;
     private string notificationMessage = string.Empty;
@@ -249,7 +251,33 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             this.SetProperty(ref this.cloudUserDomain, value);
             this.ValidateRequiredField(value, nameof(this.CloudUserDomain), "Tableau Server to Cloud User Domain Map is required.");
+            this.ValidateDomainName(value, nameof(this.CloudUserDomain), "The provided value is not a valid domain.");
             this.emailDomainOptions.Value.EmailDomain = value;
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether gets or Sets whether domain mapping enabled or disabled.
+    /// </summary>
+    public bool IsDomainMappingDisabled
+    {
+        get => this.isDomainMappingDisabled;
+        set
+        {
+            this.isDomainMappingDisabled = value;
+            this.OnPropertyChanged(nameof(this.IsDomainMappingDisabled));
+            if (this.isDomainMappingDisabled)
+            {
+                this.RemoveError(nameof(this.CloudUserDomain), "Tableau Server to Cloud User Domain Map is required.");
+                this.RemoveError(nameof(this.CloudUserDomain), "The provided value is not a valid domain.");
+                this.emailDomainOptions.Value.EmailDomain = string.Empty;
+            }
+            else
+            {
+                this.ValidateRequiredField(this.CloudUserDomain, nameof(this.CloudUserDomain), "Tableau Server to Cloud User Domain Map is required.");
+                this.ValidateDomainName(this.CloudUserDomain, nameof(this.CloudUserDomain), "The provided value is not a valid domain.");
+                this.emailDomainOptions.Value.EmailDomain = this.CloudUserDomain;
+            }
         }
     }
 
@@ -365,7 +393,10 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
         this.ValidateRequiredField(this.ServerAccessToken, nameof(this.ServerAccessToken), "Tableau Server Access Token is required.");
         this.ValidateRequiredField(this.CloudAccessTokenName, nameof(this.CloudAccessTokenName), "Tableau Cloud Access Token Name is required.");
         this.ValidateRequiredField(this.CloudAccessToken, nameof(this.CloudAccessToken), "Tableau Cloud Access Token is required.");
-        this.ValidateRequiredField(this.CloudUserDomain, nameof(this.CloudUserDomain), "Tableau Server to Cloud User Domain Map is required.");
+        if (!this.isDomainMappingDisabled)
+        {
+            this.ValidateRequiredField(this.CloudUserDomain, nameof(this.CloudUserDomain), "Tableau Server to Cloud User Domain Map is required.");
+        }
 
         if (this.HasErrors)
         {
@@ -423,6 +454,20 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     private void ValidateUriFormat(string value, string propertyName, string errorMessage)
     {
         if (!Uri.TryCreate(value, UriKind.Absolute, out _))
+        {
+            this.AddError(propertyName, errorMessage);
+        }
+        else
+        {
+            this.RemoveError(propertyName, errorMessage);
+        }
+    }
+
+    private void ValidateDomainName(string value, string propertyName, string errorMessage)
+    {
+        var domainPattern = @"^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,20}$";
+
+        if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, domainPattern))
         {
             this.AddError(propertyName, errorMessage);
         }

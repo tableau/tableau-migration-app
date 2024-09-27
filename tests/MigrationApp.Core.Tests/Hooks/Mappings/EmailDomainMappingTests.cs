@@ -62,5 +62,29 @@ namespace MigrationApp.Core.Tests.Hooks.Mappings
                                                                                                                         Assert.NotNull(result);
                                                                                                                         Assert.Contains("existingemail@existingdomain.com", result.MappedLocation.ToString());
                                                                                 }
-                                        }
+        [Fact]
+        public async Task MapAsync_ShouldUseNameAsEmail_WhenNameIsAlreadyEmailFormat()
+        {
+            var optionsMock = new Mock<IOptions<EmailDomainMappingOptions>>();
+            optionsMock.Setup(o => o.Value).Returns(new EmailDomainMappingOptions { EmailDomain = "test.com" });
+
+            var loggerMock = new Mock<ILogger<EmailDomainMapping>>();
+            var localizerMock = new Mock<ISharedResourcesLocalizer>();
+
+            var mapping = new EmailDomainMapping(optionsMock.Object, localizerMock.Object, loggerMock.Object);
+
+            var contentItem = new Mock<IUser>();
+            contentItem.Setup(c => c.Email).Returns("");
+            contentItem.Setup(c => c.Name).Returns("johndoe@nottest.com");
+
+            var mappedLocation = new ContentLocation("dummy/project/path");
+
+            var userMappingContext = new ContentMappingContext<IUser>(contentItem.Object, mappedLocation);
+
+            var result = await mapping.MapAsync(userMappingContext, default);
+
+            Assert.NotNull(result);
+            Assert.Contains("johndoe@nottest.com", result.MappedLocation.ToString());
+        }
+    }
 }
