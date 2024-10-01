@@ -81,12 +81,12 @@ public class TableauMigrationService : ITableauMigrationService
     }
 
     /// <inheritdoc/>
-    public async Task<bool> StartMigrationTaskAsync(CancellationToken cancel)
+    public async Task<ITableauMigrationService.MigrationStatus> StartMigrationTaskAsync(CancellationToken cancel)
     {
         if (this.plan == null)
         {
             this.logger.LogError("Migration plan is not built.");
-            return false;
+            return ITableauMigrationService.MigrationStatus.FAILURE;
         }
 
         var result = await this.migrator.ExecuteAsync(this.plan, cancel);
@@ -94,17 +94,17 @@ public class TableauMigrationService : ITableauMigrationService
         if (result.Status == MigrationCompletionStatus.Completed)
         {
             this.logger.LogInformation("Migration succeeded.");
-            return true;
+            return ITableauMigrationService.MigrationStatus.SUCCESS;
         }
         else if (result.Status == MigrationCompletionStatus.Canceled)
         {
             this.logger.LogInformation("Migration cancelled.");
-            return true;
+            return ITableauMigrationService.MigrationStatus.CANCELLED;
         }
         else
         {
             this.logger.LogError("Migration failed with status: {Status}", result.Status);
-            return false;
+            return ITableauMigrationService.MigrationStatus.FAILURE;
         }
     }
 

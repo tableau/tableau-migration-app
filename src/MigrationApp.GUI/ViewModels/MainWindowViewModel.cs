@@ -1,4 +1,4 @@
-﻿// <copyright file="MainWindowViewModel.cs" company="Salesforce, inc.">
+// <copyright file="MainWindowViewModel.cs" company="Salesforce, inc.">
 // Copyright (c) Salesforce, inc.. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -45,6 +45,7 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     private bool isMigrating = false;
     private IProgressUpdater progressUpdater;
     private string notificationMessage = string.Empty;
+    private CancellationTokenSource? cancellationTokenSource = null;
     private IImmutableSolidColorBrush notificationColor = Brushes.Black;
 
     /// <summary>
@@ -330,6 +331,15 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     }
 
     /// <summary>
+    /// Cancels the ongoing migration.
+    /// </summary>
+    public void CancelMigration()
+    {
+        this.cancellationTokenSource?.Cancel();
+        return;
+    }
+
+    /// <summary>
     /// Callback to update fields when error state is changed.
     /// </summary>
     /// <param name="propertyName">The name of the property that changed.</param>
@@ -360,16 +370,22 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
 
         if (planBuilt)
         {
-            bool success = await this.migrationService.StartMigrationTaskAsync(CancellationToken.None);
+            this.cancellationTokenSource = new CancellationTokenSource();
+            ITableauMigrationService.MigrationStatus status = await this.migrationService.StartMigrationTaskAsync(this.cancellationTokenSource.Token);
 
-            if (success)
+            if (status == ITableauMigrationService.MigrationStatus.SUCCESS)
             {
-                this.NotificationMessage = "Migration succeeded.";
+                this.NotificationMessage = "Migration Succeeded.";
                 this.NotificationColor = Brushes.Green;
+            }
+            else if (status == ITableauMigrationService.MigrationStatus.CANCELLED)
+            {
+                this.NotificationMessage = "Migration Cancelled.";
+                this.NotificationColor = Brushes.Red;
             }
             else
             {
-                this.NotificationMessage = "Migration failed.";
+                this.NotificationMessage = "Migration Failed.";
                 this.NotificationColor = Brushes.Red;
             }
         }
