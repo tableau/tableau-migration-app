@@ -18,6 +18,7 @@ using MigrationApp.Core.Interfaces;
 using MigrationApp.GUI.Models;
 using MigrationApp.GUI.ViewModels;
 using MigrationApp.GUI.Views;
+using Serilog;
 using System;
 
 /// <summary>
@@ -52,19 +53,75 @@ public partial class App : Application
 
             // Set MainWindow and DataContext via DI
             desktop.MainWindow = this.serviceProvider.GetRequiredService<MainWindow>();
+
+            desktop.Exit += (sender, args) =>
+            {
+                this.OnApplicationExit();
+            };
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                this.HandleUnhandledException((Exception)args.ExceptionObject);
+            };
+
+            Console.CancelKeyPress += (sender, e) =>
+            {
+                this.HandleCancelKeyPress(e);
+            };
         }
 
         base.OnFrameworkInitializationCompleted();
     }
 
+    /// <summary>
+    /// Handles unhandled exceptions.
+    /// </summary>
+    /// <param name="exception">The exception that occurred.</param>
+    public virtual void HandleUnhandledException(Exception exception)
+    {
+        Log.Error(exception, "Unhandled exception occurred.");
+        this.OnApplicationExit();
+    }
+
+    /// <summary>
+    /// Method that handles the CancelKeyPress event.
+    /// </summary>
+    /// <param name="e">The event arguments containing the cancellation details.</param>
+    public void HandleCancelKeyPress(ConsoleCancelEventArgs e)
+    {
+        e.Cancel = true;  // Cancel the termination
+        this.OnApplicationExit();  // Call the method that cleans up or exits the application
+    }
+
+    /// <summary>
+    /// Ensures logs are flushed properly when exiting the application.
+    /// </summary>
+    public virtual void OnApplicationExit()
+    {
+        Log.CloseAndFlush();
+    }
+
+    /// <summary>
+    /// Configures services for the application, including logging, settings, and dependency injection for key components.
+    /// </summary>
     private void ConfigureServices(IServiceCollection services)
     {
-        services.AddLogging(configure =>
-        {
-            configure.AddConsole();
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File(
+                "Logs/migration-app.log",
+                fileSizeLimitBytes: 20 * 1024 * 1024, // 20 MB file size limit
+                rollOnFileSizeLimit: true,
+                retainedFileCountLimit: 10,
+                shared: true)
+            .CreateLogger();
 
-            // Add other logging providers
+        services.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.ClearProviders();
+            loggingBuilder.AddSerilog(dispose: true);
         });
+
         IConfiguration configuration = ServiceCollectionExtensions.BuildConfiguration();
         services.AddMigrationAppCore(configuration);
 
