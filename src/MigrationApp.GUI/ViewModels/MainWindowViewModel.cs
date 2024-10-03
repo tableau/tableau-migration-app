@@ -6,16 +6,22 @@
 namespace MigrationApp.GUI.ViewModels;
 
 using Avalonia.Media;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Options;
 using MigrationApp.Core.Entities;
 using MigrationApp.Core.Hooks.Mappings;
 using MigrationApp.Core.Interfaces;
 using MigrationApp.GUI.Models;
+using MigrationApp.GUI.Services.Implementations;
+using MigrationApp.GUI.Services.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -25,11 +31,12 @@ using System.Windows.Input;
 /// <summary>
 /// ViewModel containing the logic bindings for the main application window.
 /// </summary>
-public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
+public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
 {
     private readonly Dictionary<string, List<string>> errors = new ();
     private readonly ITableauMigrationService migrationService;
     private readonly IOptions<EmailDomainMappingOptions> emailDomainOptions;
+    private readonly IOptions<DictionaryUserMappingOptions> dictionaryUserMappingOptions;
     private string serverSiteContent = string.Empty;
     private string serverAccessTokenName = string.Empty;
     private string serverAccessToken = string.Empty;
@@ -41,28 +48,43 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     private string serverUriBase = string.Empty;
     private string cloudUriFull = string.Empty;
     private string cloudUriBase = string.Empty;
+    private string loadedCsvFilename = "No file loaded.";
+    private string csvLoadStatus = string.Empty;
     private bool isDomainMappingDisabled = false;
     private bool isMigrating = false;
+    private bool isUserMappingFileLoaded = false;
     private IProgressUpdater progressUpdater;
+    private IFilePicker filePicker;
+    private ICsvParser csvParser;
     private string notificationMessage = string.Empty;
     private CancellationTokenSource? cancellationTokenSource = null;
     private IImmutableSolidColorBrush notificationColor = Brushes.Black;
+    private IImmutableSolidColorBrush csvLoadStatusColor = Brushes.Black;
+    private Dictionary<string, string> userMappings = new Dictionary<string, string>();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindowViewModel" /> class.
     /// </summary>
     /// <param name="migrationService">The migration service.</param>
     /// <param name="emailDomainOptions">The default domain mapping to apply to users who do not have an existing email, or mapping present.</param>
+    /// <param name="dictionaryUserMappingOptions">The user-specific mappings to be used if provided through CSV.</param>
     /// <param name="progressUpdater">The object to track the migration progress from the migration service.</param>
+    /// <param name="filePicker">The file picker service to use for CSV loaded user mappings.</param>
+    /// <param name="csvParser">The csv parser to load and parser user mappings.</param>
     public MainWindowViewModel(
         ITableauMigrationService migrationService,
         IOptions<EmailDomainMappingOptions> emailDomainOptions,
-        IProgressUpdater progressUpdater)
+        IOptions<DictionaryUserMappingOptions> dictionaryUserMappingOptions,
+        IProgressUpdater progressUpdater,
+        IFilePicker filePicker,
+        ICsvParser csvParser)
     {
         this.migrationService = migrationService;
         this.emailDomainOptions = emailDomainOptions;
+        this.dictionaryUserMappingOptions = dictionaryUserMappingOptions;
         this.progressUpdater = progressUpdater;
-        this.RunMigrationCommand = new RelayCommand(this.RunMigration, this.CanExecuteRunMigration);
+        this.filePicker = filePicker;
+        this.csvParser = csvParser;
 
         // Subscribe to the progress updater event and retrigger UI rendering on update
         this.progressUpdater.OnProgressChanged += async (sender, args) =>
@@ -86,11 +108,6 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     public static int NumMigrationStates => ProgressUpdater.NumMigrationStates;
 
     /// <summary>
-    /// Gets the command to run the migration.
-    /// </summary>
-    public ICommand RunMigrationCommand { get; }
-
-    /// <summary>
     /// Gets or sets a value indicating whether or not a migration is ongoing.
     /// </summary>
     public bool IsMigrating
@@ -100,8 +117,8 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             if (this.isMigrating != value)
             {
-                this.isMigrating = value;
-                this.OnPropertyChanged(nameof(this.IsMigrating)); // Notify UI about the change
+                this.SetProperty(ref this.isMigrating, value);
+                this.OnPropertyChanged(nameof(this.IsDomainMappingVisiblyDisabled)); // Notify UI about the change
             }
         }
     }
@@ -258,6 +275,11 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     }
 
     /// <summary>
+    /// Gets a value indicating whether the Domain Mapping should be visibly disabled.
+    /// </summary>
+    public bool IsDomainMappingVisiblyDisabled => this.IsDomainMappingDisabled || this.IsMigrating;
+
+    /// <summary>
     /// Gets or sets a value indicating whether gets or Sets whether domain mapping enabled or disabled.
     /// </summary>
     public bool IsDomainMappingDisabled
@@ -267,6 +289,7 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
         {
             this.isDomainMappingDisabled = value;
             this.OnPropertyChanged(nameof(this.IsDomainMappingDisabled));
+            this.OnPropertyChanged(nameof(this.IsDomainMappingVisiblyDisabled));
             if (this.isDomainMappingDisabled)
             {
                 this.RemoveError(nameof(this.CloudUserDomain), "Tableau Server to Cloud User Domain Map is required.");
@@ -311,9 +334,54 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     public string CurrentMigrationMessage => this.progressUpdater.CurrentMigrationMessage;
 
     /// <summary>
-    /// Gets a value indicating whether gets whether any validation errors detected.
+    /// Gets a value indicating whether any validation errors are detected.
     /// </summary>
     public bool HasErrors => this.errors.Any();
+
+    /// <summary>
+    /// Gets or sets the loaded CSV filename used for username mappings.
+    /// </summary>
+    public string LoadedCSVFilename
+    {
+        get => this.loadedCsvFilename;
+        set
+        {
+            if (value == string.Empty)
+            {
+                this.SetProperty(ref this.loadedCsvFilename, "No file loaded.");
+                return;
+            }
+
+            this.SetProperty(ref this.loadedCsvFilename, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether a CSV used for user mapping is loaded.
+    /// </summary>
+    public bool IsUserMappingFileLoaded
+    {
+        get => this.isUserMappingFileLoaded;
+        set => this.SetProperty(ref this.isUserMappingFileLoaded, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the status message displayed after loading the user mapping file.
+    /// </summary>
+    public string CSVLoadStatus
+    {
+        get => this.csvLoadStatus;
+        set => this.SetProperty(ref this.csvLoadStatus, value);
+    }
+
+    /// <summary>
+    /// Gets or Sets the color to be used for the CSV load status  message.
+    /// </summary>
+    public IImmutableSolidColorBrush CSVLoadStatusColor
+    {
+        get => this.csvLoadStatusColor;
+        set => this.SetProperty(ref this.csvLoadStatusColor, value);
+    }
 
     /// <summary>
     /// Gets the errors for a given property.
@@ -399,6 +467,7 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
         this.progressUpdater.Reset();
     }
 
+    [RelayCommand]
     private void RunMigration()
     {
         this.ValidateRequiredField(this.ServerUriFull, nameof(this.ServerUriFull), "Tableau Server URI is required.");
@@ -421,6 +490,78 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
 
         this.IsMigrating = true;
         this.RunMigrationAsync().ConfigureAwait(false);
+    }
+
+    [RelayCommand]
+    private void UnLoadUserFile()
+    {
+        this.ClearCSVLoadedValues();
+        this.CSVLoadStatus = string.Empty;
+        this.CSVLoadStatusColor = Brushes.Black;
+    }
+
+    [RelayCommand]
+    private async Task LoadUserFile()
+    {
+        try
+        {
+            var file = await this.filePicker.OpenFilePickerAsync("Load User Mappings");
+
+            if (file is null)
+            {
+                this.CSVLoadStatusColor = Brushes.Red;
+                this.CSVLoadStatus = "Could not find file.";
+                return;
+            }
+
+            string? localPath = file.TryGetLocalPath();
+            if (localPath == null)
+            {
+                this.CSVLoadStatusColor = Brushes.Red;
+                this.CSVLoadStatus = "Could not find file.";
+                return;
+            }
+
+            try
+            {
+                this.userMappings = await this.csvParser.ParseAsync(localPath);
+                this.dictionaryUserMappingOptions.Value.UserMappings = this.userMappings;
+                this.LoadedCSVFilename = file.Name;
+                this.IsUserMappingFileLoaded = true;
+                this.CSVLoadStatusColor = Brushes.Black;
+                this.CSVLoadStatus = $"{this.userMappings.Count} user mappings loaded.";
+            }
+            catch (InvalidDataException e)
+            {
+                this.CSVLoadStatusColor = Brushes.Red;
+                this.CSVLoadStatus = $"Failed to load {file.Name}.\n{e.Message}";
+                this.ClearCSVLoadedValues();
+            }
+            catch (FileNotFoundException)
+            {
+                this.CSVLoadStatusColor = Brushes.Red;
+                this.CSVLoadStatus = "Could not find file.";
+                this.CSVLoadStatusColor = Brushes.Red;
+                this.ClearCSVLoadedValues();
+            }
+        }
+        catch (Exception e)
+        {
+            this.CSVLoadStatusColor = Brushes.Red;
+            this.CSVLoadStatus = $"Encountered an unexpected error with file picker.\n{e.Message}";
+            this.CSVLoadStatusColor = Brushes.Red;
+            this.ClearCSVLoadedValues();
+        }
+
+        return;
+    }
+
+    private void ClearCSVLoadedValues()
+    {
+        this.IsUserMappingFileLoaded = false;
+        this.LoadedCSVFilename = string.Empty;
+        this.userMappings.Clear();
+        this.dictionaryUserMappingOptions.Value.UserMappings = this.userMappings;
     }
 
     private string ExtractBaseUri(string uri)
@@ -481,9 +622,7 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
 
     private void ValidateDomainName(string value, string propertyName, string errorMessage)
     {
-        var domainPattern = @"^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,20}$";
-
-        if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, domainPattern))
+        if (!Validator.IsDomainNameValid(value))
         {
             this.AddError(propertyName, errorMessage);
         }
@@ -519,52 +658,5 @@ public class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
 
             this.OnErrorsChanged(propertyName);
         }
-    }
-}
-
-/// <summary>
-/// Defines a command with execution and can-execute logic.
-/// </summary>
-public class RelayCommand : ICommand
-{
-    private readonly Action execute;
-
-    private readonly Func<bool>? canExecute;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RelayCommand" /> class.
-    /// </summary>
-    /// <param name="execute">The action to execute.</param>
-    /// <param name="canExecute">Whether or not the execute action can be called.</param>
-    public RelayCommand(Action execute, Func<bool>? canExecute = null)
-    {
-        this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
-        this.canExecute = canExecute;
-    }
-
-    /// <summary>
-    /// Occurs when changes occur that affect whether the command should execute.
-    /// </summary>
-    public event EventHandler? CanExecuteChanged;
-
-    /// <summary>
-    /// Defines the method that determines whether the command can execute in its current state.
-    /// </summary>
-    /// <param name="parameter">Data used by the command. If the command does not require data, this object can be set to null.</param>
-    /// <returns><c>true</c> if this command can be executed; otherwise, <c>false</c>.</returns>
-    public bool CanExecute(object? parameter) => this.canExecute?.Invoke() ?? true;
-
-    /// <summary>
-    /// Defines the method to be called when the command is invoked.
-    /// </summary>
-    /// <param name="parameter">Data used by the command. If the command does not require data, this object can be set to null.</param>
-    public void Execute(object? parameter) => this.execute();
-
-    /// <summary>
-    /// Occurs when changes occur that affect whether the command should execute.
-    /// </summary>
-    public void RaiseCanExecuteChanged()
-    {
-        this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -6,6 +6,7 @@
 namespace MigrationApp.GUI;
 
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
@@ -16,10 +17,13 @@ using MigrationApp.Core;
 using MigrationApp.Core.Hooks.Mappings;
 using MigrationApp.Core.Interfaces;
 using MigrationApp.GUI.Models;
+using MigrationApp.GUI.Services.Implementations;
+using MigrationApp.GUI.Services.Interfaces;
 using MigrationApp.GUI.ViewModels;
 using MigrationApp.GUI.Views;
 using Serilog;
 using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// Main application definition.
@@ -129,6 +133,11 @@ public partial class App : Application
         {
             options.EmailDomain = string.Empty;
         });
+        services.Configure<DictionaryUserMappingOptions>(options =>
+        {
+            options.UserMappings = new Dictionary<string, string>();
+        });
+
         services.AddSingleton<IProgressUpdater, ProgressUpdater>();
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<MainWindow>(provider =>
@@ -138,5 +147,8 @@ public partial class App : Application
                 DataContext = provider.GetRequiredService<MainWindowViewModel>(),
             };
         });
+        services.AddTransient<IWindowProvider, WindowProvider>();
+        services.AddTransient<IFilePicker, FilePicker>();
+        services.AddTransient<ICsvParser, CsvHelperParser>();
     }
 }

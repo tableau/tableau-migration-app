@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using MigrationApp.Core.Hooks.Mappings;
 using MigrationApp.Core.Interfaces;
 using MigrationApp.GUI.Models;
+using MigrationApp.GUI.Services.Interfaces;
 using MigrationApp.GUI.ViewModels;
 using Moq;
 
@@ -16,9 +17,18 @@ namespace MigrationApp.GUI.Tests.ViewModels
             var optionsValue = new EmailDomainMappingOptions();
             emailDomainOptionsMock.Setup(o => o.Value).Returns(optionsValue);
 
+            var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
             var migrationServiceMock = new Mock<ITableauMigrationService>();
-            var progressUpdaterMock = new Mock<ProgressUpdater>();
-            var viewModel = new MainWindowViewModel(migrationServiceMock.Object, emailDomainOptionsMock.Object, progressUpdaterMock.Object);
+            var progressUpdaterMock = new Mock<IProgressUpdater>();
+            var filePickerMock = new Mock<IFilePicker>();
+            var csvParserMock = new Mock<ICsvParser>();
+            var viewModel = new MainWindowViewModel(
+                migrationServiceMock.Object,
+                emailDomainOptionsMock.Object,
+                dictionaryUserMappingOptionsMock.Object,
+                progressUpdaterMock.Object,
+                filePickerMock.Object,
+                csvParserMock.Object);
 
             viewModel.CloudUserDomain = "testdomain.com";
 
@@ -32,10 +42,19 @@ namespace MigrationApp.GUI.Tests.ViewModels
             var optionsValue = new EmailDomainMappingOptions();
             emailDomainOptionsMock.Setup(o => o.Value).Returns(optionsValue);
 
+            var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
             var migrationServiceMock = new Mock<ITableauMigrationService>();
             var progressUpdaterMock = new Mock<ProgressUpdater>();
+            var filePickerMock = new Mock<IFilePicker>();
+            var csvParserMock = new Mock<ICsvParser>();
 
-            var viewModel = new MainWindowViewModel(migrationServiceMock.Object, emailDomainOptionsMock.Object, progressUpdaterMock.Object);
+            var viewModel = new MainWindowViewModel(
+                migrationServiceMock.Object,
+                emailDomainOptionsMock.Object,
+                dictionaryUserMappingOptionsMock.Object,
+                progressUpdaterMock.Object,
+                filePickerMock.Object,
+                csvParserMock.Object);
 
             viewModel.CloudUserDomain = "";
 
@@ -49,10 +68,19 @@ namespace MigrationApp.GUI.Tests.ViewModels
             var optionsValue = new EmailDomainMappingOptions();
             emailDomainOptionsMock.Setup(o => o.Value).Returns(optionsValue);
 
+            var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
             var migrationServiceMock = new Mock<ITableauMigrationService>();
             var progressUpdaterMock = new Mock<ProgressUpdater>();
+            var filePickerMock = new Mock<IFilePicker>();
+            var csvParserMock = new Mock<ICsvParser>();
 
-            var viewModel = new MainWindowViewModel(migrationServiceMock.Object, emailDomainOptionsMock.Object, progressUpdaterMock.Object);
+            var viewModel = new MainWindowViewModel(
+                migrationServiceMock.Object,
+                emailDomainOptionsMock.Object,
+                dictionaryUserMappingOptionsMock.Object,
+                progressUpdaterMock.Object,
+                filePickerMock.Object,
+                csvParserMock.Object);
 
             viewModel.CloudUserDomain = "invalid_domain";
 
@@ -66,10 +94,19 @@ namespace MigrationApp.GUI.Tests.ViewModels
             var optionsValue = new EmailDomainMappingOptions();
             emailDomainOptionsMock.Setup(o => o.Value).Returns(optionsValue);
 
+            var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
             var migrationServiceMock = new Mock<ITableauMigrationService>();
             var progressUpdaterMock = new Mock<ProgressUpdater>();
+            var filePickerMock = new Mock<IFilePicker>();
+            var csvParserMock = new Mock<ICsvParser>();
 
-            var viewModel = new MainWindowViewModel(migrationServiceMock.Object, emailDomainOptionsMock.Object, progressUpdaterMock.Object);
+            var viewModel = new MainWindowViewModel(
+                migrationServiceMock.Object,
+                emailDomainOptionsMock.Object,
+                dictionaryUserMappingOptionsMock.Object,
+                progressUpdaterMock.Object,
+                filePickerMock.Object,
+                csvParserMock.Object);
 
             viewModel.CloudUserDomain = "invalid_domain.c";
 
@@ -83,10 +120,19 @@ namespace MigrationApp.GUI.Tests.ViewModels
             var optionsValue = new EmailDomainMappingOptions();
             emailDomainOptionsMock.Setup(o => o.Value).Returns(optionsValue);
 
+            var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
             var migrationServiceMock = new Mock<ITableauMigrationService>();
             var progressUpdaterMock = new Mock<ProgressUpdater>();
+            var filePickerMock = new Mock<IFilePicker>();
+            var csvParserMock = new Mock<ICsvParser>();
 
-            var viewModel = new MainWindowViewModel(migrationServiceMock.Object, emailDomainOptionsMock.Object, progressUpdaterMock.Object);
+            var viewModel = new MainWindowViewModel(
+                migrationServiceMock.Object,
+                emailDomainOptionsMock.Object,
+                dictionaryUserMappingOptionsMock.Object,
+                progressUpdaterMock.Object,
+                filePickerMock.Object,
+                csvParserMock.Object);
 
             viewModel.CloudUserDomain = "valid-domain.com";
 
@@ -100,10 +146,19 @@ namespace MigrationApp.GUI.Tests.ViewModels
             var optionsValue = new EmailDomainMappingOptions();
             emailDomainOptionsMock.Setup(o => o.Value).Returns(optionsValue);
 
+            var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
             var migrationServiceMock = new Mock<ITableauMigrationService>();
             var progressUpdaterMock = new Mock<ProgressUpdater>();
+            var filePickerMock = new Mock<IFilePicker>();
+            var csvParserMock = new Mock<ICsvParser>();
 
-            var viewModel = new MainWindowViewModel(migrationServiceMock.Object, emailDomainOptionsMock.Object, progressUpdaterMock.Object);
+            var viewModel = new MainWindowViewModel(
+                migrationServiceMock.Object,
+                emailDomainOptionsMock.Object,
+                dictionaryUserMappingOptionsMock.Object,
+                progressUpdaterMock.Object,
+                filePickerMock.Object,
+                csvParserMock.Object);
 
             viewModel.CloudUserDomain = "valid.domain.com";
 

@@ -10,6 +10,7 @@ using MigrationApp.Core.Hooks.Mappings;
 using MigrationApp.Core.Hooks.Progression;
 using MigrationApp.Core.Interfaces;
 using Tableau.Migration;
+using Tableau.Migration.Content;
 
 /// <summary>
 /// Service to handle Migrations from Tableau Server to Tableau Cloud.
@@ -64,7 +65,8 @@ public class TableauMigrationService : ITableauMigrationService
                 this.appSettings.UseSimulator)
             .ForServerToCloud()
             .WithTableauIdAuthenticationType()
-            .WithTableauCloudUsernames<EmailDomainMapping>();
+            .WithTableauCloudUsernames<EmailDomainMapping>()
+            .WithTableauCloudUsernames<DictionaryUserMapping>(); // Prioritize user defined mappings over set emails
 
         var validationResult = this.planBuilder.Validate();
 

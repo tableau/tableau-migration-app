@@ -32,6 +32,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton(appSettings);
         services.AddTableauMigrationSdk(configuration.GetSection("tableau:migrationSdk"));
         services.AddScoped<ITableauMigrationService, TableauMigrationService>();
+        services.AddScoped<DictionaryUserMapping>();
         services.AddScoped<EmailDomainMapping>();
         services.AddScoped<MigrationActionProgressHook>();
         return services;

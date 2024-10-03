@@ -1,4 +1,4 @@
-﻿// <copyright file="EmailDomainMappingOptions.cs" company="Salesforce, inc.">
+// <copyright file="EmailDomainMappingOptions.cs" company="Salesforce, inc.">
 // Copyright (c) Salesforce, inc.. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
