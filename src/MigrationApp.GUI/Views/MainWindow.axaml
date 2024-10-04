@@ -211,9 +211,7 @@
 	    <StackPanel Orientation="Horizontal">
 	      <TextBlock Text="Tableau Server to Cloud Default User Domain" VerticalAlignment="Center" Margin="0,5"/>
 	      <local:HelpButton
-		  HelpText="Tableau Cloud usernames must be in an email format. Enter a domain to be appended to usernames when migrating users from Tableau Server to Tableau Cloud if a user does not already have an associated email. The domain will be used to create one in the format: username@&lt;domain&gt;.&#10;&#10;For example:&#10; - 'user1' with domain `domain.com` will become 'user1@domain.com'.&#10; - Users with existing emails, like 'user2@existingdomain.com', will not be affected."
-
-DetailsUrl="https://help.tableau.com/current/guides/migration/en-us/emg_intro.htm"/>
+		  HelpText="Tableau Cloud usernames must be in an email format. Enter a domain to be appended to usernames when migrating users from Tableau Server to Tableau Cloud if a user does not already have an associated email. The domain will be used to create one in the format: username@&lt;domain&gt;.&#10;&#10;For example:&#10; - 'user1' with domain `domain.com` will become 'user1@domain.com'.&#10; - Users with existing emails, like 'user2@existingdomain.com', will not be affected."/>
 	    </StackPanel>
 	    <TextBox Grid.Column="0"
 		     Grid.Row="1"
@@ -232,8 +230,7 @@ DetailsUrl="https://help.tableau.com/current/guides/migration/en-us/emg_intro.ht
 	    <StackPanel Orientation="Horizontal">
 	      <TextBlock Text="User Mapping File" VerticalAlignment="Center" Margin="0,5"/>
 	      <local:HelpButton
-		  HelpText="Upload a CSV file defining Tableau Server to Tableau Cloud username mappings."
-		  DetailsUrl=""/>
+		  HelpText="Upload a CSV file defining Tableau Server to Tableau Cloud username mappings."/>
 	    </StackPanel>
 	    <StackPanel>
 	      <DockPanel>
