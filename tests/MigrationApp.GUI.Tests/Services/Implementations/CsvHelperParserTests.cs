@@ -1,29 +1,34 @@
-using MigrationApp.GUI.Services.Implementations;
-using MigrationApp.GUI.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Xunit;
+// <copyright file="CsvHelperParserTests.cs" company="Salesforce, inc">
+// Copyright (c) Salesforce, inc. All rights reserved.
+// Licensed under the Apache 2.0 license. See LICENSE file in the project root for full license information.
+// </copyright>
 
 namespace MigrationApp.Tests.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
+    using MigrationApp.GUI.Services.Implementations;
+    using MigrationApp.GUI.Services.Interfaces;
+    using Xunit;
+
     public class CsvHelperParserTests : IDisposable
     {
-        private readonly string _tempFilePath;
+        private readonly string tempFilePath;
 
         public CsvHelperParserTests()
         {
             // Create a temporary file to be used in each test
-            _tempFilePath = Path.GetTempFileName();
+            this.tempFilePath = Path.GetTempFileName();
         }
 
         public void Dispose()
         {
             // Clean up the temporary file after each test
-            if (File.Exists(_tempFilePath))
+            if (File.Exists(this.tempFilePath))
             {
-                File.Delete(_tempFilePath);
+                File.Delete(this.tempFilePath);
             }
         }
 
@@ -32,7 +37,7 @@ namespace MigrationApp.Tests.Services
         {
             // Setup
             var csvContent = "serverUser1,cloudUser1@host1.com\nserverUser2,cloudUser2@host2.com\nserverUser3,cloudUser3@host3.com";
-            await File.WriteAllTextAsync(_tempFilePath, csvContent);
+            await File.WriteAllTextAsync(this.tempFilePath, csvContent);
 
             ICsvParser parser = new CsvHelperParser();
 
@@ -40,11 +45,11 @@ namespace MigrationApp.Tests.Services
             {
                 { "serverUser1", "cloudUser1@host1.com" },
                 { "serverUser2", "cloudUser2@host2.com" },
-                { "serverUser3", "cloudUser3@host3.com" }
+                { "serverUser3", "cloudUser3@host3.com" },
             };
 
             // Parse File
-            var result = await parser.ParseAsync(_tempFilePath);
+            var result = await parser.ParseAsync(this.tempFilePath);
 
             // Assert
             Assert.Equal(expected.Count, result.Count);
@@ -60,13 +65,12 @@ namespace MigrationApp.Tests.Services
         {
             // Setup data contianing row with extra column
             var csvContent = "serverUser1,cloudUser1@host1.com,extraColumn\nserverUser2,cloudUser2@host2.com";
-            await File.WriteAllTextAsync(_tempFilePath, csvContent);
+            await File.WriteAllTextAsync(this.tempFilePath, csvContent);
 
             ICsvParser parser = new CsvHelperParser();
 
             // Attempt to Parse File
-            await Assert.ThrowsAsync<InvalidDataException>(() => parser.ParseAsync(_tempFilePath));
-
+            await Assert.ThrowsAsync<InvalidDataException>(() => parser.ParseAsync(this.tempFilePath));
         }
 
         [Fact]
@@ -74,13 +78,12 @@ namespace MigrationApp.Tests.Services
         {
             // Setup data contianing row with extra column
             var csvContent = "serverUser1,cloudUser1@host1.com,nserverUser2,cloudUser2@host2";
-            await File.WriteAllTextAsync(_tempFilePath, csvContent);
+            await File.WriteAllTextAsync(this.tempFilePath, csvContent);
 
             ICsvParser parser = new CsvHelperParser();
 
             // Attempt to Parse File
-            await Assert.ThrowsAsync<InvalidDataException>(() => parser.ParseAsync(_tempFilePath));
-
+            await Assert.ThrowsAsync<InvalidDataException>(() => parser.ParseAsync(this.tempFilePath));
         }
 
         [Fact]
@@ -88,12 +91,12 @@ namespace MigrationApp.Tests.Services
         {
             // Setup
             var csvContent = string.Empty;
-            await File.WriteAllTextAsync(_tempFilePath, csvContent);
+            await File.WriteAllTextAsync(this.tempFilePath, csvContent);
 
             ICsvParser parser = new CsvHelperParser();
 
             // Parse Empty File
-            var result = await parser.ParseAsync(_tempFilePath);
+            var result = await parser.ParseAsync(this.tempFilePath);
 
             // Expect an empty dictionary back
             Assert.Empty(result);
@@ -104,18 +107,18 @@ namespace MigrationApp.Tests.Services
         {
             // Setup dicitonary with multiple entries for the same user
             var csvContent = "serverUser1,cloudUser1@host1.com\nserverUser2,cloudUser2@host2.com\nserverUser1,cloudUser3@host3.com";
-            await File.WriteAllTextAsync(_tempFilePath, csvContent);
+            await File.WriteAllTextAsync(this.tempFilePath, csvContent);
 
             ICsvParser parser = new CsvHelperParser();
 
             var expected = new Dictionary<string, string>
             {
                 { "serverUser1", "cloudUser3@host3.com" }, // Overwritten
-                { "serverUser2", "cloudUser2@host2.com" }
+                { "serverUser2", "cloudUser2@host2.com" },
             };
 
             // Parse File
-            var result = await parser.ParseAsync(_tempFilePath);
+            var result = await parser.ParseAsync(this.tempFilePath);
 
             // Verify that only the last entry was used
             Assert.Equal(expected.Count, result.Count);
@@ -131,28 +134,25 @@ namespace MigrationApp.Tests.Services
         {
             // Setup invalid CSV with invalid rows containing only one value
             var csvContent = "serverUser1,cloudUser1@host1.com\n,cloudUser2\nserverUser3@host3.com,\nserverUser4,cloudUser4@host4.com";
-            await File.WriteAllTextAsync(_tempFilePath, csvContent);
+            await File.WriteAllTextAsync(this.tempFilePath, csvContent);
 
             ICsvParser parser = new CsvHelperParser();
 
             // Attempt to parse file
-            await Assert.ThrowsAsync<InvalidDataException>(() => parser.ParseAsync(_tempFilePath));
-
+            await Assert.ThrowsAsync<InvalidDataException>(() => parser.ParseAsync(this.tempFilePath));
         }
-
 
         [Fact]
         public async Task ParseAsync_InvalidCSV_NonEmailCloudUsernames_ThrowsInvalidData()
         {
             // Setup invalid CSV with invalid rows containing only one value
             var csvContent = "serverUser1,cloudUser1@host1.com\n,serverUser2,cloudUser2\nserverUser3@host3.com,\nserverUser4,cloudUser4@host4.com";
-            await File.WriteAllTextAsync(_tempFilePath, csvContent);
+            await File.WriteAllTextAsync(this.tempFilePath, csvContent);
 
             ICsvParser parser = new CsvHelperParser();
 
             // Attempt to parse file
-            await Assert.ThrowsAsync<InvalidDataException>(() => parser.ParseAsync(_tempFilePath));
-
+            await Assert.ThrowsAsync<InvalidDataException>(() => parser.ParseAsync(this.tempFilePath));
         }
 
         [Fact]
@@ -172,18 +172,18 @@ namespace MigrationApp.Tests.Services
         {
             // Setup files with leading and trailing spaces in usernames
             var csvContent = " serverUser1 , cloudUser1@host1.com \nserverUser2,cloudUser2@host2.com";
-            await File.WriteAllTextAsync(_tempFilePath, csvContent);
+            await File.WriteAllTextAsync(this.tempFilePath, csvContent);
 
             ICsvParser parser = new CsvHelperParser();
 
             var expected = new Dictionary<string, string>
             {
                 { "serverUser1", "cloudUser1@host1.com" }, // Whitespaces are trimmed
-                { "serverUser2", "cloudUser2@host2.com" }
+                { "serverUser2", "cloudUser2@host2.com" },
             };
 
             // Parse file
-            var result = await parser.ParseAsync(_tempFilePath);
+            var result = await parser.ParseAsync(this.tempFilePath);
 
             // Verify that parsed usernames are trimmed
             Assert.Equal(expected.Count, result.Count);
@@ -193,6 +193,5 @@ namespace MigrationApp.Tests.Services
                 Assert.Equal(kvp.Value, result[kvp.Key]);
             }
         }
-
     }
 }

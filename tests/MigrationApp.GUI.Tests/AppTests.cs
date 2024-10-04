@@ -1,9 +1,14 @@
-﻿using System;
-using Xunit;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿// <copyright file="AppTests.cs" company="Salesforce, inc">
+// Copyright (c) Salesforce, inc. All rights reserved.
+// Licensed under the Apache 2.0 license. See LICENSE file in the project root for full license information.
+// </copyright>
 
 namespace MigrationApp.GUI.Tests
 {
+    using System;
+    using Avalonia.Controls.ApplicationLifetimes;
+    using Xunit;
+
     public class AppTests
     {
         [Fact]
@@ -32,7 +37,7 @@ namespace MigrationApp.GUI.Tests
         public void Should_Call_OnApplicationExit_When_CancelKeyPress_Is_Handled()
         {
             var app = new TestableApp();
-            var cancelEventArgs = CreateConsoleCancelEventArgs(ConsoleSpecialKey.ControlC);
+            var cancelEventArgs = this.CreateConsoleCancelEventArgs(ConsoleSpecialKey.ControlC);
 
             app.HandleCancelKeyPress(cancelEventArgs);
 
@@ -45,36 +50,43 @@ namespace MigrationApp.GUI.Tests
             var consoleCancelEventArgsType = typeof(ConsoleCancelEventArgs);
             var ctor = consoleCancelEventArgsType.GetConstructor(
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance,
-                null, new[] { typeof(ConsoleSpecialKey) }, null);
+                null,
+                new[] { typeof(ConsoleSpecialKey) },
+                null);
+
+            if (ctor == null)
+            {
+                throw new InvalidOperationException("Could not retrieve ConsoleCancelEventArgs constructor.");
+            }
 
             return (ConsoleCancelEventArgs)ctor.Invoke(new object[] { key });
         }
-    }
 
-    public class MockClassicDesktopStyleApplicationLifetime
-    {
-        private readonly IClassicDesktopStyleApplicationLifetime _desktopLifetime;
-
-        public MockClassicDesktopStyleApplicationLifetime(TestableApp app)
+        private class MockClassicDesktopStyleApplicationLifetime
         {
-            _desktopLifetime = new ClassicDesktopStyleApplicationLifetime();
-            _desktopLifetime.Exit += (sender, args) => app.OnApplicationExit();
+            private readonly IClassicDesktopStyleApplicationLifetime desktopLifetime;
+
+            public MockClassicDesktopStyleApplicationLifetime(TestableApp app)
+            {
+                this.desktopLifetime = new ClassicDesktopStyleApplicationLifetime();
+                this.desktopLifetime.Exit += (sender, args) => app.OnApplicationExit();
+            }
+
+            public void TriggerExit()
+            {
+                this.desktopLifetime.Shutdown();
+            }
         }
 
-        public void TriggerExit()
+        private class TestableApp : App
         {
-            _desktopLifetime.Shutdown();
-        }
-    }
+            public bool ExitCalled { get; private set; } = false;
 
-    public class TestableApp : App
-    {
-        public bool ExitCalled { get; private set; } = false;
-
-        public override void OnApplicationExit()
-        {
-            ExitCalled = true;
-            base.OnApplicationExit();
+            public override void OnApplicationExit()
+            {
+                this.ExitCalled = true;
+                base.OnApplicationExit();
+            }
         }
     }
 }

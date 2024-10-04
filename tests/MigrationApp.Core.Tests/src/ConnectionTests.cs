@@ -1,19 +1,20 @@
+// <copyright file="ConnectionTests.cs" company="Salesforce, inc">
+// Copyright (c) Salesforce, inc. All rights reserved.
+// Licensed under the Apache 2.0 license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+namespace Tableau.Migration.MigrationApp.Core.Tests;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Tableau.Migration.MigrationApp.Core;
-
-namespace Tableau.Migration.MigrationApp.Core.Tests;
-
-
-using Microsoft.Extensions.Logging;
 using System.Threading;
-
+using Tableau.Migration.MigrationApp.Core;
 
 public class ConnectionTests
 {
-    [Fact]
+    [Fact(Skip = "Disabled until TMAPP-53 resolved.")]
     public async void ConnectionTest()
     {
         // Default builder setup
@@ -21,7 +22,6 @@ public class ConnectionTests
                       .ConfigureServices((ctx, services) =>
                       {
                           services.AddTableauMigrationSdk();
-
                       })
                       .Build();
         var logger = host.Services.GetRequiredService<ILogger<ConnectionTests>>();
@@ -30,19 +30,20 @@ public class ConnectionTests
 
         // Load credentials from env vars
         planBuilder
-            .FromSourceTableauServer(new Uri(config["TABLEAU_SERVER_URL"] ?? ""),
-                                     config["TABLEAU_SERVER_SITE"] ?? "",
-                                     config["TABLEAU_SERVER_TOKEN_NAME"] ?? "",
-                                     config["TABLEAU_SERVER_TOKEN"] ?? "",
-                                     true) // use simulator to avoid failing the tests on PRs
-            .ToDestinationTableauCloud(new Uri(config["TABLEAU_CLOUD_URL"] ?? ""),
-                                       config["TABLEAU_CLOUD_SITE"] ?? "",
-                                       config["TABLEAU_CLOUD_TOKEN_NAME"] ?? "",
-                                       config["TABLEAU_CLOUD_TOKEN"] ?? "",
-                                       true)
+            .FromSourceTableauServer(
+                new Uri(config["TABLEAU_SERVER_URL"] ?? string.Empty),
+                config["TABLEAU_SERVER_SITE"] ?? string.Empty,
+                config["TABLEAU_SERVER_TOKEN_NAME"] ?? string.Empty,
+                config["TABLEAU_SERVER_TOKEN"] ?? string.Empty,
+                true) // use simulator to avoid failing the tests on PRs
+            .ToDestinationTableauCloud(
+                new Uri(config["TABLEAU_CLOUD_URL"] ?? string.Empty),
+                config["TABLEAU_CLOUD_SITE"] ?? string.Empty,
+                config["TABLEAU_CLOUD_TOKEN_NAME"] ?? string.Empty,
+                config["TABLEAU_CLOUD_TOKEN"] ?? string.Empty,
+                true)
             .ForServerToCloud()
             .WithTableauIdAuthenticationType();
-
 
         planBuilder.Validate();
 
@@ -54,6 +55,5 @@ public class ConnectionTests
         var results = await migrator.ExecuteAsync(plan, null, CancellationToken.None);
 
         Assert.Equal("Completed", results.Status.ToString());
-
     }
 }

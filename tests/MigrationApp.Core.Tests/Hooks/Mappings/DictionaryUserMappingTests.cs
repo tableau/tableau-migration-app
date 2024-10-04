@@ -1,3 +1,8 @@
+// <copyright file="DictionaryUserMappingTests.cs" company="Salesforce, inc">
+// Copyright (c) Salesforce, inc. All rights reserved.
+// Licensed under the Apache 2.0 license. See LICENSE file in the project root for full license information.
+// </copyright>
+
 namespace MigrationApp.Core.Tests.Hooks.Mappings;
 
 using Microsoft.Extensions.Logging;
@@ -41,6 +46,7 @@ public class DictionaryUserMappingTests
 
         // Assert
         Assert.NotNull(result);
+
         // User should be mapped to new definition from dictionary
         Assert.Equal(destinationUserName, result.MappedLocation.ToString());
     }
@@ -73,6 +79,7 @@ public class DictionaryUserMappingTests
 
         // Assert
         Assert.NotNull(result);
+
         // Mapping for user is unaffected
         Assert.Equal("local", result.MappedLocation.ToString());
     }
