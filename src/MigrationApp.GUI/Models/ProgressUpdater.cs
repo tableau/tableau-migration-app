@@ -5,6 +5,7 @@
 
 namespace MigrationApp.GUI.Models;
 
+using MigrationApp.Core.Entities;
 using MigrationApp.Core.Interfaces;
 using System;
 
@@ -13,8 +14,6 @@ using System;
 /// </summary>
 public class ProgressUpdater : IProgressUpdater
 {
-    private static readonly string[] MigrationStates = { "Users", "Groups", "Projects", "DataSources", "Workbooks", "ServerExtractRefreshTasks", "CustomViews" };
-
     private int currentMigrationStateIndex = -1;
 
     /// <summary>
@@ -25,7 +24,7 @@ public class ProgressUpdater : IProgressUpdater
     /// <summary>
     /// Gets the total number of migration states available.
     /// </summary>
-    public static int NumMigrationStates { get; } = MigrationStates.Length;
+    public static int NumMigrationStates { get; } = MigrationActions.Actions.Length;
 
     /// <summary>
     /// Gets or sets the current migration state index.
@@ -35,7 +34,7 @@ public class ProgressUpdater : IProgressUpdater
         get => this.currentMigrationStateIndex;
         set
         {
-            if (this.currentMigrationStateIndex != value && value <= MigrationStates.Length)
+            if (this.currentMigrationStateIndex != value && value <= MigrationActions.Actions.Length)
             {
                 this.currentMigrationStateIndex = value;
                 this.OnProgressChanged?.Invoke(this, EventArgs.Empty);
@@ -48,8 +47,8 @@ public class ProgressUpdater : IProgressUpdater
     /// </summary>
     public string CurrentMigrationStateName
     {
-        get => this.CurrentMigrationStateIndex < 0 || this.CurrentMigrationStateIndex >= MigrationStates.Length ?
-            string.Empty : MigrationStates[this.CurrentMigrationStateIndex];
+        get => this.CurrentMigrationStateIndex < 0 || this.CurrentMigrationStateIndex >= MigrationActions.Actions.Length ?
+            string.Empty : MigrationActions.Actions[this.CurrentMigrationStateIndex];
     }
 
     /// <summary>

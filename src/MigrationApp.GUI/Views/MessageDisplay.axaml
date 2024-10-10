@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+	     xmlns:AvalonEdit="using:AvaloniaEdit"
+	     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	     xmlns:vm="clr-namespace:MigrationApp.GUI.ViewModels"
+	     x:Class="MigrationApp.GUI.Views.MessageDisplay"
+	     x:DataType="vm:MessageDisplayViewModel">
+
+  <Grid Margin="10,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <TextBox
+	Classes="message-textbox"
+	Grid.Row="0"
+	Name="MessageTextBox"
+	IsReadOnly="True"
+	Text="{Binding Messages}"
+	AcceptsReturn="True"
+	TextWrapping="Wrap"
+	Foreground="Black"
+	FontFamily="Consolas"
+	FontSize="14" />
+
+    <CheckBox Grid.Row="1" x:Name="KeepScrolledCheckBox"> Keep scolled to bottom </CheckBox>
+  </Grid>
+
+</UserControl>

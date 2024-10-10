@@ -61,7 +61,7 @@ public class DictionaryUserMapping :
         // Only map users that are defined in the dictionary
         if (!this.userMappings.ContainsKey(userMappingContext.ContentItem.Name))
         {
-            this.logger.LogInformation("{user} not found in map!", userMappingContext.ContentItem.Name);
+            this.logger.LogInformation("{user} not found in user provided mapping.", userMappingContext.ContentItem.Name);
             return userMappingContext.ToTask();
         }
 

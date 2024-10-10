@@ -23,6 +23,7 @@ namespace MigrationApp.Tests.Services
             this.tempFilePath = Path.GetTempFileName();
         }
 
+        [Fact]
         public void Dispose()
         {
             // Clean up the temporary file after each test

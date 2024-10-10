@@ -3,272 +3,280 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:vm="clr-namespace:MigrationApp.GUI.ViewModels"
-    xmlns:local="clr-namespace:MigrationApp.GUI.Views"
+	xmlns:local="clr-namespace:MigrationApp.GUI.Views"
 	xmlns:converters="clr-namespace:MigrationApp.GUI.Views.Converters"
 	mc:Ignorable="d"
 	x:Class="MigrationApp.GUI.Views.MainWindow"
 	x:DataType="vm:MainWindowViewModel"
-	Title="MigrationApp.GUI"
-    Width="800" Height="650"
-    SizeToContent="Height"
-    CanResize="False">
-
+	Title="Tableau Migration App"
+	Width="800" Height="650"
+	MaxWidth="800"
+	SizeToContent="Height"
+	CanResize="True">
 
   <Window.Resources>
     <converters:StringIsNullOrEmptyConverter x:Key="StringIsNullOrEmptyConverter" />
   </Window.Resources>
 
-  <Grid Margin="0,0,0,20">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="1*"/>
-      <ColumnDefinition Width="1*"/>
-    </Grid.ColumnDefinitions>
+  <ScrollViewer HorizontalScrollBarVisibility="Auto"
+		VerticalScrollBarVisibility="Auto">
+    <Grid Margin="0,0,0,10" Width="800">
+      <Grid.RowDefinitions>
+	<RowDefinition Height="Auto"/>
+	<RowDefinition Height="Auto"/>
+	<RowDefinition Height="Auto"/>
+	<RowDefinition Height="Auto"/>
+	<RowDefinition Height="Auto"/>
+	<RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+	<ColumnDefinition Width="1*"/>
+	<ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
 
-    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Margin="0,10,0,20" Text="Migration Application"/>
+      <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Margin="0,5,0,5" Text="Migration Configuration"/>
 
-    <StackPanel Grid.Row="1" Grid.Column="0" Margin="10,10" Spacing="20" VerticalAlignment="Top">
-      <TextBlock Text="Tableau Server" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-      <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
-	<Grid>
-	  <Grid.ColumnDefinitions>
-	    <ColumnDefinition Width="Auto" />
-	    <ColumnDefinition Width="*" />
-	  </Grid.ColumnDefinitions>
-	  <Grid.RowDefinitions>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	  </Grid.RowDefinitions>
+      <StackPanel Grid.Row="1" Grid.Column="0" Margin="5,5" Spacing="5" VerticalAlignment="Top">
+	<TextBlock Text="Tableau Server" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+	<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
+	  <Grid>
+	    <Grid.ColumnDefinitions>
+	      <ColumnDefinition Width="Auto" />
+	      <ColumnDefinition Width="*" />
+	    </Grid.ColumnDefinitions>
+	    <Grid.RowDefinitions>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	    </Grid.RowDefinitions>
 
-	  <!-- Tableau Server URI Input -->
-	  <TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server URI" VerticalAlignment="Center" />
-	  <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
-	    <local:HelpButton
-	      HelpText="Enter the Tableau Server URL in one of the following formats:&#10;- For a single-site: http://&lt;serveraddress&gt;&#10;- For a multi-site: http://&lt;serveraddress&gt;/#/site/&lt;sitename&gt;&#10;The site name is parsed from the URL if provided."
-	      DetailsUrl="https://help.tableau.com/current/pro/desktop/en-us/embed_structure.htm"/>
-	  </StackPanel>
-	  <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding ServerUriFull, Mode=TwoWay}"
-	       IsEnabled="{Binding !IsMigrating}" Watermark="Ex: http://&lt;serveraddress&gt;/#/site/&lt;sitename&gt;"
-	       HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,10,0,5"/>
-
-	  <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="Server Base URI"
-		 VerticalAlignment="Center" Margin="10,5,0,5" />
-	  <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center"
-		 Foreground="Gray" Margin="10,0,0,5"
-		 Text="{Binding ServerUriBase, Converter={StaticResource StringIsNullOrEmptyConverter}, ConverterParameter='Server URI is not provided'}" />
-
-	  <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Site Name"
-		 VerticalAlignment="Center" Margin="10,5,0,5" />
-	  <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Center"
-		 Foreground="Gray" Margin="10,0,0,5"
-		 Text="{Binding ServerSiteContent, Converter={StaticResource StringIsNullOrEmptyConverter}, ConverterParameter='Default site is selected'}" />
-
-	</Grid>
-      </Border >
-
-      <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
-
-	<Grid>
-	  <Grid.ColumnDefinitions>
-	    <ColumnDefinition Width="Auto" />
-	    <ColumnDefinition Width="*" />
-	  </Grid.ColumnDefinitions>
-	  <Grid.RowDefinitions>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	  </Grid.RowDefinitions>
-	  <TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server PAT Name" VerticalAlignment="Center" />
-	  <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
-	    <local:HelpButton
-	      HelpText="Personal Access Tokens (PATs) are used for authentication.&#10;Enter the Personal Access Token Name.&#10;Then, provide the Personal Access Token.&#10;Tokens can be managed in your Tableau Server account's user settings. "
-
-	      DetailsUrl="https://help.tableau.com/current/online/en-us/security_personal_access_tokens.htm"/>
-	  </StackPanel>
-	  <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding ServerAccessTokenName, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Access Token Name" Grid.ColumnSpan="2" />
-
-
-	  <TextBlock Grid.Column="0" Grid.Row="2" Text="Tableau Server PAT" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,5"/>
-	  <TextBox Grid.Column="0"
-	       Grid.Row="3"
-	       Text="{Binding ServerAccessToken, Mode=TwoWay}"
-	       Classes="revealPasswordButton" PasswordChar="*"
-	       IsEnabled="{Binding !IsMigrating}" Watermark="Access Token" Grid.ColumnSpan="2" />
-
-	</Grid>
-      </Border>
-    </StackPanel>
-
-    <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,10" Spacing="20" VerticalAlignment="Top">
-      <TextBlock Text="Tableau Cloud" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-
-      <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
-	<Grid>
-	  <Grid.ColumnDefinitions>
-	    <ColumnDefinition Width="Auto" />
-	    <ColumnDefinition Width="*" />
-	  </Grid.ColumnDefinitions>
-	  <Grid.RowDefinitions>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	  </Grid.RowDefinitions>
-
-	  <TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud URI" VerticalAlignment="Center" />
-	  <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
-	    <local:HelpButton
-	      HelpText="Enter the Tableau Cloud URL in one of the following formats:&#10;- For a single-site: http://&lt;cloudaddress&gt;&#10;- For a multi-site: http://&lt;cloudaddress&gt;/#/site/&lt;sitename&gt;&#10;The site name is parsed from the URL if provided."
-	      DetailsUrl="https://help.tableau.com/current/pro/desktop/en-us/embed_structure.htm"/>
-	  </StackPanel>
-	  <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding CloudUriFull, Mode=TwoWay}"
-	       IsEnabled="{Binding !IsMigrating}" Watermark="Ex: http://&lt;cloudaddress&gt;/#/site/&lt;sitename&gt;"
-	       HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,10,0,5"/>
-
-	  <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="Cloud Base URI"
-		 VerticalAlignment="Center" Margin="10,5,0,5" />
-	  <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center"
-		 Foreground="Gray" Margin="10,0,0,5"
-		 Text="{Binding CloudUriBase, Converter={StaticResource StringIsNullOrEmptyConverter}, ConverterParameter='Cloud URI is not provided'}" />
-
-	  <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Site Name"
-		 VerticalAlignment="Center" Margin="10,5,0,5" />
-	  <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Center"
-		 Foreground="Gray" Margin="10,0,0,5"
-		 Text="{Binding CloudSiteContent, Converter={StaticResource StringIsNullOrEmptyConverter}, ConverterParameter='Default site is selected'}" />
-
-	</Grid>
-      </Border >
-
-      <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
-	<Grid>
-	  <Grid.ColumnDefinitions>
-	    <ColumnDefinition Width="Auto" />
-	    <ColumnDefinition Width="*" />
-	  </Grid.ColumnDefinitions>
-	  <Grid.RowDefinitions>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	    <RowDefinition Height="Auto"/>
-	  </Grid.RowDefinitions>
-	  <TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud PAT Name" VerticalAlignment="Center" />
-	  <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5">
-	    <local:HelpButton
-	      HelpText="Personal Access Tokens (PATs) are used for authentication.&#10;Enter the Personal Access Token Name.&#10;Then, provide the Personal Access Token.&#10;Tokens can be managed in your Tableau Cloud account's user settings."
-
-	      DetailsUrl="https://help.tableau.com/current/online/en-us/security_personal_access_tokens.htm"/>
-	  </StackPanel>
-	  <TextBox Grid.Column="0"
-	       Grid.Row="1"
-	       Text="{Binding CloudAccessTokenName, Mode=TwoWay}"
-	       IsEnabled="{Binding !IsMigrating}"
-	       Watermark="Access Token Name"
-	       Grid.ColumnSpan="2"/>
-
-
-	  <TextBlock Grid.Column="0" Grid.Row="2" Text="Tableau Cloud PAT" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,5"/>
-	  <TextBox Grid.Column="0"
-		   Grid.Row="3"
-		   Text="{Binding CloudAccessToken, Mode=TwoWay}"
-		   Classes="revealPasswordButton" PasswordChar="*"
-		   IsEnabled="{Binding !IsMigrating}" Watermark="Access Token"
-		   Grid.ColumnSpan="2"/>
-
-	</Grid>
-      </Border >
-    </StackPanel>
-
-
-    <!-- User Mappings -->
-    <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="10,10" Spacing="30">
-      <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
-	<Grid>
-	  <Grid.ColumnDefinitions>
-	    <ColumnDefinition Width="*" />
-	    <ColumnDefinition Width="40" />
-	    <ColumnDefinition Width="*" />
-	  </Grid.ColumnDefinitions>
-	  <Grid.RowDefinitions>
-	    <RowDefinition Height="Auto"/>
-	  </Grid.RowDefinitions>
-
-	  <!-- Default Mapping Domain -->
-	  <StackPanel Grid.Column="0">
-	    <StackPanel Orientation="Horizontal">
-	      <TextBlock Text="Tableau Server to Cloud Default User Domain" VerticalAlignment="Center" Margin="0,5"/>
+	    <!-- Tableau Server URI Input -->
+	    <TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server URI" VerticalAlignment="Center" />
+	    <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
 	      <local:HelpButton
-		  HelpText="Tableau Cloud usernames must be in an email format. Enter a domain to be appended to usernames when migrating users from Tableau Server to Tableau Cloud if a user does not already have an associated email. The domain will be used to create one in the format: username@&lt;domain&gt;.&#10;&#10;For example:&#10; - 'user1' with domain `domain.com` will become 'user1@domain.com'.&#10; - Users with existing emails, like 'user2@existingdomain.com', will not be affected."/>
+		  HelpText="Enter the Tableau Server URL in one of the following formats:&#10;- For a single-site: http://&lt;serveraddress&gt;&#10;- For a multi-site: http://&lt;serveraddress&gt;/#/site/&lt;sitename&gt;&#10;The site name is parsed from the URL if provided."
+		  DetailsUrl="https://help.tableau.com/current/pro/desktop/en-us/embed_structure.htm"/>
+	    </StackPanel>
+	    <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding ServerUriFull, Mode=TwoWay}"
+		     IsEnabled="{Binding !IsMigrating}" Watermark="Ex: http://&lt;serveraddress&gt;/#/site/&lt;sitename&gt;"
+		     HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,10,0,5"/>
+
+	    <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="Server Base URI"
+		       VerticalAlignment="Center" Margin="10,5,0,5" />
+	    <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center"
+		       Foreground="Gray" Margin="10,0,0,5"
+		       Text="{Binding ServerUriBase, Converter={StaticResource StringIsNullOrEmptyConverter}, ConverterParameter='Server URI is not provided'}" />
+
+	    <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Site Name"
+		       VerticalAlignment="Center" Margin="10,5,0,5" />
+	    <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Center"
+		       Foreground="Gray" Margin="10,0,0,5"
+		       Text="{Binding ServerSiteContent, Converter={StaticResource StringIsNullOrEmptyConverter}, ConverterParameter='Default site is selected'}" />
+
+	  </Grid>
+	</Border >
+
+	<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
+
+	  <Grid>
+	    <Grid.ColumnDefinitions>
+	      <ColumnDefinition Width="Auto" />
+	      <ColumnDefinition Width="*" />
+	    </Grid.ColumnDefinitions>
+	    <Grid.RowDefinitions>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	    </Grid.RowDefinitions>
+	    <TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Server PAT Name" VerticalAlignment="Center" />
+	    <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+	      <local:HelpButton
+		  HelpText="Personal Access Tokens (PATs) are used for authentication.&#10;Enter the Personal Access Token Name.&#10;Then, provide the Personal Access Token.&#10;Tokens can be managed in your Tableau Server account's user settings. "
+
+DetailsUrl="https://help.tableau.com/current/online/en-us/security_personal_access_tokens.htm"/>
+	    </StackPanel>
+	    <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding ServerAccessTokenName, Mode=TwoWay}" IsEnabled="{Binding !IsMigrating}" Watermark="Access Token Name" Grid.ColumnSpan="2" />
+
+
+	    <TextBlock Grid.Column="0" Grid.Row="2" Text="Tableau Server PAT" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,5"/>
+	    <TextBox Grid.Column="0"
+		     Grid.Row="3"
+		     Text="{Binding ServerAccessToken, Mode=TwoWay}"
+		     Classes="revealPasswordButton" PasswordChar="*"
+		     IsEnabled="{Binding !IsMigrating}" Watermark="Access Token" Grid.ColumnSpan="2" />
+
+	  </Grid>
+	</Border>
+      </StackPanel>
+
+      <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,5" Spacing="5" VerticalAlignment="Top">
+	<TextBlock Text="Tableau Cloud" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+
+	<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
+	  <Grid>
+	    <Grid.ColumnDefinitions>
+	      <ColumnDefinition Width="Auto" />
+	      <ColumnDefinition Width="*" />
+	    </Grid.ColumnDefinitions>
+	    <Grid.RowDefinitions>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	    </Grid.RowDefinitions>
+
+	    <TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud URI" VerticalAlignment="Center" />
+	    <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5,0,5">
+	      <local:HelpButton
+		  HelpText="Enter the Tableau Cloud URL in one of the following formats:&#10;- For a single-site: http://&lt;cloudaddress&gt;&#10;- For a multi-site: http://&lt;cloudaddress&gt;/#/site/&lt;sitename&gt;&#10;The site name is parsed from the URL if provided."
+		  DetailsUrl="https://help.tableau.com/current/pro/desktop/en-us/embed_structure.htm"/>
+	    </StackPanel>
+	    <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding CloudUriFull, Mode=TwoWay}"
+		     IsEnabled="{Binding !IsMigrating}" Watermark="Ex: http://&lt;cloudaddress&gt;/#/site/&lt;sitename&gt;"
+		     HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,10,0,5"/>
+
+	    <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="Cloud Base URI"
+		       VerticalAlignment="Center" Margin="10,5,0,5" />
+	    <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center"
+		       Foreground="Gray" Margin="10,0,0,5"
+		       Text="{Binding CloudUriBase, Converter={StaticResource StringIsNullOrEmptyConverter}, ConverterParameter='Cloud URI is not provided'}" />
+
+	    <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Site Name"
+		       VerticalAlignment="Center" Margin="10,5,0,5" />
+	    <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Center"
+		       Foreground="Gray" Margin="10,0,0,5"
+		       Text="{Binding CloudSiteContent, Converter={StaticResource StringIsNullOrEmptyConverter}, ConverterParameter='Default site is selected'}" />
+
+	  </Grid>
+	</Border >
+
+	<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
+	  <Grid>
+	    <Grid.ColumnDefinitions>
+	      <ColumnDefinition Width="Auto" />
+	      <ColumnDefinition Width="*" />
+	    </Grid.ColumnDefinitions>
+	    <Grid.RowDefinitions>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	      <RowDefinition Height="Auto"/>
+	    </Grid.RowDefinitions>
+	    <TextBlock Grid.Column="0" Grid.Row="0" Text="Tableau Cloud PAT Name" VerticalAlignment="Center" />
+	    <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="0,5">
+	      <local:HelpButton
+		  HelpText="Personal Access Tokens (PATs) are used for authentication.&#10;Enter the Personal Access Token Name.&#10;Then, provide the Personal Access Token.&#10;Tokens can be managed in your Tableau Cloud account's user settings."
+
+DetailsUrl="https://help.tableau.com/current/online/en-us/security_personal_access_tokens.htm"/>
 	    </StackPanel>
 	    <TextBox Grid.Column="0"
 		     Grid.Row="1"
-		     Text="{Binding CloudUserDomain, Mode=TwoWay}"
-		     IsEnabled="{Binding !IsDomainMappingVisiblyDisabled}"
-		     Watermark="User Cloud Domain"
+		     Text="{Binding CloudAccessTokenName, Mode=TwoWay}"
+		     IsEnabled="{Binding !IsMigrating}"
+		     Watermark="Access Token Name"
 		     Grid.ColumnSpan="2"/>
-	    <CheckBox Grid.Column="0" Grid.Row="2" Content="Disable Default Domain Mapping"
-		      IsChecked="{Binding IsDomainMappingDisabled, Mode=TwoWay}"
-		      IsEnabled="{Binding !IsMigrating}"
-		      VerticalAlignment="Center" HorizontalAlignment="Left"/>
-	  </StackPanel>
 
-	  <!-- User Mapping File -->
-	  <StackPanel Grid.Column="2" >
-	    <StackPanel Orientation="Horizontal">
-	      <TextBlock Text="User Mapping File" VerticalAlignment="Center" Margin="0,5"/>
-	      <local:HelpButton
-		  HelpText="Upload a CSV file defining Tableau Server to Tableau Cloud username mappings."/>
+
+	    <TextBlock Grid.Column="0" Grid.Row="2" Text="Tableau Cloud PAT" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,5"/>
+	    <TextBox Grid.Column="0"
+		     Grid.Row="3"
+		     Text="{Binding CloudAccessToken, Mode=TwoWay}"
+		     Classes="revealPasswordButton" PasswordChar="*"
+		     IsEnabled="{Binding !IsMigrating}" Watermark="Access Token"
+		     Grid.ColumnSpan="2"/>
+
+	  </Grid>
+	</Border >
+      </StackPanel>
+
+
+      <!-- User Mappings -->
+      <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="5,10,5,0" Spacing="30">
+	<Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="10,15" Margin="0">
+	  <Grid>
+	    <Grid.ColumnDefinitions>
+	      <ColumnDefinition Width="*" />
+	      <ColumnDefinition Width="40" />
+	      <ColumnDefinition Width="*" />
+	    </Grid.ColumnDefinitions>
+	    <Grid.RowDefinitions>
+	      <RowDefinition Height="Auto"/>
+	    </Grid.RowDefinitions>
+
+	    <!-- Default Mapping Domain -->
+	    <StackPanel Grid.Column="0">
+	      <StackPanel Orientation="Horizontal">
+		<TextBlock Text="Tableau Server to Cloud Default User Domain" VerticalAlignment="Center" Margin="0,5"/>
+		<local:HelpButton
+		    HelpText="Tableau Cloud usernames must be in an email format. Enter a domain to be appended to usernames when migrating users from Tableau Server to Tableau Cloud if a user does not already have an associated email. The domain will be used to create one in the format: username@&lt;domain&gt;.&#10;&#10;For example:&#10; - 'user1' with domain `domain.com` will become 'user1@domain.com'.&#10; - Users with existing emails, like 'user2@existingdomain.com', will not be affected."/>
+	      </StackPanel>
+	      <TextBox Grid.Column="0"
+		       Grid.Row="1"
+		       Text="{Binding CloudUserDomain, Mode=TwoWay}"
+		       IsEnabled="{Binding !IsDomainMappingVisiblyDisabled}"
+		       Watermark="User Cloud Domain"
+		       Grid.ColumnSpan="2"/>
+	      <CheckBox Grid.Column="0" Grid.Row="2" Content="Disable Default Domain Mapping"
+			IsChecked="{Binding IsDomainMappingDisabled, Mode=TwoWay}"
+			IsEnabled="{Binding !IsMigrating}"
+			VerticalAlignment="Center" HorizontalAlignment="Left"/>
 	    </StackPanel>
-	    <StackPanel>
-	      <DockPanel>
-		<Button Content="Load file" Command="{Binding LoadUserFileCommand}" IsEnabled="{Binding !IsMigrating}" IsVisible="{Binding !IsUserMappingFileLoaded}" DockPanel.Dock="Right" />
-		<Button Content="X" Command="{Binding UnLoadUserFileCommand}" IsEnabled="{Binding !IsMigrating}" IsVisible="{Binding IsUserMappingFileLoaded}" DockPanel.Dock="Right" />
-		<TextBox IsEnabled="False" Text="{Binding LoadedCSVFilename, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,5,0"/>
-	      </DockPanel>
-	      <!-- CSV Loading Status message -->
-	      <TextBlock Text="{Binding CSVLoadStatus, Mode=TwoWay}" Foreground="{Binding CSVLoadStatusColor}"/>
+
+	    <!-- User Mapping File -->
+	    <StackPanel Grid.Column="2" >
+	      <StackPanel Orientation="Horizontal">
+		<TextBlock Text="User Mapping File" VerticalAlignment="Center" Margin="0,5"/>
+		<local:HelpButton
+		    HelpText="Upload a CSV file defining Tableau Server to Tableau Cloud username mappings."/>
+	      </StackPanel>
+	      <StackPanel>
+		<DockPanel>
+		  <Button Content="Load file" Command="{Binding LoadUserFileCommand}" IsEnabled="{Binding !IsMigrating}" IsVisible="{Binding !IsUserMappingFileLoaded}" DockPanel.Dock="Right" />
+		  <Button Content="X" Command="{Binding UnLoadUserFileCommand}" IsEnabled="{Binding !IsMigrating}" IsVisible="{Binding IsUserMappingFileLoaded}" DockPanel.Dock="Right" />
+		  <TextBox IsEnabled="False" Text="{Binding LoadedCSVFilename, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+		</DockPanel>
+		<!-- CSV Loading Status message -->
+		<TextBlock Text="{Binding CSVLoadStatus, Mode=TwoWay}" Foreground="{Binding CSVLoadStatusColor}"/>
+	      </StackPanel>
 	    </StackPanel>
-	  </StackPanel>
 
-	</Grid>
-      </Border>
-    </StackPanel>
+	  </Grid>
+	</Border>
+      </StackPanel>
 
-    <Button Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Run Migration" IsVisible="{Binding !IsMigrating}"
-	    Command="{Binding RunMigrationCommand}" IsEnabled="{Binding !IsMigrating}" VerticalAlignment="Bottom" Margin="0,20"/>
+      <Button Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Run Migration" IsVisible="{Binding !IsMigrating}"
+	      Command="{Binding RunMigrationCommand}" IsEnabled="{Binding !IsMigrating}" VerticalAlignment="Bottom" Margin="0,10"/>
 
-    <Button Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Stop Migration"  IsVisible="{Binding IsMigrating}"
-	    Click="StopMigrationOnClick" IsEnabled="{Binding IsMigrating}" VerticalAlignment="Bottom" Margin="0,20"/>
+      <Button Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Stop Migration"  IsVisible="{Binding IsMigrating}"
+	      Click="StopMigrationOnClick" IsEnabled="{Binding IsMigrating}" VerticalAlignment="Bottom" Margin="0,10"/>
 
-    <TextBlock Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" IsVisible="{Binding !IsMigrating}"
-	   Text="{Binding NotificationMessage}" Foreground="{Binding NotificationColor}"/>
+      <TextBlock Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" IsVisible="{Binding !IsMigrating}"
+		 Text="{Binding NotificationMessage}" Foreground="{Binding NotificationColor}"/>
 
-    <Grid Grid.Row="4" Grid.ColumnSpan="2" IsVisible="{Binding IsMigrating}">
-      <ProgressBar Name="progressBar" Minimum="0" Maximum="{Binding NumMigrationStates}"
-	     Height="20" Width="300" Value="{Binding CurrentMigrationStateIndex}"/>
+      <Grid Grid.Row="4" Grid.ColumnSpan="2" IsVisible="{Binding IsMigrating}">
+	<ProgressBar Name="progressBar" Minimum="0" Maximum="{Binding NumMigrationStates}"
+		     Height="20" Width="300" Value="{Binding CurrentMigrationStateIndex}"/>
 
-      <!-- TextBlock overlay on the progress bar to display current state -->
-      <TextBlock Name="progressStateText"
-	     VerticalAlignment="Center"
-	     HorizontalAlignment="Center"
-	     Text="{Binding CurrentMigrationMessage}"
-	     FontSize="16"
-	     Foreground="Black" />
+	<!-- TextBlock overlay on the progress bar to display current state -->
+	<TextBlock Name="progressStateText"
+		   VerticalAlignment="Center"
+		   HorizontalAlignment="Center"
+		   Text="{Binding CurrentMigrationMessage}"
+		   FontSize="16"
+		   Foreground="Black" />
+      </Grid>
+	<local:MessageDisplay
+	    Grid.Row="5"
+	    Grid.ColumnSpan="2"
+	    Margin="0,5,0,0"
+	    Height="280"
+	    DataContext="{Binding MessageDisplayVM}"/>
     </Grid>
-
-  </Grid>
-
+  </ScrollViewer>
 </Window>

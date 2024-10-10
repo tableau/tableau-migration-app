@@ -11,6 +11,7 @@ using MigrationApp.Core.Hooks.Progression;
 using MigrationApp.Core.Interfaces;
 using Tableau.Migration;
 using Tableau.Migration.Content;
+using Tableau.Migration.Content.Schedules.Cloud;
 
 /// <summary>
 /// Service to handle Migrations from Tableau Server to Tableau Cloud.
@@ -76,7 +77,16 @@ public class TableauMigrationService : ITableauMigrationService
             return false;
         }
 
+        // Progression Hooks
         this.planBuilder.Hooks.Add<MigrationActionProgressHook>();
+        this.planBuilder.Hooks.Add<BatchMigrationCompletedProgressHook<IUser>>();
+        this.planBuilder.Hooks.Add<BatchMigrationCompletedProgressHook<IGroup>>();
+        this.planBuilder.Hooks.Add<BatchMigrationCompletedProgressHook<IProject>>();
+        this.planBuilder.Hooks.Add<BatchMigrationCompletedProgressHook<IDataSource>>();
+        this.planBuilder.Hooks.Add<BatchMigrationCompletedProgressHook<IWorkbook>>();
+        this.planBuilder.Hooks.Add<BatchMigrationCompletedProgressHook<ICloudExtractRefreshTask>>();
+        this.planBuilder.Hooks.Add<BatchMigrationCompletedProgressHook<ICustomView>>();
+
         this.plan = this.planBuilder.Build();
 
         return true;

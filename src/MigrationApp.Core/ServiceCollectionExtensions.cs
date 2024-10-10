@@ -35,6 +35,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<DictionaryUserMapping>();
         services.AddScoped<EmailDomainMapping>();
         services.AddScoped<MigrationActionProgressHook>();
+        services.AddScoped(typeof(BatchMigrationCompletedProgressHook<>));
         return services;
     }
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="IProgressUpdater.cs" company="Salesforce, inc">
+// <copyright file="IProgressUpdater.cs" company="Salesforce, inc">
 // Copyright (c) Salesforce, inc. All rights reserved.
 // Licensed under the Apache 2.0 license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -36,7 +36,7 @@ public interface IProgressUpdater
     static int NumMigrationStates { get; }
 
     /// <summary>
-    /// Updates the visual representation of the migrateion progress.
+    /// Updates the visual representation of the migration progress.
     /// </summary>
     void Update();
 

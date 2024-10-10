@@ -10,6 +10,8 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MigrationApp.Core.Entities;
 using MigrationApp.Core.Hooks.Mappings;
@@ -61,6 +63,7 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     private IImmutableSolidColorBrush notificationColor = Brushes.Black;
     private IImmutableSolidColorBrush csvLoadStatusColor = Brushes.Black;
     private Dictionary<string, string> userMappings = new Dictionary<string, string>();
+    private ILogger<MainWindowViewModel>? logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindowViewModel" /> class.
@@ -69,6 +72,7 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     /// <param name="emailDomainOptions">The default domain mapping to apply to users who do not have an existing email, or mapping present.</param>
     /// <param name="dictionaryUserMappingOptions">The user-specific mappings to be used if provided through CSV.</param>
     /// <param name="progressUpdater">The object to track the migration progress from the migration service.</param>
+    /// <param name="publisher">The progress publisher for progress status messages.</param>
     /// <param name="filePicker">The file picker service to use for CSV loaded user mappings.</param>
     /// <param name="csvParser">The csv parser to load and parser user mappings.</param>
     public MainWindowViewModel(
@@ -76,15 +80,18 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
         IOptions<EmailDomainMappingOptions> emailDomainOptions,
         IOptions<DictionaryUserMappingOptions> dictionaryUserMappingOptions,
         IProgressUpdater progressUpdater,
+        IProgressMessagePublisher publisher,
         IFilePicker filePicker,
         ICsvParser csvParser)
     {
         this.migrationService = migrationService;
+        this.MessageDisplayVM = new MessageDisplayViewModel(publisher);
         this.emailDomainOptions = emailDomainOptions;
         this.dictionaryUserMappingOptions = dictionaryUserMappingOptions;
         this.progressUpdater = progressUpdater;
         this.filePicker = filePicker;
         this.csvParser = csvParser;
+        this.logger = App.ServiceProvider?.GetRequiredService<ILogger<MainWindowViewModel>>();
 
         // Subscribe to the progress updater event and retrigger UI rendering on update
         this.progressUpdater.OnProgressChanged += async (sender, args) =>
@@ -106,6 +113,11 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     /// Gets the total number of migration states available.
     /// </summary>
     public static int NumMigrationStates => ProgressUpdater.NumMigrationStates;
+
+    /// <summary>
+    /// Gets the progress status Message Display View Model.
+    /// </summary>
+    public MessageDisplayViewModel MessageDisplayVM { get; }
 
     /// <summary>
     /// Gets or sets a value indicating whether or not a migration is ongoing.
@@ -443,7 +455,7 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
 
             if (status == ITableauMigrationService.MigrationStatus.SUCCESS)
             {
-                this.NotificationMessage = "Migration Succeeded.";
+                this.NotificationMessage = "Migration Completed.";
                 this.NotificationColor = Brushes.Green;
             }
             else if (status == ITableauMigrationService.MigrationStatus.CANCELLED)
@@ -489,6 +501,8 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         this.IsMigrating = true;
+        this.MessageDisplayVM.AddMessage("Migration Started");
+        this.logger?.LogInformation("Migration Started");
         this.RunMigrationAsync().ConfigureAwait(false);
     }
 

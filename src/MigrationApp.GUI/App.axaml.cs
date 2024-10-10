@@ -30,7 +30,10 @@ using System.Collections.Generic;
 /// </summary>
 public partial class App : Application
 {
-    private IServiceProvider? serviceProvider;
+    /// <summary>
+    /// Gets the service provider.
+    /// </summary>
+    public static IServiceProvider? ServiceProvider { get; private set; }
 
     /// <summary>
     /// Initializes the app.
@@ -47,7 +50,7 @@ public partial class App : Application
     {
         var serviceCollection = new ServiceCollection();
         this.ConfigureServices(serviceCollection);
-        this.serviceProvider = serviceCollection.BuildServiceProvider();
+        App.ServiceProvider = serviceCollection.BuildServiceProvider();
 
         if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -56,7 +59,7 @@ public partial class App : Application
             BindingPlugins.DataValidators.RemoveAt(0);
 
             // Set MainWindow and DataContext via DI
-            desktop.MainWindow = this.serviceProvider.GetRequiredService<MainWindow>();
+            desktop.MainWindow = App.ServiceProvider.GetRequiredService<MainWindow>();
 
             desktop.Exit += (sender, args) =>
             {
@@ -139,6 +142,7 @@ public partial class App : Application
         });
 
         services.AddSingleton<IProgressUpdater, ProgressUpdater>();
+        services.AddSingleton<IProgressMessagePublisher, ProgressMessagePublisher>();
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<MainWindow>(provider =>
         {

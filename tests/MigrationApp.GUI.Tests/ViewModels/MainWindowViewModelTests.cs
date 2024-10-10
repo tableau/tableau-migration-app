@@ -25,6 +25,7 @@ public class MainWindowViewModelTests
         var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
         var migrationServiceMock = new Mock<ITableauMigrationService>();
         var progressUpdaterMock = new Mock<IProgressUpdater>();
+        var progressPublisherMock = new Mock<IProgressMessagePublisher>();
         var filePickerMock = new Mock<IFilePicker>();
         var csvParserMock = new Mock<ICsvParser>();
         var viewModel = new MainWindowViewModel(
@@ -32,6 +33,7 @@ public class MainWindowViewModelTests
             emailDomainOptionsMock.Object,
             dictionaryUserMappingOptionsMock.Object,
             progressUpdaterMock.Object,
+            progressPublisherMock.Object,
             filePickerMock.Object,
             csvParserMock.Object);
 
@@ -50,6 +52,7 @@ public class MainWindowViewModelTests
         var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
         var migrationServiceMock = new Mock<ITableauMigrationService>();
         var progressUpdaterMock = new Mock<ProgressUpdater>();
+        var progressPublisherMock = new Mock<IProgressMessagePublisher>();
         var filePickerMock = new Mock<IFilePicker>();
         var csvParserMock = new Mock<ICsvParser>();
 
@@ -58,6 +61,7 @@ public class MainWindowViewModelTests
             emailDomainOptionsMock.Object,
             dictionaryUserMappingOptionsMock.Object,
             progressUpdaterMock.Object,
+            progressPublisherMock.Object,
             filePickerMock.Object,
             csvParserMock.Object);
 
@@ -76,6 +80,7 @@ public class MainWindowViewModelTests
         var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
         var migrationServiceMock = new Mock<ITableauMigrationService>();
         var progressUpdaterMock = new Mock<ProgressUpdater>();
+        var progressPublisherMock = new Mock<IProgressMessagePublisher>();
         var filePickerMock = new Mock<IFilePicker>();
         var csvParserMock = new Mock<ICsvParser>();
 
@@ -84,6 +89,7 @@ public class MainWindowViewModelTests
             emailDomainOptionsMock.Object,
             dictionaryUserMappingOptionsMock.Object,
             progressUpdaterMock.Object,
+            progressPublisherMock.Object,
             filePickerMock.Object,
             csvParserMock.Object);
 
@@ -102,6 +108,7 @@ public class MainWindowViewModelTests
         var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
         var migrationServiceMock = new Mock<ITableauMigrationService>();
         var progressUpdaterMock = new Mock<ProgressUpdater>();
+        var progressPublisherMock = new Mock<IProgressMessagePublisher>();
         var filePickerMock = new Mock<IFilePicker>();
         var csvParserMock = new Mock<ICsvParser>();
 
@@ -110,6 +117,7 @@ public class MainWindowViewModelTests
             emailDomainOptionsMock.Object,
             dictionaryUserMappingOptionsMock.Object,
             progressUpdaterMock.Object,
+            progressPublisherMock.Object,
             filePickerMock.Object,
             csvParserMock.Object);
 
@@ -128,6 +136,7 @@ public class MainWindowViewModelTests
         var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
         var migrationServiceMock = new Mock<ITableauMigrationService>();
         var progressUpdaterMock = new Mock<ProgressUpdater>();
+        var progressPublisherMock = new Mock<IProgressMessagePublisher>();
         var filePickerMock = new Mock<IFilePicker>();
         var csvParserMock = new Mock<ICsvParser>();
 
@@ -136,6 +145,7 @@ public class MainWindowViewModelTests
             emailDomainOptionsMock.Object,
             dictionaryUserMappingOptionsMock.Object,
             progressUpdaterMock.Object,
+            progressPublisherMock.Object,
             filePickerMock.Object,
             csvParserMock.Object);
 
@@ -154,6 +164,7 @@ public class MainWindowViewModelTests
         var dictionaryUserMappingOptionsMock = new Mock<IOptions<DictionaryUserMappingOptions>>();
         var migrationServiceMock = new Mock<ITableauMigrationService>();
         var progressUpdaterMock = new Mock<ProgressUpdater>();
+        var progressPublisherMock = new Mock<IProgressMessagePublisher>();
         var filePickerMock = new Mock<IFilePicker>();
         var csvParserMock = new Mock<ICsvParser>();
 
@@ -162,6 +173,7 @@ public class MainWindowViewModelTests
             emailDomainOptionsMock.Object,
             dictionaryUserMappingOptionsMock.Object,
             progressUpdaterMock.Object,
+            progressPublisherMock.Object,
             filePickerMock.Object,
             csvParserMock.Object);
 
