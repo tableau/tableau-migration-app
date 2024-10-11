@@ -45,6 +45,14 @@ public class BatchMigrationCompletedProgressHook<T> :
     {
         // Build publishing message
         List<string> messageList = new ();
+        if (ctx.ItemResults.Count == 0)
+        {
+            this.logger.LogInformation(
+                "No resources found for {type} to be migrated.",
+                MigrationActions.ActionNameMapping[typeof(T)]);
+            return Task.FromResult<IContentBatchMigrationResult<T>?>(ctx);
+        }
+
         foreach (var result in ctx.ItemResults)
         {
             this.ProcessManifestEntry(result, messageList);
@@ -68,7 +76,7 @@ public class BatchMigrationCompletedProgressHook<T> :
         return Task.FromResult<IContentBatchMigrationResult<T>?>(ctx);
     }
 
-    private string ProcessManifestEntry(IContentItemMigrationResult<T> result, List<string> messageList)
+    private void ProcessManifestEntry(IContentItemMigrationResult<T> result, List<string> messageList)
     {
         // Construct a status entry from the manifest entry result
         var statusIcon = IProgressMessagePublisher.GetStatusIcon(this.ConvertToMessageStatus(result.ManifestEntry.Status));
@@ -85,8 +93,6 @@ public class BatchMigrationCompletedProgressHook<T> :
                 messageList.Add($"Could not parse error message: \n{error.Message}");
             }
         }
-
-        return string.Empty;
     }
 
     private MessageStatus ConvertToMessageStatus(MigrationManifestEntryStatus status)
