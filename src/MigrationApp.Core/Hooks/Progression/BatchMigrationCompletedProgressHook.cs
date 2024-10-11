@@ -13,6 +13,7 @@ using Tableau.Migration.Engine.Hooks;
 using Tableau.Migration.Engine.Manifest;
 using Tableau.Migration.Engine.Migrators;
 using Tableau.Migration.Engine.Migrators.Batch;
+using static MigrationApp.Core.Interfaces.IProgressMessagePublisher;
 
 /// <summary>
 /// Batch Migration Hook to broadcast partial migration progress information.
@@ -67,37 +68,11 @@ public class BatchMigrationCompletedProgressHook<T> :
         return Task.FromResult<IContentBatchMigrationResult<T>?>(ctx);
     }
 
-    private static string GetStatusIcon(MigrationManifestEntryStatus status)
-    {
-        string statusIcon;
-        switch (status)
-        {
-            case MigrationManifestEntryStatus.Pending:
-                statusIcon = "🟡";
-                break;
-            case MigrationManifestEntryStatus.Skipped:
-                statusIcon = "🔵";
-                break;
-            case MigrationManifestEntryStatus.Canceled:
-            case MigrationManifestEntryStatus.Error:
-                statusIcon = "🔴";
-                break;
-            case MigrationManifestEntryStatus.Migrated:
-                statusIcon = "🟢";
-                break;
-            default:
-                statusIcon = "🟣"; // Unknown status
-                break;
-        }
-
-        return statusIcon;
-    }
-
     private string ProcessManifestEntry(IContentItemMigrationResult<T> result, List<string> messageList)
     {
         // Construct a status entry from the manifest entry result
-        var statusIcon = BatchMigrationCompletedProgressHook<T>.GetStatusIcon(result.ManifestEntry.Status);
-        messageList.Add($"\t • {statusIcon} [{result.ManifestEntry.Source.Location.Name}] to [{result.ManifestEntry.MappedLocation.Name}] → {result.ManifestEntry.Status}");
+        var statusIcon = IProgressMessagePublisher.GetStatusIcon(this.ConvertToMessageStatus(result.ManifestEntry.Status));
+        messageList.Add($"\t {statusIcon} [{result.ManifestEntry.Source.Location.Name}] to [{result.ManifestEntry.MappedLocation.Name}] → {result.ManifestEntry.Status}");
         foreach (var error in result.ManifestEntry.Errors)
         {
             try
@@ -112,5 +87,24 @@ public class BatchMigrationCompletedProgressHook<T> :
         }
 
         return string.Empty;
+    }
+
+    private MessageStatus ConvertToMessageStatus(MigrationManifestEntryStatus status)
+    {
+        switch (status)
+        {
+            case MigrationManifestEntryStatus.Pending:
+                return MessageStatus.Pending;
+            case MigrationManifestEntryStatus.Skipped:
+                return MessageStatus.Skipped;
+            case MigrationManifestEntryStatus.Migrated:
+                return MessageStatus.Successful;
+            case MigrationManifestEntryStatus.Error:
+                return MessageStatus.Error;
+            case MigrationManifestEntryStatus.Canceled:
+                return MessageStatus.Error;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(status), status, "Unknown status value");
+        }
     }
 }

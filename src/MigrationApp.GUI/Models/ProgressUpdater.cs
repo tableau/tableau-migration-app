@@ -67,7 +67,7 @@ public class ProgressUpdater : IProgressUpdater
                 return "Migration Finished.";
             }
 
-            return $"Migrating {this.CurrentMigrationStateName}";
+            return $"{this.CurrentMigrationStateName}";
         }
     }
 

@@ -54,7 +54,7 @@ namespace MigrationApp.Tests.ViewModels
             onProgressMessage?.Invoke(progressEventArgs);
 
             // Verify that the message was added
-            var expectedMessage = "Migrating ActionName\nActionMessage\n";
+            var expectedMessage = "ActionName" + Environment.NewLine + "ActionMessage" + Environment.NewLine;
             Assert.Equal(expectedMessage, viewModel.Messages);
         }
 

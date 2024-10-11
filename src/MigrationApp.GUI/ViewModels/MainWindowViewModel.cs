@@ -35,6 +35,7 @@ using System.Windows.Input;
 /// </summary>
 public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
 {
+    private const string MigrationMessagesSessionSeperator = "--------------------------------------------";
     private readonly Dictionary<string, List<string>> errors = new ();
     private readonly ITableauMigrationService migrationService;
     private readonly IOptions<EmailDomainMappingOptions> emailDomainOptions;
@@ -59,6 +60,7 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     private IFilePicker filePicker;
     private ICsvParser csvParser;
     private string notificationMessage = string.Empty;
+    private string notificationDetailsMessage = string.Empty;
     private CancellationTokenSource? cancellationTokenSource = null;
     private IImmutableSolidColorBrush notificationColor = Brushes.Black;
     private IImmutableSolidColorBrush csvLoadStatusColor = Brushes.Black;
@@ -327,6 +329,15 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
     }
 
     /// <summary>
+    /// Gets or Sets the notification message at the bottom of the main window.
+    /// </summary>
+    public string NotificationDetailsMessage
+    {
+        get => this.notificationDetailsMessage;
+        set => this.SetProperty(ref this.notificationDetailsMessage, value);
+    }
+
+    /// <summary>
     /// Gets or Sets the color to be used for the notification message.
     /// </summary>
     public IImmutableSolidColorBrush NotificationColor
@@ -451,21 +462,23 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
         if (planBuilt)
         {
             this.cancellationTokenSource = new CancellationTokenSource();
-            ITableauMigrationService.MigrationStatus status = await this.migrationService.StartMigrationTaskAsync(this.cancellationTokenSource.Token);
+            DetailedMigrationResult migrationResult = await this.migrationService.StartMigrationTaskAsync(this.cancellationTokenSource.Token);
 
-            if (status == ITableauMigrationService.MigrationStatus.SUCCESS)
+            if (migrationResult.status == ITableauMigrationService.MigrationStatus.SUCCESS)
             {
                 this.NotificationMessage = "Migration Completed.";
                 this.NotificationColor = Brushes.Green;
             }
-            else if (status == ITableauMigrationService.MigrationStatus.CANCELLED)
+            else if (migrationResult.status == ITableauMigrationService.MigrationStatus.CANCELLED)
             {
                 this.NotificationMessage = "Migration Cancelled.";
+                this.NotificationDetailsMessage = this.BuildErrorDetails(migrationResult.errors);
                 this.NotificationColor = Brushes.Red;
             }
             else
             {
                 this.NotificationMessage = "Migration Failed.";
+                this.NotificationDetailsMessage = this.BuildErrorDetails(migrationResult.errors);
                 this.NotificationColor = Brushes.Red;
             }
         }
@@ -475,8 +488,22 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
             this.NotificationColor = Brushes.Red;
         }
 
+        this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
         this.IsMigrating = false;
         this.progressUpdater.Reset();
+    }
+
+    /// <summary>
+    /// Helper method to build error details from exceptions.
+    /// </summary>
+    private string BuildErrorDetails(IReadOnlyList<Exception> errors)
+    {
+        if (errors == null || errors.Count == 0)
+        {
+            return "No additional error information available.";
+        }
+
+        return string.Join(Environment.NewLine, errors.Select(e => e.Message));
     }
 
     [RelayCommand]
@@ -501,6 +528,7 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyDataErrorInfo
         }
 
         this.IsMigrating = true;
+        this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
         this.MessageDisplayVM.AddMessage("Migration Started");
         this.logger?.LogInformation("Migration Started");
         this.RunMigrationAsync().ConfigureAwait(false);

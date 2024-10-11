@@ -12,6 +12,7 @@ using MigrationApp.Core.Interfaces;
 using Tableau.Migration;
 using Tableau.Migration.Content;
 using Tableau.Migration.Content.Schedules.Cloud;
+using Tableau.Migration.Engine;
 
 /// <summary>
 /// Service to handle Migrations from Tableau Server to Tableau Cloud.
@@ -23,6 +24,7 @@ public class TableauMigrationService : ITableauMigrationService
     private readonly IMigrator migrator;
     private readonly ILogger<TableauMigrationService> logger;
     private readonly IProgressUpdater? progressUpdater;
+    private readonly IProgressMessagePublisher? publisher;
     private IMigrationPlan? plan;
 
     /// <summary>
@@ -33,18 +35,21 @@ public class TableauMigrationService : ITableauMigrationService
     /// <param name="logger">The logger to be used.</param>
     /// <param name="appSettings">The application settings to apply to the application.</param>
     /// <param name="progressUpdater">The object to handle the visual migration progress indicator.</param>
+    /// <param name="publisher">The message publisher to broadcast progress updates.</param>
     public TableauMigrationService(
         IMigrationPlanBuilder planBuilder,
         IMigrator migrator,
         ILogger<TableauMigrationService> logger,
         AppSettings appSettings,
-        IProgressUpdater? progressUpdater = null)
+        IProgressUpdater? progressUpdater = null,
+        IProgressMessagePublisher? publisher = null)
     {
         this.appSettings = appSettings;
         this.planBuilder = planBuilder;
         this.migrator = migrator;
         this.logger = logger;
         this.progressUpdater = progressUpdater;
+        this.publisher = publisher;
     }
 
     /// <inheritdoc/>
@@ -93,30 +98,52 @@ public class TableauMigrationService : ITableauMigrationService
     }
 
     /// <inheritdoc/>
-    public async Task<ITableauMigrationService.MigrationStatus> StartMigrationTaskAsync(CancellationToken cancel)
+    public async Task<DetailedMigrationResult> StartMigrationTaskAsync(CancellationToken cancel)
     {
         if (this.plan == null)
         {
             this.logger.LogError("Migration plan is not built.");
-            return ITableauMigrationService.MigrationStatus.FAILURE;
+            return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.FAILURE, new List<Exception>());
         }
 
         var result = await this.migrator.ExecuteAsync(this.plan, cancel);
+        List<string> messageList = new ();
+        var manifest = result.Manifest;
+        IReadOnlyList<Exception> errors = manifest.Errors;
+        var statusIcon = IProgressMessagePublisher.GetStatusIcon(IProgressMessagePublisher.MessageStatus.Error);
+        foreach (var error in errors)
+        {
+            try
+            {
+                ErrorMessage parsedError = new ErrorMessage(error.Message);
+                messageList.Add($"\t {statusIcon} {parsedError.Detail}");
+                messageList.Add($"\t\t {parsedError.Summary}: {parsedError.URL}");
+            }
+            catch (Exception)
+            {
+                messageList.Add($"\t {statusIcon} Could not parse error message: \n{error.Message}");
+            }
+        }
+
+        string resultErrorMessage = string.Join("\n", messageList);
 
         if (result.Status == MigrationCompletionStatus.Completed)
         {
-            this.logger.LogInformation("Migration succeeded.");
-            return ITableauMigrationService.MigrationStatus.SUCCESS;
+            this.logger.LogInformation("Migration completed.");
+            this.publisher?.PublishProgressMessage("Migration completed", resultErrorMessage);
+            return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.SUCCESS, errors);
         }
         else if (result.Status == MigrationCompletionStatus.Canceled)
         {
             this.logger.LogInformation("Migration cancelled.");
-            return ITableauMigrationService.MigrationStatus.CANCELLED;
+            this.publisher?.PublishProgressMessage("Migration cancelled", resultErrorMessage);
+            return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.CANCELLED, errors);
         }
         else
         {
             this.logger.LogError("Migration failed with status: {Status}", result.Status);
-            return ITableauMigrationService.MigrationStatus.FAILURE;
+            this.publisher?.PublishProgressMessage("Migration failed", resultErrorMessage);
+            return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.FAILURE, errors);
         }
     }
 

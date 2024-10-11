@@ -50,8 +50,8 @@ namespace MigrationApp.Core.Interfaces
         /// Begin the migration from Tableau Server to Tableau Cloud.
         /// </summary>
         /// <param name="cancel"> The cancellation token to interrupt the running task. </param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation <see cref="MigrationStatus"/>.</returns>
-        Task<MigrationStatus> StartMigrationTaskAsync(CancellationToken cancel);
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation <see cref="DetailedMigrationResult"/>.</returns>
+        Task<DetailedMigrationResult> StartMigrationTaskAsync(CancellationToken cancel);
 
         /// <summary>
         /// Retuerns a value as to whether a plan was properly built from existing credentials.
