@@ -20,6 +20,8 @@ insert_final_newline = false
 # Organize usings
 dotnet_separate_import_directive_groups = false
 dotnet_sort_system_directives_first = false
+# Error on uneeded imports
+#dotnet_diagnostic.IDE0005.severity = error
 
 # this. and Me. preferences
 dotnet_style_qualification_for_event = false:none

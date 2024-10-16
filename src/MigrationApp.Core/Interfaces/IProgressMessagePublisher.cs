@@ -6,8 +6,6 @@
 namespace MigrationApp.Core.Interfaces;
 using MigrationApp.Core.Entities;
 using System;
-using System.Collections.Generic;
-using Tableau.Migration.Engine.Manifest;
 
 /// <summary>
 /// Class to publish a progress messages events.

@@ -5,36 +5,35 @@
 	     x:Class="MigrationApp.GUI.Views.MessageDisplay"
 	     x:DataType="vm:MessageDisplayViewModel">
 
-	<Grid Margin="10,0">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
+  <Grid Margin="10,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
 
-		<Button Grid.Row="0"
-				Content="{Binding ShowDetailsButtonText}"
-				Command="{Binding ToggleDetailsCommand}"
-				HorizontalAlignment="Right" 
-				IsVisible="false"/>
+    <Button Grid.Row="0"
+	    Content="{Binding ShowDetailsButtonText}"
+	    Command="{Binding ToggleDetailsCommand}"
+	    HorizontalAlignment="Right"
+	    IsVisible="false"/>
 
-		<StackPanel Grid.Row="1" IsVisible="{Binding IsDetailsVisible}">
-			<TextBox
-                Classes="message-textbox"
-                Name="MessageTextBox"
-                IsReadOnly="True"
-                Text="{Binding Messages}"
-                AcceptsReturn="True"
-                TextWrapping="Wrap"
-                Foreground="Black"
-                FontFamily="Consolas"
-                FontSize="14"
-                Height="200" />
+    <StackPanel Grid.Row="1" IsVisible="{Binding IsDetailsVisible}">
+      <TextBox
+	  Classes="message-textbox"
+	  Name="MessageTextBox"
+	  IsReadOnly="True"
+	  Text="{Binding Messages}"
+	  AcceptsReturn="True"
+	  TextWrapping="Wrap"
+	  Foreground="Black"
+	  FontFamily="Consolas"
+	  FontSize="14"
+	  Height="200" />
 
-			<CheckBox
-                x:Name="KeepScrolledCheckBox">
-				Keep scrolled to bottom
-			</CheckBox>
-		</StackPanel>
-	</Grid>
+      <CheckBox x:Name="KeepScrolledCheckBox">
+	Keep scrolled to bottom
+      </CheckBox>
+    </StackPanel>
+  </Grid>
 
 </UserControl>

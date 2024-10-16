@@ -6,7 +6,6 @@ namespace MigrationApp.GUI.Views;
 
 using Avalonia.Controls;
 using MigrationApp.GUI.ViewModels;
-using System;
 
 /// <summary>
 /// The main window for the application.

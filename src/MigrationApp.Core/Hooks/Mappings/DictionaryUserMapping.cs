@@ -6,9 +6,7 @@
 namespace MigrationApp.Core.Hooks.Mappings;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Net.Mail;
-using Tableau.Migration;
 using Tableau.Migration.Content;
 using Tableau.Migration.Engine.Hooks.Mappings;
 using Tableau.Migration.Engine.Hooks.Mappings.Default;

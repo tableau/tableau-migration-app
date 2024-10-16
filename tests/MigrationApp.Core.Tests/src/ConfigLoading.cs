@@ -4,12 +4,6 @@
 // </copyright>
 
 namespace Tableau.Migration.MigrationApp.Core.Tests;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using MigrationApp.Core;
-
 public class ConfigLoadTests
 {
     [Fact(Skip = "Disabled until TMAPP-53 resolved.")]

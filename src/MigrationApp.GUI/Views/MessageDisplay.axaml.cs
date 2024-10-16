@@ -6,22 +6,12 @@
 namespace MigrationApp.GUI.Views;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Diagnostics;
-using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 /// <summary>
 /// View control for Message Display.

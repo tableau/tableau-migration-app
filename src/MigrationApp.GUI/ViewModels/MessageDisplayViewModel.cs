@@ -4,14 +4,11 @@
 // </copyright>
 
 namespace MigrationApp.GUI.ViewModels;
-using Avalonia.Controls;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MigrationApp.Core.Entities;
 using MigrationApp.Core.Interfaces;
-using MigrationApp.GUI.Models;
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;

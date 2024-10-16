@@ -5,11 +5,8 @@
 
 namespace MigrationApp.GUI.Views;
 
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using System;
-using System.Threading.Tasks;
 
 /// <summary>
 /// Customizable confirmation pop up dialog window.

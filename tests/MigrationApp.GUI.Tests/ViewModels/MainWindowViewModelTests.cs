@@ -37,7 +37,7 @@ public class MainWindowViewModelTests
             filePickerMock.Object,
             csvParserMock.Object);
 
-        viewModel.CloudUserDomain = "testdomain.com";
+        viewModel.UserMappingsVM.UserDomainMappingVM.CloudUserDomain = "testdomain.com";
 
         Assert.Equal("testdomain.com", optionsValue.EmailDomain);
     }
@@ -65,9 +65,13 @@ public class MainWindowViewModelTests
             filePickerMock.Object,
             csvParserMock.Object);
 
-        viewModel.CloudUserDomain = string.Empty;
+        viewModel.UserMappingsVM.UserDomainMappingVM.CloudUserDomain = string.Empty;
 
-        Assert.NotEmpty(viewModel.GetErrors(nameof(viewModel.CloudUserDomain)));
+        Assert.NotEmpty(
+            viewModel
+            .UserMappingsVM
+            .GetErrors(
+                nameof(viewModel.UserMappingsVM.UserDomainMappingVM.CloudUserDomain)));
     }
 
     [Fact]
@@ -93,9 +97,13 @@ public class MainWindowViewModelTests
             filePickerMock.Object,
             csvParserMock.Object);
 
-        viewModel.CloudUserDomain = "invalid_domain";
+        viewModel.UserMappingsVM.UserDomainMappingVM.CloudUserDomain = "invalid_domain";
 
-        Assert.NotEmpty(viewModel.GetErrors(nameof(viewModel.CloudUserDomain)));
+        Assert.NotEmpty(
+            viewModel
+            .UserMappingsVM
+            .GetErrors(
+                nameof(viewModel.UserMappingsVM.UserDomainMappingVM.CloudUserDomain)));
     }
 
     [Fact]
@@ -121,9 +129,13 @@ public class MainWindowViewModelTests
             filePickerMock.Object,
             csvParserMock.Object);
 
-        viewModel.CloudUserDomain = "invalid_domain.c";
+        viewModel.UserMappingsVM.UserDomainMappingVM.CloudUserDomain = "invalid_domain.c";
 
-        Assert.NotEmpty(viewModel.GetErrors(nameof(viewModel.CloudUserDomain)));
+        Assert.NotEmpty(
+            viewModel
+            .UserMappingsVM
+            .GetErrors(
+                nameof(viewModel.UserMappingsVM.UserDomainMappingVM.CloudUserDomain)));
     }
 
     [Fact]
@@ -149,9 +161,13 @@ public class MainWindowViewModelTests
             filePickerMock.Object,
             csvParserMock.Object);
 
-        viewModel.CloudUserDomain = "valid-domain.com";
+        viewModel.UserMappingsVM.UserDomainMappingVM.CloudUserDomain = "valid-domain.com";
 
-        Assert.Empty(viewModel.GetErrors(nameof(viewModel.CloudUserDomain)));
+        Assert.Empty(
+            viewModel
+            .UserMappingsVM
+            .GetErrors(
+                nameof(viewModel.UserMappingsVM.UserDomainMappingVM.CloudUserDomain)));
     }
 
     [Fact]
@@ -177,8 +193,12 @@ public class MainWindowViewModelTests
             filePickerMock.Object,
             csvParserMock.Object);
 
-        viewModel.CloudUserDomain = "valid.domain.com";
+        viewModel.UserMappingsVM.UserDomainMappingVM.CloudUserDomain = "valid.domain.com";
 
-        Assert.Empty(viewModel.GetErrors(nameof(viewModel.CloudUserDomain)));
+        Assert.Empty(
+            viewModel
+            .UserMappingsVM
+            .GetErrors(
+                nameof(viewModel.UserMappingsVM.UserDomainMappingVM.CloudUserDomain)));
     }
 }

@@ -5,9 +5,9 @@
 
 namespace MigrationApp.Core.Entities;
 
+using MigrationApp.Core.Interfaces;
 using System;
 using System.Collections.Generic;
-using MigrationApp.Core.Interfaces;
 
 /// <summary>
 /// Represents the detailed result of a migration run.

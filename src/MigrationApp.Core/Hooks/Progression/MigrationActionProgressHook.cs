@@ -5,7 +5,6 @@
 
 namespace MigrationApp.Core.Hooks.Progression
 {
-    using Microsoft.Extensions.Logging;
     using MigrationApp.Core.Interfaces;
     using Tableau.Migration.Engine.Actions;
     using Tableau.Migration.Engine.Hooks;

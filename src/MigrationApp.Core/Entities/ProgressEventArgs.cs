@@ -5,7 +5,6 @@
 
 namespace MigrationApp.Core.Entities;
 using System;
-using System.Collections.Generic;
 
 /// <summary>
 /// Definition of migration progress event messages.

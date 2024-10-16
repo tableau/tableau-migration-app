@@ -6,7 +6,6 @@
 namespace MigrationApp.Core.Tests.Hooks.Mappings;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MigrationApp.Core.Hooks.Mappings;
 using Moq;
 using Tableau.Migration;

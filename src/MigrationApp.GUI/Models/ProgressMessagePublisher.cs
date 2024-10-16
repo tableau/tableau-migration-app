@@ -8,8 +8,6 @@ namespace MigrationApp.GUI.Models;
 using MigrationApp.Core.Entities;
 using MigrationApp.Core.Interfaces;
 using System;
-using Tableau.Migration.Engine.Manifest;
-using static MigrationApp.Core.Interfaces.IProgressMessagePublisher;
 
 /// <inheritdoc/>
 public class ProgressMessagePublisher : IProgressMessagePublisher
