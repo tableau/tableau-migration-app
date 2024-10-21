@@ -16,8 +16,13 @@
 // </copyright>
 
 namespace MigrationApp.Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Tableau.Migration.Content;
 using Tableau.Migration.Content.Schedules.Server;
+using Tableau.Migration.Engine.Pipelines;
 
 /// <summary>
 /// Details of Tableau Migration SDK Migration Actions.
@@ -25,22 +30,31 @@ using Tableau.Migration.Content.Schedules.Server;
 public class MigrationActions
 {
     /// <summary>
-    /// Dictionary mapping IContentReference types to their names.
+    /// Gets the list of actions available from the Tableau Migration SDK and the order in which they are migrated.
     /// </summary>
-    public static readonly Dictionary<Type, string> ActionNameMapping =
-        new Dictionary<Type, string>
+    public static List<string> Actions
+    {
+        get
         {
-            { typeof(IUser), "Users" },
-            { typeof(IGroup), "Groups" },
-            { typeof(IProject), "Projects" },
-            { typeof(IDataSource), "Data Sources" },
-            { typeof(IWorkbook), "Workbooks" },
-            { typeof(IServerExtractRefreshTask), "Extract Refresh Tasks" },
-            { typeof(ICustomView), "Custom Views" },
-        };
+            var result = ServerToCloudMigrationPipeline
+                .ContentTypes
+                .Select(
+                    contentType => GetActionTypeName(contentType.ContentType)).ToList();
+            return result;
+        }
+    }
 
     /// <summary>
-    /// List of actions available from the Tableau Migration SDK and the order in which they are migrated.
+    /// Returns the action type names from the SDK.
     /// </summary>
-    public static readonly string[] Actions = { "Users", "Groups", "Projects", "DataSources", "Workbooks", "ServerExtractRefreshTasks", "CustomViews" };
+    /// <param name="contentType">The type to get the name for.</param>
+    /// <returns>The human readable type name.</returns>
+    public static string GetActionTypeName(Type contentType)
+    {
+        string typeName = MigrationPipelineContentType.GetConfigKeyForType(contentType);
+
+        // Add a space before every Capitalized letter that's not the first.
+        typeName = Regex.Replace(typeName, "(?<!^)([A-Z])", " $1");
+        return typeName;
+    }
 }

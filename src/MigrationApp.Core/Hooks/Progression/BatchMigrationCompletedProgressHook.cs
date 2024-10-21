@@ -61,7 +61,7 @@ public class BatchMigrationCompletedProgressHook<T> :
         {
             this.logger.LogInformation(
                 "No resources found for {type} to be migrated.",
-                MigrationActions.ActionNameMapping[typeof(T)]);
+                MigrationActions.GetActionTypeName(typeof(T)));
             return Task.FromResult<IContentBatchMigrationResult<T>?>(ctx);
         }
 
@@ -77,12 +77,12 @@ public class BatchMigrationCompletedProgressHook<T> :
 
         // Publish and log the message
         this.publisher?.PublishProgressMessage(
-            MigrationActions.ActionNameMapping[typeof(T)],
+            MigrationActions.GetActionTypeName(typeof(T)),
             progressMessage);
 
         this.logger.LogInformation(
             "Published progress message for {type}:\n {message}",
-            MigrationActions.ActionNameMapping[typeof(T)],
+            MigrationActions.GetActionTypeName(typeof(T)),
             progressMessage);
 
         return Task.FromResult<IContentBatchMigrationResult<T>?>(ctx);

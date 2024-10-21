@@ -20,6 +20,7 @@ namespace MigrationApp.GUI.Models;
 using MigrationApp.Core.Entities;
 using MigrationApp.Core.Interfaces;
 using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// Class to track ongoing progress of a migration.
@@ -27,6 +28,15 @@ using System;
 public class ProgressUpdater : IProgressUpdater
 {
     private int currentMigrationStateIndex = -1;
+    private List<string> actions;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ProgressUpdater" /> class.
+    /// </summary>
+    public ProgressUpdater()
+    {
+        this.actions = MigrationActions.Actions;
+    }
 
     /// <summary>
     /// Occurs when changes occur that affect the action of the current migration.
@@ -36,7 +46,7 @@ public class ProgressUpdater : IProgressUpdater
     /// <summary>
     /// Gets the total number of migration states available.
     /// </summary>
-    public static int NumMigrationStates { get; } = MigrationActions.Actions.Length;
+    public static int NumMigrationStates { get; } = MigrationActions.Actions.Count;
 
     /// <summary>
     /// Gets or sets the current migration state index.
@@ -46,7 +56,7 @@ public class ProgressUpdater : IProgressUpdater
         get => this.currentMigrationStateIndex;
         set
         {
-            if (this.currentMigrationStateIndex != value && value <= MigrationActions.Actions.Length)
+            if (this.currentMigrationStateIndex != value && value <= this.actions.Count)
             {
                 this.currentMigrationStateIndex = value;
                 this.OnProgressChanged?.Invoke(this, EventArgs.Empty);
@@ -59,8 +69,10 @@ public class ProgressUpdater : IProgressUpdater
     /// </summary>
     public string CurrentMigrationStateName
     {
-        get => this.CurrentMigrationStateIndex < 0 || this.CurrentMigrationStateIndex >= MigrationActions.Actions.Length ?
-            string.Empty : MigrationActions.Actions[this.CurrentMigrationStateIndex];
+        get => this.CurrentMigrationStateIndex < 0
+            || this.CurrentMigrationStateIndex >= this.actions.Count
+            ? string.Empty
+            : this.actions[this.CurrentMigrationStateIndex];
     }
 
     /// <summary>

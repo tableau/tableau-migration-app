@@ -42,7 +42,7 @@ public class ProgressUpdaterTests
         progressUpdater.Update();
 
         Assert.Equal(0, progressUpdater.CurrentMigrationStateIndex);
-        Assert.Equal("Users", progressUpdater.CurrentMigrationStateName);
+        Assert.Equal("User", progressUpdater.CurrentMigrationStateName);
         progressUpdater.CurrentMigrationStateIndex = ProgressUpdater.NumMigrationStates + 1;
         Assert.Equal(0, progressUpdater.CurrentMigrationStateIndex); // Don't update if state index is out of bounds
 
