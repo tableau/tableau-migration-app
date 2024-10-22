@@ -24,6 +24,7 @@ using MigrationApp.Core.Interfaces;
 using Tableau.Migration;
 using Tableau.Migration.Content;
 using Tableau.Migration.Content.Schedules.Cloud;
+using Tableau.Migration.Engine.Manifest;
 
 /// <summary>
 /// Service to handle Migrations from Tableau Server to Tableau Cloud.
@@ -36,7 +37,9 @@ public class TableauMigrationService : ITableauMigrationService
     private readonly ILogger<TableauMigrationService> logger;
     private readonly IProgressUpdater? progressUpdater;
     private readonly IProgressMessagePublisher? publisher;
+    private readonly MigrationManifestSerializer manifestSerializer;
     private IMigrationPlan? plan;
+    private IMigrationManifest? manifest;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TableauMigrationService" /> class.
@@ -47,11 +50,13 @@ public class TableauMigrationService : ITableauMigrationService
     /// <param name="appSettings">The application settings to apply to the application.</param>
     /// <param name="progressUpdater">The object to handle the visual migration progress indicator.</param>
     /// <param name="publisher">The message publisher to broadcast progress updates.</param>
+    /// <param name="manifestSerializer">Serializaer class to save and load manifest file.</param>
     public TableauMigrationService(
         IMigrationPlanBuilder planBuilder,
         IMigrator migrator,
         ILogger<TableauMigrationService> logger,
         AppSettings appSettings,
+        MigrationManifestSerializer manifestSerializer,
         IProgressUpdater? progressUpdater = null,
         IProgressMessagePublisher? publisher = null)
     {
@@ -61,6 +66,7 @@ public class TableauMigrationService : ITableauMigrationService
         this.logger = logger;
         this.progressUpdater = progressUpdater;
         this.publisher = publisher;
+        this.manifestSerializer = manifestSerializer;
     }
 
     /// <inheritdoc/>
@@ -117,11 +123,115 @@ public class TableauMigrationService : ITableauMigrationService
             return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.FAILURE, new List<Exception>());
         }
 
-        var result = await this.migrator.ExecuteAsync(this.plan, cancel);
+        return await this.ExecuteMigrationAsync(this.plan, null, cancel);
+    }
+
+    /// <inheritdoc/>
+    public async Task<DetailedMigrationResult> ResumeMigrationTaskAsync(string manifestFilepath, CancellationToken cancel)
+    {
+        if (this.plan == null)
+        {
+            this.logger.LogError("Migration plan is not built.");
+            return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.FAILURE, new List<Exception>());
+        }
+
+        if (!(await this.LoadManifestAsync(manifestFilepath, cancel)))
+        {
+            this.logger.LogError("Migration manifest is null. Unable to resume the migration");
+            return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.FAILURE, new List<Exception>());
+        }
+
+        return await this.ExecuteMigrationAsync(this.plan, this.manifest, cancel);
+    }
+
+    /// <inheritdoc/>
+    public bool IsMigrationPlanBuilt()
+    {
+        return this.plan != null;
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> SaveManifestAsync(string manifestFilepath)
+    {
+        if (this.manifest == null)
+        {
+            this.logger?.LogWarning("Manifest is null, unable to save.");
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(manifestFilepath))
+        {
+            this.logger?.LogWarning("Invalid manifest file path.");
+            return false;
+        }
+
+        try
+        {
+            await this.manifestSerializer.SaveAsync(this.manifest, manifestFilepath);
+            this.logger?.LogInformation($"Manifest saved successfully at {manifestFilepath}.");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            this.logger?.LogError(ex, $"Failed to save manifest to {manifestFilepath}: {ex.Message}");
+            return false;
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> LoadManifestAsync(string manifestFilepath, CancellationToken cancel)
+    {
+        if (string.IsNullOrEmpty(manifestFilepath))
+        {
+            this.logger?.LogWarning("Invalid manifest file path.");
+            return false;
+        }
+
+        try
+        {
+            this.manifest = await this.manifestSerializer.LoadAsync(manifestFilepath, cancel);
+
+            if (this.manifest != null)
+            {
+                this.logger?.LogInformation($"Manifest loaded successfully from {manifestFilepath}.");
+                return true;
+            }
+            else
+            {
+                this.logger?.LogWarning($"Manifest is null after loading from {manifestFilepath}.");
+                return false;
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            this.logger?.LogWarning("Manifest loading was canceled.");
+            return false;
+        }
+        catch (Exception ex)
+        {
+            this.logger?.LogError(ex, $"Failed to load manifest from {manifestFilepath}: {ex.Message}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Executes the migration and handles the common result processing.
+    /// </summary>
+    /// <param name="plan">The migration plan.</param>
+    /// <param name="manifest">The optional migration manifest, used in resume operations.</param>
+    /// <param name="cancel">The cancellation token.</param>
+    /// <returns>The detailed migration result.</returns>
+    private async Task<DetailedMigrationResult> ExecuteMigrationAsync(IMigrationPlan plan, IMigrationManifest? manifest, CancellationToken cancel)
+    {
+        MigrationResult result;
+
+        result = await this.migrator.ExecuteAsync(plan, manifest, cancel);
+
         List<string> messageList = new ();
-        var manifest = result.Manifest;
-        IReadOnlyList<Exception> errors = manifest.Errors;
+        this.manifest = result.Manifest;
+        IReadOnlyList<Exception> errors = this.manifest.Errors;
         var statusIcon = IProgressMessagePublisher.GetStatusIcon(IProgressMessagePublisher.MessageStatus.Error);
+
         foreach (var error in errors)
         {
             try
@@ -156,11 +266,5 @@ public class TableauMigrationService : ITableauMigrationService
             this.publisher?.PublishProgressMessage("Migration failed", resultErrorMessage);
             return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.FAILURE, errors);
         }
-    }
-
-    /// <inheritdoc/>
-    public bool IsMigrationPlanBuilt()
-    {
-        return this.plan != null;
     }
 }

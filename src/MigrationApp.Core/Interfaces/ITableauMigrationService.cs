@@ -66,6 +66,29 @@ namespace MigrationApp.Core.Interfaces
         Task<DetailedMigrationResult> StartMigrationTaskAsync(CancellationToken cancel);
 
         /// <summary>
+        /// Resumes the last migration from Tableau Server to Tableau Cloud.
+        /// </summary>
+        /// <param name="manifestFilepath"> The path of manifest file from previous migration. </param>
+        /// <param name="cancel"> The cancellation token to interrupt the running task. </param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation <see cref="DetailedMigrationResult"/>.</returns>
+        Task<DetailedMigrationResult> ResumeMigrationTaskAsync(string manifestFilepath, CancellationToken cancel);
+
+        /// <summary>
+        /// Asynchronously saves the current manifest to the specified file path.
+        /// </summary>
+        /// <param name="manifestFilepath">The file path where the manifest will be saved.</param>
+        /// <returns>Returns true if the manifest was successfully saved, otherwise false.</returns>
+        Task<bool> SaveManifestAsync(string manifestFilepath);
+
+        /// <summary>
+        /// Asynchronously loads the manifest from the specified file path.
+        /// </summary>
+        /// <param name="manifestFilepath">The file path from which the manifest will be loaded.</param>
+        /// <param name="cancel">A cancellation token to cancel the load operation.</param>
+        /// <returns>Returns true if the manifest was successfully loaded, otherwise false.</returns>
+        Task<bool> LoadManifestAsync(string manifestFilepath, CancellationToken cancel);
+
+        /// <summary>
         /// Retuerns a value as to whether a plan was properly built from existing credentials.
         /// </summary>
         /// <returns> Whether a plan was built.</returns>

@@ -23,6 +23,7 @@ using MigrationApp.Core.Hooks.Progression;
 using MigrationApp.Core.Interfaces;
 using MigrationApp.Core.Services;
 using Tableau.Migration;
+using Tableau.Migration.Engine.Manifest;
 
 /// <summary>
 /// Dependency Injection utility extensions to setup migration.
@@ -42,6 +43,7 @@ public static class ServiceCollectionExtensions
             UseSimulator = configuration.GetValue<bool>("AppSettings:UseSimulator", false),
         };
         services.AddSingleton(appSettings);
+        services.AddSingleton<MigrationManifestSerializer>();
         services.AddTableauMigrationSdk(configuration.GetSection("tableau:migrationSdk"));
         services.AddScoped<ITableauMigrationService, TableauMigrationService>();
         services.AddScoped<DictionaryUserMapping>();

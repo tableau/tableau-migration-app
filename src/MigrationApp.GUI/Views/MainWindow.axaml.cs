@@ -18,7 +18,10 @@
 namespace MigrationApp.GUI.Views;
 
 using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using MigrationApp.GUI.ViewModels;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 /// <summary>
 /// The main window for the application.
@@ -36,66 +39,133 @@ public partial class MainWindow : Window
         this.Closing += this.OnWindowClosing;
     }
 
-    private async void StopMigrationOnClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private async void ResumeMigrationOnClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var confirmationStopDialog = new ConfirmationDialog(
-            "Stop Migration",
-            "Are you sure you want to stop the migration?",
-            "Stop Migration",
-            "Cancel");
-
-        var result = await confirmationStopDialog.ShowDialog<bool>(this);
-
-        if (result)
+        // Select the manifest file from a file dialog
+        var window = this;
+        var options = new FilePickerOpenOptions
         {
-            // Handle OK
+            Title = "Select Manifest File",
+            AllowMultiple = false, // Allow only one file selection
+            FileTypeFilter = new List<FilePickerFileType>
+            {
+                new FilePickerFileType("JSON files") { Patterns = new[] { "*.json" } },
+                new FilePickerFileType("All files") { Patterns = new[] { "*.*" } },
+            },
+        };
+
+        // Open the file picker dialog
+        var result = await window.StorageProvider.OpenFilePickerAsync(options);
+
+        if (result != null && result.Count > 0)
+        {
+            // Get the file path of the selected manifest file
+            var filePath = result[0].TryGetLocalPath();
+
+            // Call RunResumeMigrationCommand with the selected file path
             MainWindowViewModel? myViewModel = this.DataContext as MainWindowViewModel;
-            myViewModel?.CancelMigration();
+            if (filePath != null)
+            {
+                myViewModel?.RunResumeMigration(filePath);
+            }
+            else
+            {
+                // Handle the case where the file path is invalid or the user cancels
+                // Optionally show a notification or log the issue
+            }
+        }
+        else
+        {
+            // Handle case where no file was selected or dialog was canceled
+            // Optionally show a notification or log the issue
         }
     }
 
-    // Override the default closing behavior to prompt when a migration is ongoing
+    private async void StopMigrationOnClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        await this.HandleMigrationCancellation("Stop Migration", "Are you sure you want to stop the migration?");
+    }
+
     private async void OnWindowClosing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
-        // Prevent closing while dialog is open
         if (this.isDialogOpen)
         {
             e.Cancel = true;
             return;
         }
 
-        // Get the ViewModel from the DataContext
         if (this.DataContext is MainWindowViewModel viewModel)
         {
-            // Check if there is an ongoing migration
             if (viewModel.IsMigrating)
             {
-                // Prevent window from immediately closing
                 e.Cancel = true;
                 this.isDialogOpen = true;
 
-                // Open confirmation window
-                var confirmationExitDialog = new ConfirmationDialog(
-                    "Quit",
-                    "A migration is running! Are you sure you want to stop the migration and exit?",
-                    "Stop Migration and Exit",
-                    "Cancel");
+                await this.HandleMigrationCancellation("Quit", "A migration is running! Are you sure you want to stop the migration and exit?");
 
-                var result = await confirmationExitDialog.ShowDialog<bool>(this);
                 this.isDialogOpen = false;
 
-                if (result)
+                if (!viewModel.IsMigrating)
                 {
-                    // Cancel migration and then exit
-                    viewModel.CancelMigration();
-
-                    // Defer a closing call because the current close event has been cancelled
                     Avalonia.Threading.Dispatcher.UIThread.Post(() =>
                     {
-                        this.Closing -= this.OnWindowClosing; // Unsubscribe to prevent recursion
+                        this.Closing -= this.OnWindowClosing;
                         this.Close();
                     });
                 }
+            }
+        }
+    }
+
+    private async Task HandleMigrationCancellation(string title, string message)
+    {
+        var confirmationDialog = new ConfirmationDialog(
+            title,
+            message,
+            "Stop",
+            "Cancel");
+
+        var result = await confirmationDialog.ShowDialog<bool>(this);
+
+        if (result)
+        {
+            var saveManifestDialog = new ConfirmationDialog(
+                "Save Manifest File",
+                "Do you want to save the manifest to resume migration later?",
+                "Yes",
+                "No");
+
+            var resultSaveManifest = await saveManifestDialog.ShowDialog<bool>(this);
+            MainWindowViewModel? myViewModel = this.DataContext as MainWindowViewModel;
+            if (resultSaveManifest)
+            {
+                var window = this;
+                var options = new FilePickerSaveOptions
+                {
+                    Title = "Save Manifest",
+                    FileTypeChoices = new List<FilePickerFileType>
+                    {
+                        new FilePickerFileType("JSON files") { Patterns = new[] { "*.json" } },
+                        new FilePickerFileType("All files") { Patterns = new[] { "*.*" } },
+                    },
+                    DefaultExtension = "json",
+                };
+
+                var resultFile = await window.StorageProvider.SaveFilePickerAsync(options);
+
+                if (resultFile != null)
+                {
+                    var filePath = resultFile.TryGetLocalPath();
+                    myViewModel?.CancelMigration(filePath ?? string.Empty);
+                }
+                else
+                {
+                    myViewModel?.CancelMigration(string.Empty);
+                }
+            }
+            else
+            {
+                myViewModel?.CancelMigration(string.Empty);
             }
         }
     }

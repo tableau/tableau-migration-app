@@ -19,6 +19,7 @@ namespace MigrationApp.GUI.ViewModels;
 
 using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -34,6 +35,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
+using MigrationApp.GUI.Views;
 
 /// <summary>
 /// ViewModel containing the logic bindings for the main application window.
@@ -46,6 +49,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private IProgressUpdater progressUpdater;
     private string notificationMessage = string.Empty;
     private string notificationDetailsMessage = string.Empty;
+    private string? manifestSaveFilePath = null;
     private CancellationTokenSource? cancellationTokenSource = null;
     private IImmutableSolidColorBrush notificationColor = Brushes.Black;
     private ILogger<MainWindowViewModel>? logger;
@@ -180,10 +184,38 @@ public partial class MainWindowViewModel : ViewModelBase
     /// <summary>
     /// Cancels the ongoing migration.
     /// </summary>
-    public void CancelMigration()
+    /// <param name="manifestSaveFilePath">The path of manifest file to save.</param>
+    public void CancelMigration(string? manifestSaveFilePath)
     {
+        this.manifestSaveFilePath = manifestSaveFilePath;
         this.cancellationTokenSource?.Cancel();
         return;
+    }
+
+    /// <summary>
+    /// Resumes a migration process using the specified manifest file path.
+    /// </summary>
+    /// <param name="manifestLoadFilePath">The file path to the manifest used to resume the migration.</param>
+    /// <remarks>
+    /// This method validates the necessary fields before proceeding. If the validation fails,
+    /// it logs a message and aborts the migration process. Upon successful validation, it initiates
+    /// the migration process asynchronously, displaying messages in the UI to indicate that
+    /// the resume migration process has started.
+    /// </remarks>
+    public void RunResumeMigration(string manifestLoadFilePath)
+    {
+        if (!this.AreFieldsValid())
+        {
+            this.logger?.LogInformation("Migration Run failed due to validation errors.");
+            return;
+        }
+
+        this.IsMigrating = true;
+        this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
+        this.MessageDisplayVM.AddMessage("Migration Resumed");
+
+        this.logger?.LogInformation("Resume Migration Started");
+        this.ResumeMigrationTask(manifestLoadFilePath).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -195,7 +227,45 @@ public partial class MainWindowViewModel : ViewModelBase
         this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
     }
 
-    private async Task RunMigrationAsync()
+    /// <summary>
+    /// Validates fields and starts the migration process if valid.
+    /// </summary>
+    [RelayCommand]
+    private void RunMigration()
+    {
+        if (!this.AreFieldsValid())
+        {
+            this.logger?.LogInformation("Migration Run failed due to validation errors.");
+            return;
+        }
+
+        this.IsMigrating = true;
+        this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
+        this.MessageDisplayVM.AddMessage("Migration Started");
+        this.logger?.LogInformation("Migration Started");
+        this.RunMigrationTask().ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Initiates the migration task asynchronously.
+    /// </summary>
+    private Task RunMigrationTask()
+    {
+        return this.ExecuteMigrationAsync(token => this.migrationService.StartMigrationTaskAsync(token));
+    }
+
+    /// <summary>
+    /// Resumes a migration process using the provided manifest file path.
+    /// </summary>
+    private Task ResumeMigrationTask(string manifestLoadFilePath)
+    {
+        return this.ExecuteMigrationAsync(token => this.migrationService.ResumeMigrationTaskAsync(manifestLoadFilePath, token));
+    }
+
+    /// <summary>
+    /// Executes the migration task with the provided function, handling the migration result and notifications.
+    /// </summary>
+    private async Task ExecuteMigrationAsync(Func<CancellationToken, Task<DetailedMigrationResult>> migrationTaskFunc)
     {
         var serverCreds = new EndpointOptions
         {
@@ -218,35 +288,60 @@ public partial class MainWindowViewModel : ViewModelBase
         if (planBuilt)
         {
             this.cancellationTokenSource = new CancellationTokenSource();
-            DetailedMigrationResult migrationResult = await this.migrationService.StartMigrationTaskAsync(this.cancellationTokenSource.Token);
+            DetailedMigrationResult migrationResult = await migrationTaskFunc(this.cancellationTokenSource.Token);
 
-            if (migrationResult.status == ITableauMigrationService.MigrationStatus.SUCCESS)
+            switch (migrationResult.status)
             {
-                this.NotificationMessage = "Migration Completed.";
-                this.NotificationColor = Brushes.Green;
-            }
-            else if (migrationResult.status == ITableauMigrationService.MigrationStatus.CANCELLED)
-            {
-                this.NotificationMessage = "Migration Cancelled.";
-                this.NotificationDetailsMessage = this.BuildErrorDetails(migrationResult.errors);
-                this.NotificationColor = Brushes.Red;
-            }
-            else
-            {
-                this.NotificationMessage = "Migration Failed.";
-                this.NotificationDetailsMessage = this.BuildErrorDetails(migrationResult.errors);
-                this.NotificationColor = Brushes.Red;
+                case ITableauMigrationService.MigrationStatus.SUCCESS:
+                    this.SetNotification("Migration Completed.", color: Brushes.Green);
+                    break;
+
+                case ITableauMigrationService.MigrationStatus.CANCELLED:
+                    var details = this.BuildErrorDetails(migrationResult.errors);
+                    this.SetNotification("Migration Cancelled.", details, Brushes.Red);
+                    await this.SaveManifestIfRequiredAsync();
+                    break;
+
+                default:
+                    var failureDetails = this.BuildErrorDetails(migrationResult.errors);
+                    this.SetNotification("Migration Failed.", failureDetails, Brushes.Red);
+                    break;
             }
         }
         else
         {
-            this.NotificationMessage = "Migration plan building failed.";
-            this.NotificationColor = Brushes.Red;
+            this.SetNotification("Migration plan building failed.", color: Brushes.Red);
         }
 
         this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
         this.IsMigrating = false;
         this.progressUpdater.Reset();
+    }
+
+    /// <summary>
+    /// Saves the migration manifest if a save file path is provided.
+    /// </summary>
+    private async Task SaveManifestIfRequiredAsync()
+    {
+        if (!string.IsNullOrEmpty(this.manifestSaveFilePath))
+        {
+            bool isSaved = await this.migrationService.SaveManifestAsync(this.manifestSaveFilePath);
+            this.NotificationMessage += isSaved ? " Manifest saved." : " Failed to save manifest.";
+        }
+        else
+        {
+            this.NotificationMessage += " Manifest was not saved.";
+        }
+    }
+
+    /// <summary>
+    /// Sets the notification message, details, and color for the UI.
+    /// </summary>
+    private void SetNotification(string message, string? detailsMessage = null, IImmutableSolidColorBrush? color = null)
+    {
+        this.NotificationMessage = message;
+        this.NotificationDetailsMessage = detailsMessage ?? string.Empty;
+        this.NotificationColor = color ?? Brushes.Black;
     }
 
     /// <summary>
@@ -262,22 +357,9 @@ public partial class MainWindowViewModel : ViewModelBase
         return string.Join(Environment.NewLine, errors.Select(e => e.Message));
     }
 
-    [RelayCommand]
-    private void RunMigration()
-    {
-        if (!this.AreFieldsValid())
-        {
-            this.logger?.LogInformation("Migration Run failed due to validation errors.");
-            return;
-        }
-
-        this.IsMigrating = true;
-        this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
-        this.MessageDisplayVM.AddMessage("Migration Started");
-        this.logger?.LogInformation("Migration Started");
-        this.RunMigrationAsync().ConfigureAwait(false);
-    }
-
+    /// <summary>
+    /// Validates all fields and returns true if no errors are found; logs and throws if error count is invalid.
+    /// </summary>
     private bool AreFieldsValid()
     {
         this.ServerCredentialsVM.ValidateAll();
