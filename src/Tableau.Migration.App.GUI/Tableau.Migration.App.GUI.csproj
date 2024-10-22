@@ -64,4 +64,8 @@
   <AdditionalFiles Include="../../stylecop.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\tableau-migration-app.ico" />
+  </ItemGroup>
+
 </Project>

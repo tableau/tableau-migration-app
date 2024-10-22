@@ -9,6 +9,7 @@
 	mc:Ignorable="d"
 	x:Class="Tableau.Migration.App.GUI.Views.MainWindow"
 	x:DataType="vm:MainWindowViewModel"
+	Icon="avares://TableauMigrationApp/Assets/tableau-migration-app.ico"
 	Title="Tableau Migration App"
 	Width="820" Height="680"
 	MaxWidth="820"
