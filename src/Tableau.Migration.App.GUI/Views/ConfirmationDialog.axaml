@@ -1,0 +1,21 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Tableau.Migration.App.GUI.Views"
+        x:Class="Tableau.Migration.App.GUI.Views.ConfirmationDialog"
+        x:DataType="local:ConfirmationDialog"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner"
+        Title="Confirmation">
+  <StackPanel Margin="20">
+    <TextBlock x:Name="MessageTextBlock" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+       <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="CancelButton" Grid.Column="0" HorizontalContentAlignment="Center"/>
+            <Button x:Name="OkButton" Grid.Column="2" HorizontalContentAlignment="Center"/>
+       </Grid>
+  </StackPanel>
+</Window>

@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+	     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	     xmlns:local="clr-namespace:Tableau.Migration.App.GUI.Views"
+	     xmlns:converters="clr-namespace:Tableau.Migration.App.GUI.Views.Converters"
+	     x:Class="Tableau.Migration.App.GUI.Views.HelpButton"
+	     x:DataType="local:HelpButton">
+
+	<UserControl.Resources>
+		<converters:StringIsNullOrEmptyToBooleanConverter x:Key="StringIsNullOrEmptyToBooleanConverter"/>
+	</UserControl.Resources>
+
+	<Button
+	    IsEnabled="True"
+	    Grid.Column="1" Grid.Row="1"
+	    Width="17" Height="17"
+	    Background="LightBlue"
+	    Foreground="Black"
+	    BorderBrush="Transparent"
+	    BorderThickness="0"
+	    Margin="5,0,0,0"
+	    Padding="0">
+		<Button.Styles>
+			<Style Selector="Button">
+				<Setter Property="CornerRadius" Value="50"/>
+				<Setter Property="HorizontalContentAlignment" Value="Center"/>
+				<Setter Property="VerticalContentAlignment" Value="Center"/>
+			</Style>
+		</Button.Styles>
+		<Button.Content>
+			<TextBlock Text="?" FontSize="11" FontWeight="Bold" Foreground="White" Margin="0"/>
+		</Button.Content>
+		<Button.Flyout>
+			<Flyout>
+				<StackPanel>
+					<TextBlock Text="{Binding HelpText}" TextWrapping="Wrap" MaxWidth="400" Margin="0, 0, 0, 10"/>
+
+					<TextBlock x:Name="LinkTextBlock" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"
+			       Text="Click here for more details."
+			       IsVisible="{Binding DetailsUrl, Converter={StaticResource StringIsNullOrEmptyToBooleanConverter}}"/>
+				</StackPanel>
+			</Flyout>
+		</Button.Flyout>
+	</Button>
+
+</UserControl>
