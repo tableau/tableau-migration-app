@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+	     xmlns:AvalonEdit="using:AvaloniaEdit"
+	     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	     xmlns:vm="clr-namespace:Tableau.Migration.App.GUI.ViewModels"
+	     xmlns:local="clr-namespace:Tableau.Migration.App.GUI.Views"
+	     x:Name="root"
+	     x:Class="Tableau.Migration.App.GUI.Views.TokenDetails"
+	     x:DataType="vm:TokenDetailsViewModel">
+  <StackPanel>
+
+    <!-- Token Name -->
+    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+      <TextBlock Name="TokenNameLabel" />
+      <local:HelpButton Name="InfoHelp"/>
+    </StackPanel>
+
+    <TextBox
+	Name="TokenName"
+	IsEnabled="{Binding IsEnabled, ElementName=root}"
+	Text="{Binding TokenName, Mode=TwoWay}"
+	Margin="0,0,0,3"
+	Watermark="Personal Access Token Name" />
+
+    <!-- Token Secret -->
+    <TextBlock Name="TokenSecretLabel" Margin="0,0,0,3"/>
+    <TextBox
+	Name="TokenSecret"
+	Classes="revealPasswordButton"
+	Text="{Binding TokenSecret, Mode=TwoWay}"
+	PasswordChar="*"
+	IsEnabled="{Binding IsEnabled, ElementName=root}"
+	Watermark="Personal Access Token Secret"/>
+
+  </StackPanel>
+</UserControl>
