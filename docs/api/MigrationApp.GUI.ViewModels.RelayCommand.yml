@@ -1,0 +1,717 @@
+### YamlMime:ManagedReference
+items:
+- uid: MigrationApp.GUI.ViewModels.RelayCommand
+  commentId: T:MigrationApp.GUI.ViewModels.RelayCommand
+  id: RelayCommand
+  parent: MigrationApp.GUI.ViewModels
+  children:
+  - MigrationApp.GUI.ViewModels.RelayCommand.#ctor(System.Action,System.Func{System.Boolean})
+  - MigrationApp.GUI.ViewModels.RelayCommand.CanExecute(System.Object)
+  - MigrationApp.GUI.ViewModels.RelayCommand.CanExecuteChanged
+  - MigrationApp.GUI.ViewModels.RelayCommand.Execute(System.Object)
+  - MigrationApp.GUI.ViewModels.RelayCommand.RaiseCanExecuteChanged
+  langs:
+  - csharp
+  - vb
+  name: RelayCommand
+  nameWithType: RelayCommand
+  fullName: MigrationApp.GUI.ViewModels.RelayCommand
+  type: Class
+  source:
+    remote:
+      path: src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: RelayCommand
+    path: ../src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+    startLine: 330
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.ViewModels
+  syntax:
+    content: 'public class RelayCommand : ICommand'
+    content.vb: Public Class RelayCommand Implements ICommand
+  inheritance:
+  - System.Object
+  implements:
+  - System.Windows.Input.ICommand
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MigrationApp.GUI.ViewModels.RelayCommand.#ctor(System.Action,System.Func{System.Boolean})
+  commentId: M:MigrationApp.GUI.ViewModels.RelayCommand.#ctor(System.Action,System.Func{System.Boolean})
+  id: '#ctor(System.Action,System.Func{System.Boolean})'
+  parent: MigrationApp.GUI.ViewModels.RelayCommand
+  langs:
+  - csharp
+  - vb
+  name: RelayCommand(Action, Func<bool>?)
+  nameWithType: RelayCommand.RelayCommand(Action, Func<bool>?)
+  fullName: MigrationApp.GUI.ViewModels.RelayCommand.RelayCommand(System.Action, System.Func<bool>?)
+  type: Constructor
+  source:
+    remote:
+      path: src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: .ctor
+    path: ../src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+    startLine: 335
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.ViewModels
+  syntax:
+    content: public RelayCommand(Action execute, Func<bool>? canExecute = null)
+    parameters:
+    - id: execute
+      type: System.Action
+    - id: canExecute
+      type: System.Func{System.Boolean}
+    content.vb: Public Sub New(execute As Action, canExecute As Func(Of Boolean) = Nothing)
+  overload: MigrationApp.GUI.ViewModels.RelayCommand.#ctor*
+  nameWithType.vb: RelayCommand.New(Action, Func(Of Boolean))
+  fullName.vb: MigrationApp.GUI.ViewModels.RelayCommand.New(System.Action, System.Func(Of Boolean))
+  name.vb: New(Action, Func(Of Boolean))
+- uid: MigrationApp.GUI.ViewModels.RelayCommand.CanExecute(System.Object)
+  commentId: M:MigrationApp.GUI.ViewModels.RelayCommand.CanExecute(System.Object)
+  id: CanExecute(System.Object)
+  parent: MigrationApp.GUI.ViewModels.RelayCommand
+  langs:
+  - csharp
+  - vb
+  name: CanExecute(object?)
+  nameWithType: RelayCommand.CanExecute(object?)
+  fullName: MigrationApp.GUI.ViewModels.RelayCommand.CanExecute(object?)
+  type: Method
+  source:
+    remote:
+      path: src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: CanExecute
+    path: ../src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+    startLine: 341
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.ViewModels
+  summary: Defines the method that determines whether the command can execute in its current state.
+  example: []
+  syntax:
+    content: public bool CanExecute(object? parameter)
+    parameters:
+    - id: parameter
+      type: System.Object
+      description: Data used by the command.  If the command does not require data to be passed, this object can be set to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if this command can be executed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function CanExecute(parameter As Object) As Boolean
+  overload: MigrationApp.GUI.ViewModels.RelayCommand.CanExecute*
+  implements:
+  - System.Windows.Input.ICommand.CanExecute(System.Object)
+  nameWithType.vb: RelayCommand.CanExecute(Object)
+  fullName.vb: MigrationApp.GUI.ViewModels.RelayCommand.CanExecute(Object)
+  name.vb: CanExecute(Object)
+- uid: MigrationApp.GUI.ViewModels.RelayCommand.Execute(System.Object)
+  commentId: M:MigrationApp.GUI.ViewModels.RelayCommand.Execute(System.Object)
+  id: Execute(System.Object)
+  parent: MigrationApp.GUI.ViewModels.RelayCommand
+  langs:
+  - csharp
+  - vb
+  name: Execute(object?)
+  nameWithType: RelayCommand.Execute(object?)
+  fullName: MigrationApp.GUI.ViewModels.RelayCommand.Execute(object?)
+  type: Method
+  source:
+    remote:
+      path: src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: Execute
+    path: ../src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+    startLine: 342
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.ViewModels
+  summary: Defines the method to be called when the command is invoked.
+  example: []
+  syntax:
+    content: public void Execute(object? parameter)
+    parameters:
+    - id: parameter
+      type: System.Object
+      description: Data used by the command.  If the command does not require data to be passed, this object can be set to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+    content.vb: Public Sub Execute(parameter As Object)
+  overload: MigrationApp.GUI.ViewModels.RelayCommand.Execute*
+  implements:
+  - System.Windows.Input.ICommand.Execute(System.Object)
+  nameWithType.vb: RelayCommand.Execute(Object)
+  fullName.vb: MigrationApp.GUI.ViewModels.RelayCommand.Execute(Object)
+  name.vb: Execute(Object)
+- uid: MigrationApp.GUI.ViewModels.RelayCommand.CanExecuteChanged
+  commentId: E:MigrationApp.GUI.ViewModels.RelayCommand.CanExecuteChanged
+  id: CanExecuteChanged
+  parent: MigrationApp.GUI.ViewModels.RelayCommand
+  langs:
+  - csharp
+  - vb
+  name: CanExecuteChanged
+  nameWithType: RelayCommand.CanExecuteChanged
+  fullName: MigrationApp.GUI.ViewModels.RelayCommand.CanExecuteChanged
+  type: Event
+  source:
+    remote:
+      path: src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: CanExecuteChanged
+    path: ../src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+    startLine: 343
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.ViewModels
+  summary: Occurs when changes occur that affect whether or not the command should execute.
+  example: []
+  syntax:
+    content: public event EventHandler? CanExecuteChanged
+    return:
+      type: System.EventHandler
+    content.vb: Public Event CanExecuteChanged As EventHandler
+  implements:
+  - System.Windows.Input.ICommand.CanExecuteChanged
+- uid: MigrationApp.GUI.ViewModels.RelayCommand.RaiseCanExecuteChanged
+  commentId: M:MigrationApp.GUI.ViewModels.RelayCommand.RaiseCanExecuteChanged
+  id: RaiseCanExecuteChanged
+  parent: MigrationApp.GUI.ViewModels.RelayCommand
+  langs:
+  - csharp
+  - vb
+  name: RaiseCanExecuteChanged()
+  nameWithType: RelayCommand.RaiseCanExecuteChanged()
+  fullName: MigrationApp.GUI.ViewModels.RelayCommand.RaiseCanExecuteChanged()
+  type: Method
+  source:
+    remote:
+      path: src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: RaiseCanExecuteChanged
+    path: ../src/MigrationApp.GUI/ViewModels/MainWindowViewModel.cs
+    startLine: 345
+  assemblies:
+  - MigrationApp.GUI
+  namespace: MigrationApp.GUI.ViewModels
+  syntax:
+    content: public void RaiseCanExecuteChanged()
+    content.vb: Public Sub RaiseCanExecuteChanged()
+  overload: MigrationApp.GUI.ViewModels.RelayCommand.RaiseCanExecuteChanged*
+references:
+- uid: MigrationApp.GUI.ViewModels
+  commentId: N:MigrationApp.GUI.ViewModels
+  href: MigrationApp.html
+  name: MigrationApp.GUI.ViewModels
+  nameWithType: MigrationApp.GUI.ViewModels
+  fullName: MigrationApp.GUI.ViewModels
+  spec.csharp:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.GUI
+    name: GUI
+    href: MigrationApp.GUI.html
+  - name: .
+  - uid: MigrationApp.GUI.ViewModels
+    name: ViewModels
+    href: MigrationApp.GUI.ViewModels.html
+  spec.vb:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.GUI
+    name: GUI
+    href: MigrationApp.GUI.html
+  - name: .
+  - uid: MigrationApp.GUI.ViewModels
+    name: ViewModels
+    href: MigrationApp.GUI.ViewModels.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Windows.Input.ICommand
+  commentId: T:System.Windows.Input.ICommand
+  parent: System.Windows.Input
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.windows.input.icommand
+  name: ICommand
+  nameWithType: ICommand
+  fullName: System.Windows.Input.ICommand
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Windows.Input
+  commentId: N:System.Windows.Input
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Windows.Input
+  nameWithType: System.Windows.Input
+  fullName: System.Windows.Input
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Windows
+    name: Windows
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.windows
+  - name: .
+  - uid: System.Windows.Input
+    name: Input
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.windows.input
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Windows
+    name: Windows
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.windows
+  - name: .
+  - uid: System.Windows.Input
+    name: Input
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.windows.input
+- uid: MigrationApp.GUI.ViewModels.RelayCommand.#ctor*
+  commentId: Overload:MigrationApp.GUI.ViewModels.RelayCommand.#ctor
+  href: MigrationApp.GUI.ViewModels.RelayCommand.html#MigrationApp_GUI_ViewModels_RelayCommand__ctor_System_Action_System_Func_System_Boolean__
+  name: RelayCommand
+  nameWithType: RelayCommand.RelayCommand
+  fullName: MigrationApp.GUI.ViewModels.RelayCommand.RelayCommand
+  nameWithType.vb: RelayCommand.New
+  fullName.vb: MigrationApp.GUI.ViewModels.RelayCommand.New
+  name.vb: New
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: System.Func{System.Boolean}
+  commentId: T:System.Func{System.Boolean}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<bool>
+  nameWithType: Func<bool>
+  fullName: System.Func<bool>
+  nameWithType.vb: Func(Of Boolean)
+  fullName.vb: System.Func(Of Boolean)
+  name.vb: Func(Of Boolean)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: MigrationApp.GUI.ViewModels.RelayCommand.CanExecute*
+  commentId: Overload:MigrationApp.GUI.ViewModels.RelayCommand.CanExecute
+  href: MigrationApp.GUI.ViewModels.RelayCommand.html#MigrationApp_GUI_ViewModels_RelayCommand_CanExecute_System_Object_
+  name: CanExecute
+  nameWithType: RelayCommand.CanExecute
+  fullName: MigrationApp.GUI.ViewModels.RelayCommand.CanExecute
+- uid: System.Windows.Input.ICommand.CanExecute(System.Object)
+  commentId: M:System.Windows.Input.ICommand.CanExecute(System.Object)
+  parent: System.Windows.Input.ICommand
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.windows.input.icommand.canexecute
+  name: CanExecute(object)
+  nameWithType: ICommand.CanExecute(object)
+  fullName: System.Windows.Input.ICommand.CanExecute(object)
+  nameWithType.vb: ICommand.CanExecute(Object)
+  fullName.vb: System.Windows.Input.ICommand.CanExecute(Object)
+  name.vb: CanExecute(Object)
+  spec.csharp:
+  - uid: System.Windows.Input.ICommand.CanExecute(System.Object)
+    name: CanExecute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.windows.input.icommand.canexecute
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Windows.Input.ICommand.CanExecute(System.Object)
+    name: CanExecute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.windows.input.icommand.canexecute
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: MigrationApp.GUI.ViewModels.RelayCommand.Execute*
+  commentId: Overload:MigrationApp.GUI.ViewModels.RelayCommand.Execute
+  href: MigrationApp.GUI.ViewModels.RelayCommand.html#MigrationApp_GUI_ViewModels_RelayCommand_Execute_System_Object_
+  name: Execute
+  nameWithType: RelayCommand.Execute
+  fullName: MigrationApp.GUI.ViewModels.RelayCommand.Execute
+- uid: System.Windows.Input.ICommand.Execute(System.Object)
+  commentId: M:System.Windows.Input.ICommand.Execute(System.Object)
+  parent: System.Windows.Input.ICommand
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.windows.input.icommand.execute
+  name: Execute(object)
+  nameWithType: ICommand.Execute(object)
+  fullName: System.Windows.Input.ICommand.Execute(object)
+  nameWithType.vb: ICommand.Execute(Object)
+  fullName.vb: System.Windows.Input.ICommand.Execute(Object)
+  name.vb: Execute(Object)
+  spec.csharp:
+  - uid: System.Windows.Input.ICommand.Execute(System.Object)
+    name: Execute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.windows.input.icommand.execute
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Windows.Input.ICommand.Execute(System.Object)
+    name: Execute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.windows.input.icommand.execute
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Windows.Input.ICommand.CanExecuteChanged
+  commentId: E:System.Windows.Input.ICommand.CanExecuteChanged
+  parent: System.Windows.Input.ICommand
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.windows.input.icommand.canexecutechanged
+  name: CanExecuteChanged
+  nameWithType: ICommand.CanExecuteChanged
+  fullName: System.Windows.Input.ICommand.CanExecuteChanged
+- uid: System.EventHandler
+  commentId: T:System.EventHandler
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler
+  name: EventHandler
+  nameWithType: EventHandler
+  fullName: System.EventHandler
+- uid: MigrationApp.GUI.ViewModels.RelayCommand.RaiseCanExecuteChanged*
+  commentId: Overload:MigrationApp.GUI.ViewModels.RelayCommand.RaiseCanExecuteChanged
+  href: MigrationApp.GUI.ViewModels.RelayCommand.html#MigrationApp_GUI_ViewModels_RelayCommand_RaiseCanExecuteChanged
+  name: RaiseCanExecuteChanged
+  nameWithType: RelayCommand.RaiseCanExecuteChanged
+  fullName: MigrationApp.GUI.ViewModels.RelayCommand.RaiseCanExecuteChanged

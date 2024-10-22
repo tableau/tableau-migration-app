@@ -1,0 +1,334 @@
+### YamlMime:ManagedReference
+items:
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater
+  commentId: T:MigrationApp.Core.Interfaces.IProgressUpdater
+  id: IProgressUpdater
+  parent: MigrationApp.Core.Interfaces
+  children:
+  - MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage
+  - MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex
+  - MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName
+  - MigrationApp.Core.Interfaces.IProgressUpdater.NumMigrationStates
+  - MigrationApp.Core.Interfaces.IProgressUpdater.OnProgressChanged
+  - MigrationApp.Core.Interfaces.IProgressUpdater.Reset
+  - MigrationApp.Core.Interfaces.IProgressUpdater.Update
+  langs:
+  - csharp
+  - vb
+  name: IProgressUpdater
+  nameWithType: IProgressUpdater
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater
+  type: Interface
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: IProgressUpdater
+    path: ../src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+    startLine: 2
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: public interface IProgressUpdater
+    content.vb: Public Interface IProgressUpdater
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex
+  commentId: P:MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex
+  id: CurrentMigrationStateIndex
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: CurrentMigrationStateIndex
+  nameWithType: IProgressUpdater.CurrentMigrationStateIndex
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex
+  type: Property
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: CurrentMigrationStateIndex
+    path: ../src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+    startLine: 4
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: int CurrentMigrationStateIndex { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property CurrentMigrationStateIndex As Integer
+  overload: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex*
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName
+  commentId: P:MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName
+  id: CurrentMigrationStateName
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: CurrentMigrationStateName
+  nameWithType: IProgressUpdater.CurrentMigrationStateName
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName
+  type: Property
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: CurrentMigrationStateName
+    path: ../src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+    startLine: 5
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: string CurrentMigrationStateName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property CurrentMigrationStateName As String
+  overload: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName*
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage
+  commentId: P:MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage
+  id: CurrentMigrationMessage
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: CurrentMigrationMessage
+  nameWithType: IProgressUpdater.CurrentMigrationMessage
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage
+  type: Property
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: CurrentMigrationMessage
+    path: ../src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+    startLine: 7
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: string CurrentMigrationMessage { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property CurrentMigrationMessage As String
+  overload: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage*
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.NumMigrationStates
+  commentId: P:MigrationApp.Core.Interfaces.IProgressUpdater.NumMigrationStates
+  id: NumMigrationStates
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: NumMigrationStates
+  nameWithType: IProgressUpdater.NumMigrationStates
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.NumMigrationStates
+  type: Property
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: NumMigrationStates
+    path: ../src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+    startLine: 8
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: public static int NumMigrationStates { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared ReadOnly Property NumMigrationStates As Integer
+  overload: MigrationApp.Core.Interfaces.IProgressUpdater.NumMigrationStates*
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.OnProgressChanged
+  commentId: E:MigrationApp.Core.Interfaces.IProgressUpdater.OnProgressChanged
+  id: OnProgressChanged
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: OnProgressChanged
+  nameWithType: IProgressUpdater.OnProgressChanged
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.OnProgressChanged
+  type: Event
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: OnProgressChanged
+    path: ../src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+    startLine: 10
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: event EventHandler? OnProgressChanged
+    return:
+      type: System.EventHandler
+    content.vb: Event OnProgressChanged As EventHandler
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.Update
+  commentId: M:MigrationApp.Core.Interfaces.IProgressUpdater.Update
+  id: Update
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: Update()
+  nameWithType: IProgressUpdater.Update()
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.Update()
+  type: Method
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: Update
+    path: ../src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+    startLine: 11
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: void Update()
+    content.vb: Sub Update()
+  overload: MigrationApp.Core.Interfaces.IProgressUpdater.Update*
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.Reset
+  commentId: M:MigrationApp.Core.Interfaces.IProgressUpdater.Reset
+  id: Reset
+  parent: MigrationApp.Core.Interfaces.IProgressUpdater
+  langs:
+  - csharp
+  - vb
+  name: Reset()
+  nameWithType: IProgressUpdater.Reset()
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.Reset()
+  type: Method
+  source:
+    remote:
+      path: src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+      branch: lsz/docs
+      repo: git@github.com:Bit-Quill/tableau-esmb-migration-app.git
+    id: Reset
+    path: ../src/MigrationApp.Core/Interfaces/IProgressUpdater.cs
+    startLine: 13
+  assemblies:
+  - MigrationApp.Core
+  namespace: MigrationApp.Core.Interfaces
+  syntax:
+    content: void Reset()
+    content.vb: Sub Reset()
+  overload: MigrationApp.Core.Interfaces.IProgressUpdater.Reset*
+references:
+- uid: MigrationApp.Core.Interfaces
+  commentId: N:MigrationApp.Core.Interfaces
+  href: MigrationApp.html
+  name: MigrationApp.Core.Interfaces
+  nameWithType: MigrationApp.Core.Interfaces
+  fullName: MigrationApp.Core.Interfaces
+  spec.csharp:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.Core
+    name: Core
+    href: MigrationApp.Core.html
+  - name: .
+  - uid: MigrationApp.Core.Interfaces
+    name: Interfaces
+    href: MigrationApp.Core.Interfaces.html
+  spec.vb:
+  - uid: MigrationApp
+    name: MigrationApp
+    href: MigrationApp.html
+  - name: .
+  - uid: MigrationApp.Core
+    name: Core
+    href: MigrationApp.Core.html
+  - name: .
+  - uid: MigrationApp.Core.Interfaces
+    name: Interfaces
+    href: MigrationApp.Core.Interfaces.html
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex*
+  commentId: Overload:MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_CurrentMigrationStateIndex
+  name: CurrentMigrationStateIndex
+  nameWithType: IProgressUpdater.CurrentMigrationStateIndex
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName*
+  commentId: Overload:MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_CurrentMigrationStateName
+  name: CurrentMigrationStateName
+  nameWithType: IProgressUpdater.CurrentMigrationStateName
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationStateName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage*
+  commentId: Overload:MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_CurrentMigrationMessage
+  name: CurrentMigrationMessage
+  nameWithType: IProgressUpdater.CurrentMigrationMessage
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.CurrentMigrationMessage
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.NumMigrationStates*
+  commentId: Overload:MigrationApp.Core.Interfaces.IProgressUpdater.NumMigrationStates
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_NumMigrationStates
+  name: NumMigrationStates
+  nameWithType: IProgressUpdater.NumMigrationStates
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.NumMigrationStates
+- uid: System.EventHandler
+  commentId: T:System.EventHandler
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.eventhandler
+  name: EventHandler
+  nameWithType: EventHandler
+  fullName: System.EventHandler
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.Update*
+  commentId: Overload:MigrationApp.Core.Interfaces.IProgressUpdater.Update
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_Update
+  name: Update
+  nameWithType: IProgressUpdater.Update
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.Update
+- uid: MigrationApp.Core.Interfaces.IProgressUpdater.Reset*
+  commentId: Overload:MigrationApp.Core.Interfaces.IProgressUpdater.Reset
+  href: MigrationApp.Core.Interfaces.IProgressUpdater.html#MigrationApp_Core_Interfaces_IProgressUpdater_Reset
+  name: Reset
+  nameWithType: IProgressUpdater.Reset
+  fullName: MigrationApp.Core.Interfaces.IProgressUpdater.Reset

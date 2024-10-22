@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+	     xmlns:AvalonEdit="using:AvaloniaEdit"
+	     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	     xmlns:vm="clr-namespace:Tableau.Migration.App.GUI.ViewModels"
+	     xmlns:local="clr-namespace:Tableau.Migration.App.GUI.Views"
+	     xmlns:converters="clr-namespace:Tableau.Migration.App.GUI.Views.Converters"
+	     x:Name="root"
+	     x:Class="Tableau.Migration.App.GUI.Views.UserFileMappings"
+	     x:DataType="vm:UserFileMappingsViewModel">
+
+  <StackPanel>
+    <StackPanel Orientation="Horizontal">
+      <TextBlock Text="User Mapping File" VerticalAlignment="Center" />
+      <local:HelpButton
+	  HelpText="Upload a CSV file defining Tableau Server to Tableau Cloud username mappings."/>
+    </StackPanel>
+    <StackPanel>
+      <DockPanel>
+	<Button Content="Load file"
+		Command="{Binding LoadUserFileCommand}"
+		IsVisible="{Binding !IsUserMappingFileLoaded}"
+		DockPanel.Dock="Right" />
+	<Button Content="X"
+		Command="{Binding UnLoadUserFileCommand}"
+		IsVisible="{Binding IsUserMappingFileLoaded}"
+		DockPanel.Dock="Right" />
+	<TextBox
+	    IsEnabled="False"
+	    Text="{Binding LoadedCSVFilename, Mode=TwoWay}"
+	    VerticalAlignment="Center"
+	    Margin="0,0,5,0"/>
+      </DockPanel>
+
+      <!-- CSV Loading Status message -->
+      <TextBlock
+	  Text="{Binding CSVLoadStatus, Mode=TwoWay}"
+	  Foreground="{Binding CSVLoadStatusColor}"/>
+    </StackPanel>
+  </StackPanel>
+
+</UserControl>

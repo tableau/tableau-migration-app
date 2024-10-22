@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MigrationApp.Core
+  commentId: N:MigrationApp.Core
+  id: MigrationApp.Core
+  children:
+  - MigrationApp.Core.ServiceCollectionExtensions
+  langs:
+  - csharp
+  - vb
+  name: MigrationApp.Core
+  nameWithType: MigrationApp.Core
+  fullName: MigrationApp.Core
+  type: Namespace
+  assemblies:
+  - MigrationApp.Core
+references:
+- uid: MigrationApp.Core.ServiceCollectionExtensions
+  commentId: T:MigrationApp.Core.ServiceCollectionExtensions
+  href: MigrationApp.Core.ServiceCollectionExtensions.html
+  name: ServiceCollectionExtensions
+  nameWithType: ServiceCollectionExtensions
+  fullName: MigrationApp.Core.ServiceCollectionExtensions

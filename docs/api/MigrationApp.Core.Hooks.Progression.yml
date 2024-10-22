@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MigrationApp.Core.Hooks.Progression
+  commentId: N:MigrationApp.Core.Hooks.Progression
+  id: MigrationApp.Core.Hooks.Progression
+  children:
+  - MigrationApp.Core.Hooks.Progression.MigrationActionProgressHook
+  langs:
+  - csharp
+  - vb
+  name: MigrationApp.Core.Hooks.Progression
+  nameWithType: MigrationApp.Core.Hooks.Progression
+  fullName: MigrationApp.Core.Hooks.Progression
+  type: Namespace
+  assemblies:
+  - MigrationApp.Core
+references:
+- uid: MigrationApp.Core.Hooks.Progression.MigrationActionProgressHook
+  commentId: T:MigrationApp.Core.Hooks.Progression.MigrationActionProgressHook
+  href: MigrationApp.Core.Hooks.Progression.MigrationActionProgressHook.html
+  name: MigrationActionProgressHook
+  nameWithType: MigrationActionProgressHook
+  fullName: MigrationApp.Core.Hooks.Progression.MigrationActionProgressHook
