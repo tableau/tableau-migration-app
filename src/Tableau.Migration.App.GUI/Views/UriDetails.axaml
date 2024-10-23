@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+	     xmlns:AvalonEdit="using:AvaloniaEdit"
+	     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	     xmlns:vm="clr-namespace:Tableau.Migration.App.GUI.ViewModels"
+	     xmlns:local="clr-namespace:Tableau.Migration.App.GUI.Views"
+	     xmlns:converters="clr-namespace:Tableau.Migration.App.GUI.Views.Converters"
+	     x:Name="root"
+	     x:Class="Tableau.Migration.App.GUI.Views.UriDetails"
+	     x:DataType="vm:UriDetailsViewModel">
+  <UserControl.Resources>
+    <converters:StringIsNullOrEmptyMultiConverter x:Key="StringIsNullOrEmptyMultiConverter" />
+    <converters:StringIsNullOrEmptyConverter x:Key="StringIsNullOrEmptyConverter" />
+  </UserControl.Resources>
+
+  <StackPanel>
+    <!-- Header -->
+    <TextBlock
+	Name="Header"
+	FontWeight="Bold"
+	Margin="0,0,0,10"
+	HorizontalAlignment="Center"/>
+
+    <!-- URL Label -->
+    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+      <TextBlock Name="UriLabel"/>
+      <local:HelpButton Name="InfoHelp" />
+    </StackPanel>
+
+    <!-- URL Input -->
+    <TextBox
+	Name="UriFull"
+	Text="{Binding UriFull, Mode=TwoWay}"
+	HorizontalAlignment="Stretch"
+	IsEnabled="{Binding IsEnabled, ElementName=root}" />
+
+    <!-- Base URI -->
+    <StackPanel Margin="10,0,0,0">
+      <TextBlock Name="BaseUriLabel" />
+      <TextBlock Name="UriBase" Foreground="Gray">
+	<TextBlock.Text>
+	  <MultiBinding Converter="{StaticResource StringIsNullOrEmptyMultiConverter}">
+	    <Binding Path="UriBase" />
+	    <Binding Path="UriBaseDefaultMessage" />
+	  </MultiBinding>
+	</TextBlock.Text>
+      </TextBlock>
+    </StackPanel>
+
+    <!-- Site Name -->
+    <StackPanel Margin="10,0,0,0">
+      <TextBlock Name="SiteNameLabel" />
+      <TextBlock
+	  Foreground="Gray"
+	  Name="SiteName"
+	  Text="{Binding SiteContent,
+		Converter={StaticResource StringIsNullOrEmptyConverter},
+		ConverterParameter='Default site is selected'}" />
+    </StackPanel>
+
+
+  </StackPanel>
+</UserControl>
