@@ -20,7 +20,7 @@
       - [What order will my resources get migrated in?](#what-order-will-my-resources-get-migrated-in)
 
 ## Features
-The purpose of ths Tabelau Migration App is to provide users with a method to perform simple migrations from their Tableau Server to Tableau Cloud. This app is meant to accompany the [Tableau Manual Migration Guide](https://help.tableau.com/current/guides/migration/en-us/emg_intro.htm) and replace the work required for the migration steps.
+The purpose of the Tableau Migration App is to provide users with a method to perform simple migrations from their Tableau Server to Tableau Cloud. This app is meant to accompany the [Tableau Manual Migration Guide](https://help.tableau.com/current/guides/migration/en-us/emg_intro.htm) and replace the work required for the migration steps.
 
 <div align="center">
     <img src="./screenshots/TableauMigrationApp.png" alt="Tableau Migration App" width=400>
@@ -53,7 +53,7 @@ These URIs can be found from your browser address bar when logging into the resp
 ### Personal Access Tokens
 > <div align="center"><img src="./screenshots/PatParams.png" alt="Tableau Migration App Token Fields" ></div>
 
-Personal Access Tokens (PATs) are used by the app to programatically access and make changes to the corresponding Tableau Products.
+Personal Access Tokens (PATs) are used by the app to programmatically access and make changes to the corresponding Tableau Products.
 
 PATs can be generated in your Tableau Environment by going to
 
@@ -151,7 +151,7 @@ These logs can be used to provide further insight to the ongoing status and/or e
 > Or that the application has hit its limit on the number of requests it can make in the current time frame, and is currently waiting until it can send more. In this case, the logs messages should mention how much longer it needs to wait for. 
 
 #### How do I migrate items with more specific logic rules?
-> If you want finer control over how migration is handled, such as renaming resources or applying special rules such as re-assigning resources, then it is recommended that you use the [Tableau Migration SDK](https://github.com/tableau/tableau-migration-sdk) to programatically perform the migration.
+> If you want finer control over how migration is handled, such as renaming resources or applying special rules such as re-assigning resources, then it is recommended that you use the [Tableau Migration SDK](https://github.com/tableau/tableau-migration-sdk) to programmatically perform the migration.
 
 #### How do I exclude certain items from being migrated?
 > You can either delete the items after the migration is performed, or you will have to use the [Tableau Migration SDK](https://github.com/tableau/tableau-migration-sdk)
