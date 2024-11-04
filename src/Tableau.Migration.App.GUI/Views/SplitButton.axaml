@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+	     xmlns:AvalonEdit="using:AvaloniaEdit"
+	     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	     xmlns:vm="clr-namespace:Tableau.Migration.App.GUI.ViewModels"
+	     xmlns:local="clr-namespace:Tableau.Migration.App.GUI.Views"
+	     x:Name="root"
+	     x:Class="Tableau.Migration.App.GUI.Views.SplitButton">
+	<StackPanel Orientation="Horizontal" >
+		<Button
+			Content="{Binding PrimaryButtonText, ElementName=root}"
+			Margin="0"
+			BorderThickness="0"
+			DataContext="{Binding ElementName=root}"
+            Command="{Binding PrimaryCommand}">
+			<Button.Styles>
+				<Style Selector="Button">
+					<Setter Property="Border.CornerRadius" Value="3, 0, 0, 3" />
+				</Style>
+			</Button.Styles>
+		</Button>
+		<Button
+			Name="RunOptionsButton"
+			Content="▼"
+			Foreground="gray"
+			Margin="0"
+			BorderThickness="0"
+			Padding="2,6,2,5" >
+			<Button.Styles>
+				<Style Selector="Button">
+					<Setter Property="Border.CornerRadius" Value="0, 3, 3, 0" />
+				</Style>
+			</Button.Styles>
+			<Button.Flyout>
+				<MenuFlyout>
+					<MenuItem
+                        Header="{Binding SecondaryButtonText, ElementName=root}"
+                        DataContext="{Binding ElementName=root}"
+                        Command="{Binding SecondaryCommand}" />
+				</MenuFlyout>
+			</Button.Flyout>
+		</Button>
+	</StackPanel>
+</UserControl>

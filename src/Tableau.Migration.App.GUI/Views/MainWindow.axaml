@@ -91,17 +91,11 @@
 
 			<Separator Margin="0,0,0,10" />
 			<StackPanel Orientation="Horizontal" IsVisible="{Binding !IsMigrating}" IsEnabled="{Binding !IsMigrating}" HorizontalAlignment="Center" Spacing="10">
-				<Button
-					Content="Run Migration"
-					HorizontalAlignment="Center"
-					Command="{Binding RunMigrationCommand}"
-					VerticalAlignment="Bottom" />
-
-				<Button
-					Content="Resume Migration"
-					HorizontalAlignment="Center"
-					Click="ResumeMigrationOnClick"
-					VerticalAlignment="Bottom" />
+				<local:SplitButton
+					PrimaryCommand="{Binding RunMigrationCommand}"
+					SecondaryCommand="{Binding ResumeMigrationCommand}"
+					PrimaryButtonText="Start Migration"
+					SecondaryButtonText="Resume Migration" />
 			</StackPanel>
 
 			<Button

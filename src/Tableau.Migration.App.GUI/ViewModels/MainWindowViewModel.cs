@@ -18,6 +18,7 @@
 namespace Tableau.Migration.App.GUI.ViewModels;
 
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -31,6 +32,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Tableau.Migration.App.Core.Entities;
 using Tableau.Migration.App.Core.Hooks.Mappings;
 using Tableau.Migration.App.Core.Interfaces;
@@ -193,32 +195,6 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Resumes a migration process using the specified manifest file path.
-    /// </summary>
-    /// <param name="manifestLoadFilePath">The file path to the manifest used to resume the migration.</param>
-    /// <remarks>
-    /// This method validates the necessary fields before proceeding. If the validation fails,
-    /// it logs a message and aborts the migration process. Upon successful validation, it initiates
-    /// the migration process asynchronously, displaying messages in the UI to indicate that
-    /// the resume migration process has started.
-    /// </remarks>
-    public void RunResumeMigration(string manifestLoadFilePath)
-    {
-        if (!this.AreFieldsValid())
-        {
-            this.logger?.LogInformation("Migration Run failed due to validation errors.");
-            return;
-        }
-
-        this.IsMigrating = true;
-        this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
-        this.MessageDisplayVM.AddMessage("Migration Resumed");
-
-        this.logger?.LogInformation("Resume Migration Started");
-        this.ResumeMigrationTask(manifestLoadFilePath).ConfigureAwait(false);
-    }
-
-    /// <summary>
     /// Callback to update fields when error state is changed.
     /// </summary>
     /// <param name="propertyName">The name of the property that changed.</param>
@@ -230,8 +206,9 @@ public partial class MainWindowViewModel : ViewModelBase
     /// <summary>
     /// Validates fields and starts the migration process if valid.
     /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     [RelayCommand]
-    private void RunMigration()
+    private async Task RunMigration()
     {
         if (!this.AreFieldsValid())
         {
@@ -243,7 +220,68 @@ public partial class MainWindowViewModel : ViewModelBase
         this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
         this.MessageDisplayVM.AddMessage("Migration Started");
         this.logger?.LogInformation("Migration Started");
-        this.RunMigrationTask().ConfigureAwait(false);
+        await this.RunMigrationTask().ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Asynchronously resumes migration by selecting a manifest file and calling RunResumeMigration with the file path.
+    /// </summary>
+    [RelayCommand]
+    private async Task ResumeMigration()
+    {
+        if (!this.AreFieldsValid())
+        {
+            this.logger?.LogInformation("Migration Run failed due to validation errors.");
+            return;
+        }
+
+        var filePath = await this.SelectManifestFileAsync();
+        if (filePath != null)
+        {
+            this.IsMigrating = true;
+            this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
+            this.MessageDisplayVM.AddMessage("Migration Started");
+            this.logger?.LogInformation("Migration Started");
+            await this.RunMigrationTask().ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Opens a file picker dialog to select a manifest file and returns the selected file path.
+    /// </summary>
+    /// <returns>The file path if a file is selected; otherwise, <c>null</c>.</returns>
+    private async Task<string?> SelectManifestFileAsync()
+    {
+        var options = new FilePickerOpenOptions
+        {
+            Title = "Select Manifest File",
+            AllowMultiple = false, // Allow only one file selection
+            FileTypeFilter = new List<FilePickerFileType>
+        {
+            new FilePickerFileType("JSON files") { Patterns = new[] { "*.json" } },
+            new FilePickerFileType("All files") { Patterns = new[] { "*.*" } },
+        },
+        };
+
+        var window = App.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop
+            ? desktop.MainWindow
+            : null;
+
+        if (window?.StorageProvider == null)
+        {
+            this.logger?.LogWarning("StorageProvider is null; unable to open file picker dialog.");
+            return null;
+        }
+
+        var result = await window.StorageProvider.OpenFilePickerAsync(options);
+
+        if (result == null || result.Count == 0)
+        {
+            this.logger?.LogInformation("No file selected in file picker dialog.");
+            return null;
+        }
+
+        return result[0].TryGetLocalPath();
     }
 
     /// <summary>
