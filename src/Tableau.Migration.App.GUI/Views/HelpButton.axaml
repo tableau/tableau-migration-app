@@ -34,9 +34,15 @@
 				<StackPanel>
 					<TextBlock Text="{Binding HelpText}" TextWrapping="Wrap" MaxWidth="400" Margin="0, 0, 0, 10"/>
 
-					<TextBlock x:Name="LinkTextBlock" Foreground="Blue" TextDecorations="Underline" Cursor="Hand"
-			       Text="Click here for more details."
-			       IsVisible="{Binding DetailsUrl, Converter={StaticResource StringIsNullOrEmptyToBooleanConverter}}"/>
+					<Button Content="Click here for more details."
+                            Foreground="Blue"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Cursor="Hand"
+                            HorizontalAlignment="Left"
+                            IsVisible="{Binding DetailsUrl, Converter={StaticResource StringIsNullOrEmptyToBooleanConverter}}"
+                            Click="OnLinkClicked">
+					</Button>
 				</StackPanel>
 			</Flyout>
 		</Button.Flyout>

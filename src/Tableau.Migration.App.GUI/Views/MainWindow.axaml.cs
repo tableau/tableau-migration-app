@@ -39,48 +39,6 @@ public partial class MainWindow : Window
         this.Closing += this.OnWindowClosing;
     }
 
-    private async void ResumeMigrationOnClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        // Select the manifest file from a file dialog
-        var window = this;
-        var options = new FilePickerOpenOptions
-        {
-            Title = "Select Manifest File",
-            AllowMultiple = false, // Allow only one file selection
-            FileTypeFilter = new List<FilePickerFileType>
-            {
-                new FilePickerFileType("JSON files") { Patterns = new[] { "*.json" } },
-                new FilePickerFileType("All files") { Patterns = new[] { "*.*" } },
-            },
-        };
-
-        // Open the file picker dialog
-        var result = await window.StorageProvider.OpenFilePickerAsync(options);
-
-        if (result != null && result.Count > 0)
-        {
-            // Get the file path of the selected manifest file
-            var filePath = result[0].TryGetLocalPath();
-
-            // Call RunResumeMigrationCommand with the selected file path
-            MainWindowViewModel? myViewModel = this.DataContext as MainWindowViewModel;
-            if (filePath != null)
-            {
-                myViewModel?.RunResumeMigration(filePath);
-            }
-            else
-            {
-                // Handle the case where the file path is invalid or the user cancels
-                // Optionally show a notification or log the issue
-            }
-        }
-        else
-        {
-            // Handle case where no file was selected or dialog was canceled
-            // Optionally show a notification or log the issue
-        }
-    }
-
     private async void StopMigrationOnClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         await this.HandleMigrationCancellation("Stop Migration", "Are you sure you want to stop the migration?");

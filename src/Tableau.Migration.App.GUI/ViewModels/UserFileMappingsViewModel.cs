@@ -104,16 +104,23 @@ public partial class UserFileMappingsViewModel
         set => this.SetProperty(ref this.isUserMappingFileLoaded, value);
     }
 
+    /// <summary>
+    /// This command executes <see cref="UnLoadUserFile" />.
+    /// </summary>
     [RelayCommand]
-    private void UnLoadUserFile()
+    public void UnLoadUserFile()
     {
         this.ClearCSVLoadedValues();
         this.CSVLoadStatus = string.Empty;
         this.CSVLoadStatusColor = Brushes.Black;
     }
 
+    /// <summary>
+    /// This command executes <see cref="LoadUserFile" />.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the Load User File operation.</returns>
     [RelayCommand]
-    private async Task LoadUserFile()
+    public async Task LoadUserFile()
     {
         try
         {

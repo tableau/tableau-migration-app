@@ -2,32 +2,41 @@
   "metadata": [
     {
       "src": [
-        {
-          "src": "../src",
-          "files": [
-            "**/*.csproj"
-          ]
-        }
+	{
+	  "src": "../src",
+	  "files": [
+	    "**/*.csproj"
+	  ],
+	}
       ],
-      "dest": "api"
+      "dest": "api",
+      "disableGitFeatures": true
     }
   ],
   "build": {
     "content": [
       {
-        "files": [
-          "**/*.{md,yml}"
-        ],
-        "exclude": [
-          "_site/**"
-        ]
+	"files": [
+	  "**/*.{md,yml}"
+	],
+	"exclude": [
+	  "_site/**"
+	]
+      },
+      {
+	"files": [
+	  "readme.md"
+	],
+	"src": "../",
+	"dest": "index.md"
       }
     ],
     "resource": [
       {
-        "files": [
-          "images/**"
-        ]
+	"files": [
+	  "images/**",
+	  "screenshots/**"
+	]
       }
     ],
     "output": "_site",
@@ -39,6 +48,12 @@
       "_appName": "Tableau Migration App",
       "_appTitle": "Tableau Migration App",
       "_enableSearch": true,
+      "_disableContribution": true,
+      "_gitContribute": {
+	"branch": "",
+	"path": ""
+      },
+      "gitUrlPattern": "github",
       "pdf": true
     }
   }
