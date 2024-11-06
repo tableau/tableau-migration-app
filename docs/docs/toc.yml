@@ -1,0 +1,12 @@
+- name: Overview
+  href: introduction.md
+  items:
+    - name: Getting Started
+      href: getting-started.md
+- name: App Architecture
+  href: architecture.md
+  items:
+    - name: Core Module
+      href: core.md
+    - name: GUI Module
+      href: gui.md
