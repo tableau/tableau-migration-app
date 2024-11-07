@@ -1,0 +1,44 @@
+﻿name: Build and Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --no-build --configuration Release --verbosity normal
+        env:
+          TABLEAU_CLOUD_URL: ${{ secrets.TABLEAU_CLOUD_URL }}
+          TABLEAU_CLOUD_SITE: ${{ secrets.TABLEAU_CLOUD_SITE }}
+          TABLEAU_CLOUD_TOKEN_NAME: ${{ secrets.TABLEAU_CLOUD_TOKEN_NAME }}
+          TABLEAU_CLOUD_TOKEN: ${{ secrets.TABLEAU_CLOUD_TOKEN }}
+          TABLEAU_SERVER_URL: ${{ secrets.TABLEAU_SERVER_URL }}
+          TABLEAU_SERVER_SITE: ""
+          TABLEAU_SERVER_TOKEN_NAME: ${{ secrets.TABLEAU_SERVER_TOKEN_NAME }}
+          TABLEAU_SERVER_TOKEN: ${{ secrets.TABLEAU_SERVER_TOKEN }}
+
+      - name: Run dotnet format
+        run: dotnet format --verbosity diagnostic
+
+      - name: Check format results
+        if: failure()
+        run: echo "Formatting issues found. Please run 'dotnet format' locally and fix the issues."

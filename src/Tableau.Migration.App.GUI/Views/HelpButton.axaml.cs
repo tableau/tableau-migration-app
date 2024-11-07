@@ -49,15 +49,6 @@ public partial class HelpButton : UserControl
     {
         this.DataContext = this;
         this.InitializeComponent();
-
-        this.Initialized += (sender, e) =>
-        {
-            var linkTextBlock = this.FindControl<TextBlock>("LinkTextBlock");
-            if (linkTextBlock != null)
-            {
-                linkTextBlock.PointerPressed += this.OnLinkClicked;
-            }
-        };
     }
 
     /// <summary>
