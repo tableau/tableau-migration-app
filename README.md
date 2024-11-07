@@ -20,6 +20,8 @@
 	  - [What order will my resources get migrated in?](#what-order-will-my-resources-get-migrated-in)
 
 ## Features
+**The Tableau Migration App can be downloaded from the [releases](https://github.com/tableau/tableau-migration-app/releases) page of this repo.**
+
 The purpose of the Tableau Migration App is to provide users with a method to perform simple migrations from their Tableau Server to Tableau Cloud. This app is meant to accompany the [Tableau Manual Migration Guide](https://help.tableau.com/current/guides/migration/en-us/emg_intro.htm) and replace the work required for the migration steps.
 
 <div align="center">
