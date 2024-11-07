@@ -1,4 +1,5 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -9,6 +10,22 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tableau.Migration.App.Core.Tests", "tests\Tableau.Migration.App.Core.Tests\Tableau.Migration.App.Core.Tests.csproj", "{E9180159-E6A0-4BF9-BA42-EFF6281D72CC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tableau.Migration.App.GUI.Tests", "tests\Tableau.Migration.App.GUI.Tests\Tableau.Migration.App.GUI.Tests.csproj", "{C172CFCB-62C3-46E6-AF02-F0DC55D79DE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{521DF08B-3474-4734-8052-93568EA6163F}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		BUILD.md = BUILD.md
+		CODEOWNERS = CODEOWNERS
+		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+		CONTRIBUTING.md = CONTRIBUTING.md
+		Dockerfile = Dockerfile
+		global.json = global.json
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+		SECURITY.md = SECURITY.md
+		stylecop.json = stylecop.json
+		THIRD-PARTY.md = THIRD-PARTY.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
