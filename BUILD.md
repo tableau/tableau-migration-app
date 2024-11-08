@@ -1,4 +1,4 @@
-# Tableau ESMB Migration App
+# Tableau Migration App
 Tableau express migration application to migrate data sources from Tableau Server to Tableau Cloud.
 Requirements doc can be found [here](https://docs.google.com/document/d/1DXrYdTbS5aGcZeicNVAdD1tvGRwtH1Yj/edit#heading=h.gjdgxs).
 
