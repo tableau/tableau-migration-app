@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+	xmlns:AvalonEdit="using:AvaloniaEdit"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:Tableau.Migration.App.GUI.ViewModels"
+    x:Class="Tableau.Migration.App.GUI.Views.TimerDisplay"
+	xmlns:local="clr-namespace:Tableau.Migration.App.GUI.Views"
+	x:Name="root"
+    x:DataType="vm:TimerDisplayViewModel">
+
+	<Grid HorizontalAlignment="Center" Margin="10">
+		<!-- Define two columns for labels and values -->
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<!-- Label column -->
+			<ColumnDefinition Width="Auto" />
+			<!-- Value column -->
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<!-- Total Migration Time Row -->
+		<TextBlock
+            Grid.Row="0" Grid.Column="0"
+            Text="Total Migration Time:"
+            HorizontalAlignment="Right"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center" />
+		<TextBlock
+            Grid.Row="0" Grid.Column="1"
+            Text="{Binding TotalElapsedTime}"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />
+
+		<!-- Current Action Time Row -->
+		<TextBlock
+            Grid.Row="1" Grid.Column="0"
+            Text="{Binding ActionText}"
+            HorizontalAlignment="Right"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center" />
+		<TextBlock
+            Grid.Row="1" Grid.Column="1"
+            Text="{Binding ActionElapsedTime}"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center" />
+	</Grid>
+</UserControl>

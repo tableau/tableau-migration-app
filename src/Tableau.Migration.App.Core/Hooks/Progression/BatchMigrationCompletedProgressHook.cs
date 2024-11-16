@@ -35,7 +35,6 @@ public class BatchMigrationCompletedProgressHook<T> :
     IContentBatchMigrationCompletedHook<T>
     where T : IContentReference
 {
-    private const string Separator = "-------------------";
     private readonly ILogger<BatchMigrationCompletedProgressHook<T>> logger;
     private readonly IProgressMessagePublisher? publisher;
 
@@ -70,13 +69,11 @@ public class BatchMigrationCompletedProgressHook<T> :
             this.ProcessManifestEntry(result, messageList);
         }
 
-        messageList.Add(BatchMigrationCompletedProgressHook<T>.Separator);
-
         // Join the messages together to be broadcasted
         string progressMessage = string.Join("\n", messageList);
 
         // Publish and log the message
-        this.publisher?.PublishProgressMessage(
+        this.publisher?.CompleteActionWithProgressMessage(
             MigrationActions.GetActionTypeName(typeof(T)),
             progressMessage);
 

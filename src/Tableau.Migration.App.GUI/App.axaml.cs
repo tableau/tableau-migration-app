@@ -154,6 +154,7 @@ public partial class App : Application
 
         services.AddSingleton<IProgressUpdater, ProgressUpdater>();
         services.AddSingleton<IProgressMessagePublisher, ProgressMessagePublisher>();
+        services.AddSingleton<IProgressTimerController, ProgressTimerController>();
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<MainWindow>(provider =>
         {

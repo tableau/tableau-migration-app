@@ -112,7 +112,7 @@
 				IsVisible="{Binding !IsMigrating}"
 				Text="{Binding NotificationMessage}"
 				Foreground="{Binding NotificationColor}"/>
-
+			
 			<!-- Progress Bar -->
 			<Grid IsVisible="{Binding IsMigrating}">
 				<ProgressBar
@@ -135,7 +135,13 @@
 
 			<!-- Migration Progress Status -->
 			<local:MessageDisplay
-			DataContext="{Binding MessageDisplayVM}"/>
+				DataContext="{Binding MessageDisplayVM}"/>
+
+			<StackPanel IsVisible="{Binding IsMigrating}">
+				<local:TimerDisplay
+					DataContext="{Binding TimerDisplayVM}"
+					HorizontalAlignment="Right"/>
+			</StackPanel>
 
 		</StackPanel>
 

@@ -17,7 +17,6 @@
 
 namespace Tableau.Migration.App.GUI.ViewModels;
 
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
@@ -63,6 +62,7 @@ public partial class MainWindowViewModel : ViewModelBase
     /// <param name="emailDomainOptions">The default domain mapping to apply to users who do not have an existing email, or mapping present.</param>
     /// <param name="dictionaryUserMappingOptions">The user-specific mappings to be used if provided through CSV.</param>
     /// <param name="progressUpdater">The object to track the migration progress from the migration service.</param>
+    /// <param name="timerController">The object to track the migration timers from the migration service.</param>
     /// <param name="publisher">The progress publisher for progress status messages.</param>
     /// <param name="filePicker">The file picker service to use for CSV loaded user mappings.</param>
     /// <param name="csvParser">The csv parser to load and parser user mappings.</param>
@@ -71,6 +71,7 @@ public partial class MainWindowViewModel : ViewModelBase
         IOptions<EmailDomainMappingOptions> emailDomainOptions,
         IOptions<DictionaryUserMappingOptions> dictionaryUserMappingOptions,
         IProgressUpdater progressUpdater,
+        IProgressTimerController timerController,
         IProgressMessagePublisher publisher,
         IFilePicker filePicker,
         ICsvParser csvParser)
@@ -79,6 +80,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
         // Sub View Models
         this.MessageDisplayVM = new MessageDisplayViewModel(publisher);
+        this.TimerDisplayVM = new TimerDisplayViewModel(timerController, progressUpdater);
         this.ServerCredentialsVM = new AuthCredentialsViewModel(TableauEnv.TableauServer);
         this.CloudCredentialsVM = new AuthCredentialsViewModel(TableauEnv.TableauCloud);
         this.UserMappingsVM = new UserMappingsViewModel(
@@ -115,6 +117,11 @@ public partial class MainWindowViewModel : ViewModelBase
     /// Gets the progress status Message Display View Model.
     /// </summary>
     public MessageDisplayViewModel MessageDisplayVM { get; }
+
+    /// <summary>
+    /// Gets the progress status Message Display View Model.
+    /// </summary>
+    public TimerDisplayViewModel TimerDisplayVM { get; }
 
     /// <summary>
     /// Gets the ViewModel for the Tableau Server Credentials.

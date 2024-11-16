@@ -37,6 +37,7 @@ public class TableauMigrationService : ITableauMigrationService
     private readonly ILogger<TableauMigrationService> logger;
     private readonly IProgressUpdater? progressUpdater;
     private readonly IProgressMessagePublisher? publisher;
+    private readonly IProgressTimerController? timerController;
     private readonly MigrationManifestSerializer manifestSerializer;
     private IMigrationPlan? plan;
     private IMigrationManifest? manifest;
@@ -50,6 +51,7 @@ public class TableauMigrationService : ITableauMigrationService
     /// <param name="appSettings">The application settings to apply to the application.</param>
     /// <param name="progressUpdater">The object to handle the visual migration progress indicator.</param>
     /// <param name="publisher">The message publisher to broadcast progress updates.</param>
+    /// <param name="timerController">The timer controller to broadcast progress timers.</param>
     /// <param name="manifestSerializer">Serializaer class to save and load manifest file.</param>
     public TableauMigrationService(
         IMigrationPlanBuilder planBuilder,
@@ -58,7 +60,8 @@ public class TableauMigrationService : ITableauMigrationService
         AppSettings appSettings,
         MigrationManifestSerializer manifestSerializer,
         IProgressUpdater? progressUpdater = null,
-        IProgressMessagePublisher? publisher = null)
+        IProgressMessagePublisher? publisher = null,
+        IProgressTimerController? timerController = null)
     {
         this.appSettings = appSettings;
         this.planBuilder = planBuilder;
@@ -67,6 +70,7 @@ public class TableauMigrationService : ITableauMigrationService
         this.progressUpdater = progressUpdater;
         this.publisher = publisher;
         this.manifestSerializer = manifestSerializer;
+        this.timerController = timerController;
     }
 
     /// <inheritdoc/>
@@ -223,6 +227,8 @@ public class TableauMigrationService : ITableauMigrationService
     /// <returns>The detailed migration result.</returns>
     private async Task<DetailedMigrationResult> ExecuteMigrationAsync(IMigrationPlan plan, IMigrationManifest? manifest, CancellationToken cancel)
     {
+        this.publisher?.StartMigrationTimer();
+        this.timerController?.StartMigrationTimer();
         MigrationResult result;
 
         result = await this.migrator.ExecuteAsync(plan, manifest, cancel);
@@ -248,22 +254,24 @@ public class TableauMigrationService : ITableauMigrationService
 
         string resultErrorMessage = string.Join("\n", messageList);
 
+        this.timerController?.CompleteMigration();
+
         if (result.Status == MigrationCompletionStatus.Completed)
         {
             this.logger.LogInformation("Migration completed.");
-            this.publisher?.PublishProgressMessage("Migration completed", resultErrorMessage);
+            this.publisher?.CompleteMigrationWithResultMessage("Migration completed", resultErrorMessage);
             return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.SUCCESS, errors);
         }
         else if (result.Status == MigrationCompletionStatus.Canceled)
         {
             this.logger.LogInformation("Migration cancelled.");
-            this.publisher?.PublishProgressMessage("Migration cancelled", resultErrorMessage);
+            this.publisher?.CompleteMigrationWithResultMessage("Migration cancelled", resultErrorMessage);
             return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.CANCELLED, errors);
         }
         else
         {
             this.logger.LogError("Migration failed with status: {Status}", result.Status);
-            this.publisher?.PublishProgressMessage("Migration failed", resultErrorMessage);
+            this.publisher?.CompleteMigrationWithResultMessage("Migration failed", resultErrorMessage);
             return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.FAILURE, errors);
         }
     }
