@@ -50,7 +50,6 @@ public partial class MainWindowViewModel : ViewModelBase
     private IProgressUpdater progressUpdater;
     private string notificationMessage = string.Empty;
     private string notificationDetailsMessage = string.Empty;
-    private string? manifestSaveFilePath = null;
     private CancellationTokenSource? cancellationTokenSource = null;
     private IImmutableSolidColorBrush notificationColor = Brushes.Black;
     private ILogger<MainWindowViewModel>? logger;
@@ -193,12 +192,28 @@ public partial class MainWindowViewModel : ViewModelBase
     /// <summary>
     /// Cancels the ongoing migration.
     /// </summary>
-    /// <param name="manifestSaveFilePath">The path of manifest file to save.</param>
-    public void CancelMigration(string? manifestSaveFilePath)
+    public void CancelMigration()
     {
-        this.manifestSaveFilePath = manifestSaveFilePath;
         this.cancellationTokenSource?.Cancel();
         return;
+    }
+
+    /// <summary>
+    /// Saves the migration manifest if a save file path is provided.
+    /// </summary>
+    /// <param name="manifestSaveFilePath">The file path where the manifest should be saved, or null if saving is not required.</param>
+    /// <returns>A task that represents the asynchronous save operation.</returns>
+    public async Task SaveManifestIfRequiredAsync(string? manifestSaveFilePath)
+    {
+        if (!string.IsNullOrEmpty(manifestSaveFilePath))
+        {
+            bool isSaved = await this.migrationService.SaveManifestAsync(manifestSaveFilePath);
+            this.NotificationMessage += isSaved ? " Manifest saved." : " Failed to save manifest.";
+        }
+        else
+        {
+            this.NotificationMessage += " Manifest was not saved.";
+        }
     }
 
     /// <summary>
@@ -344,7 +359,6 @@ public partial class MainWindowViewModel : ViewModelBase
                 case ITableauMigrationService.MigrationStatus.CANCELLED:
                     var details = this.BuildErrorDetails(migrationResult.errors);
                     this.SetNotification("Migration Cancelled.", details, Brushes.Red);
-                    await this.SaveManifestIfRequiredAsync();
                     break;
 
                 default:
@@ -361,22 +375,6 @@ public partial class MainWindowViewModel : ViewModelBase
         this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
         this.IsMigrating = false;
         this.progressUpdater.Reset();
-    }
-
-    /// <summary>
-    /// Saves the migration manifest if a save file path is provided.
-    /// </summary>
-    private async Task SaveManifestIfRequiredAsync()
-    {
-        if (!string.IsNullOrEmpty(this.manifestSaveFilePath))
-        {
-            bool isSaved = await this.migrationService.SaveManifestAsync(this.manifestSaveFilePath);
-            this.NotificationMessage += isSaved ? " Manifest saved." : " Failed to save manifest.";
-        }
-        else
-        {
-            this.NotificationMessage += " Manifest was not saved.";
-        }
     }
 
     /// <summary>

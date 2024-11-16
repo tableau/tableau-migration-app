@@ -87,6 +87,11 @@ public partial class MainWindow : Window
 
         if (result)
         {
+            // Stop migration first
+            MainWindowViewModel? myViewModel = this.DataContext as MainWindowViewModel;
+            myViewModel?.CancelMigration();
+
+            // Ask if the user wants to save the manifest file to resume migration later
             var saveManifestDialog = new ConfirmationDialog(
                 "Save Manifest File",
                 "Do you want to save the manifest to resume migration later?",
@@ -94,7 +99,7 @@ public partial class MainWindow : Window
                 "No");
 
             var resultSaveManifest = await saveManifestDialog.ShowDialog<bool>(this);
-            MainWindowViewModel? myViewModel = this.DataContext as MainWindowViewModel;
+            string? filePath = null;
             if (resultSaveManifest)
             {
                 var window = this;
@@ -102,10 +107,10 @@ public partial class MainWindow : Window
                 {
                     Title = "Save Manifest",
                     FileTypeChoices = new List<FilePickerFileType>
-                    {
-                        new FilePickerFileType("JSON files") { Patterns = new[] { "*.json" } },
-                        new FilePickerFileType("All files") { Patterns = new[] { "*.*" } },
-                    },
+                {
+                    new FilePickerFileType("JSON files") { Patterns = new[] { "*.json" } },
+                    new FilePickerFileType("All files") { Patterns = new[] { "*.*" } },
+                },
                     DefaultExtension = "json",
                 };
 
@@ -113,18 +118,11 @@ public partial class MainWindow : Window
 
                 if (resultFile != null)
                 {
-                    var filePath = resultFile.TryGetLocalPath();
-                    myViewModel?.CancelMigration(filePath ?? string.Empty);
-                }
-                else
-                {
-                    myViewModel?.CancelMigration(string.Empty);
+                    filePath = resultFile.TryGetLocalPath();
                 }
             }
-            else
-            {
-                myViewModel?.CancelMigration(string.Empty);
-            }
+
+            myViewModel?.SaveManifestIfRequiredAsync(filePath);
         }
     }
 }
