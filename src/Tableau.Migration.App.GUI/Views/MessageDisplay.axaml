@@ -2,6 +2,7 @@
 	     xmlns:AvalonEdit="using:AvaloniaEdit"
 	     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	     xmlns:vm="clr-namespace:Tableau.Migration.App.GUI.ViewModels"
+	     xmlns:local="clr-namespace:Tableau.Migration.App.GUI.Views"
 	     x:Class="Tableau.Migration.App.GUI.Views.MessageDisplay"
 	     x:DataType="vm:MessageDisplayViewModel">
 
@@ -30,10 +31,19 @@
 	  FontSize="14"
 	  Height="200" />
 
-      <CheckBox x:Name="KeepScrolledCheckBox">
-	Keep scrolled to bottom
-      </CheckBox>
+      <Grid>
+	<Grid.ColumnDefinitions>
+	  <ColumnDefinition Width="Auto" />
+	  <ColumnDefinition Width="*" />
+	  <ColumnDefinition Width="Auto" />
+	</Grid.ColumnDefinitions>
+	<CheckBox
+	    Grid.Column="0"
+	    x:Name="KeepScrolledCheckBox">
+	  Keep scrolled to bottom
+	</CheckBox>
+	<local:Timers Grid.Column="2"/>
+      </Grid>
     </StackPanel>
   </Grid>
-
 </UserControl>

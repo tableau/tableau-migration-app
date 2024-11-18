@@ -93,24 +93,8 @@ public interface IProgressMessagePublisher
     }
 
     /// <summary>
-    /// Starts the total migration timer if it hasn't started yet,
-    /// and resets the action timer to track the time for a new action.
+    /// Publish progress message of current Migration Action with its corresponding status messages.
     /// </summary>
-    void StartMigrationTimer();
-
-    /// <summary>
-    /// Stops the action timer, calculates the elapsed time for the specified action,
-    /// and publishes the provided progress message along with the elapsed time.
-    /// </summary>
-    /// <param name="action">The name of the completed action.</param>
-    /// <param name="progressMessage">The progress message to publish for the completed action.</param>
-    void CompleteActionWithProgressMessage(string action, string progressMessage);
-
-    /// <summary>
-    /// Stops the total migration timer and the action timer for the last action,
-    /// then publishes the provided migration result message along with the total elapsed time.
-    /// </summary>
-    /// <param name="migrationResult">The summary text of the migration result.</param>
-    /// <param name="resultMessage">The final message to publish for the migration result.</param>
-    void CompleteMigrationWithResultMessage(string migrationResult, string resultMessage);
+    /// <param name="message">The message.</param>
+    void PublishProgressMessage(string message);
 }

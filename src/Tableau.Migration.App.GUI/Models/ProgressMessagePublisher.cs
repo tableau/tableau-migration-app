@@ -18,79 +18,20 @@
 namespace Tableau.Migration.App.GUI.Models;
 
 using System;
-using System.Diagnostics;
-using System.Text;
 using Tableau.Migration.App.Core.Entities;
 using Tableau.Migration.App.Core.Interfaces;
 
 /// <inheritdoc/>
 public class ProgressMessagePublisher : IProgressMessagePublisher
 {
-    private const string Separator = "-------------------";
-    private readonly Stopwatch totalStopwatch;
-    private readonly Stopwatch actionStopwatch;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ProgressMessagePublisher"/> class.
-    /// </summary>
-    public ProgressMessagePublisher()
-    {
-        this.totalStopwatch = new Stopwatch();
-        this.actionStopwatch = new Stopwatch();
-    }
-
     /// <inheritdoc/>
     public event Action<ProgressEventArgs>? OnProgressMessage;
 
-    /// <inheritdoc/>
-    public void StartMigrationTimer()
+    /// <inheritdoc />
+    public void PublishProgressMessage(string message)
     {
-        this.totalStopwatch.Restart();
-        this.actionStopwatch.Restart();
-    }
-
-    /// <inheritdoc/>
-    public void CompleteActionWithProgressMessage(string action, string progressMessage)
-    {
-        var messageBuilder = new StringBuilder();
-        messageBuilder.AppendLine(progressMessage);
-
-        if (this.actionStopwatch.IsRunning)
-        {
-            this.actionStopwatch.Stop();
-            messageBuilder.AppendLine($"Elapsed time: {this.actionStopwatch.Elapsed}");
-        }
-
-        messageBuilder.AppendLine(ProgressMessagePublisher.Separator);
-        this.PublishProgressMessage(action, messageBuilder.ToString());
-
-        // Restart the timer for the next action
-        this.actionStopwatch.Restart();
-    }
-
-    /// <inheritdoc/>
-    public void CompleteMigrationWithResultMessage(string migrationResultText, string resultMessage)
-    {
-        var messageBuilder = new StringBuilder();
-        messageBuilder.AppendLine(resultMessage);
-
-        if (this.totalStopwatch.IsRunning)
-        {
-            this.totalStopwatch.Stop();
-            messageBuilder.AppendLine($"Total elapsed time for migration: {this.totalStopwatch.Elapsed}");
-        }
-
-        this.PublishProgressMessage(migrationResultText, messageBuilder.ToString());
-    }
-
-    /// <summary>
-    /// Publishes a progress message for a specific action or migration status.
-    /// </summary>
-    /// <param name="header">The action or migration status.</param>
-    /// <param name="message">The message to be published.</param>
-    private void PublishProgressMessage(string header, string message)
-    {
-        ProgressEventArgs progressMessage = new ProgressEventArgs(header, message);
+        ProgressEventArgs progressMessage = new ProgressEventArgs(message);
         this.OnProgressMessage?.Invoke(progressMessage);
+        return;
     }
 }

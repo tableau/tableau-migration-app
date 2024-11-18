@@ -17,6 +17,7 @@
 
 namespace Tableau.Migration.App.GUI.ViewModels;
 
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
@@ -44,15 +45,18 @@ using Tableau.Migration.App.GUI.Views;
 /// </summary>
 public partial class MainWindowViewModel : ViewModelBase
 {
-    private const string MigrationMessagesSessionSeperator = "--------------------------------------------";
+    private const string MigrationMessagesSessionSeperator = "─────────────────────────────";
     private readonly ITableauMigrationService migrationService;
     private bool isMigrating = false;
     private IProgressUpdater progressUpdater;
+    private IProgressMessagePublisher publisher;
+    private IMigrationTimer migrationTimer;
     private string notificationMessage = string.Empty;
     private string notificationDetailsMessage = string.Empty;
     private CancellationTokenSource? cancellationTokenSource = null;
     private IImmutableSolidColorBrush notificationColor = Brushes.Black;
     private ILogger<MainWindowViewModel>? logger;
+    private TimersViewModel timersVM;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindowViewModel" /> class.
@@ -61,25 +65,27 @@ public partial class MainWindowViewModel : ViewModelBase
     /// <param name="emailDomainOptions">The default domain mapping to apply to users who do not have an existing email, or mapping present.</param>
     /// <param name="dictionaryUserMappingOptions">The user-specific mappings to be used if provided through CSV.</param>
     /// <param name="progressUpdater">The object to track the migration progress from the migration service.</param>
-    /// <param name="timerController">The object to track the migration timers from the migration service.</param>
+    /// <param name="migrationTimer">The object to track the migration times.</param>
     /// <param name="publisher">The progress publisher for progress status messages.</param>
     /// <param name="filePicker">The file picker service to use for CSV loaded user mappings.</param>
     /// <param name="csvParser">The csv parser to load and parser user mappings.</param>
+    /// <param name="timersVM">The Timers view model.</param>
     public MainWindowViewModel(
         ITableauMigrationService migrationService,
         IOptions<EmailDomainMappingOptions> emailDomainOptions,
         IOptions<DictionaryUserMappingOptions> dictionaryUserMappingOptions,
         IProgressUpdater progressUpdater,
-        IProgressTimerController timerController,
         IProgressMessagePublisher publisher,
+        IMigrationTimer migrationTimer,
         IFilePicker filePicker,
-        ICsvParser csvParser)
+        ICsvParser csvParser,
+        TimersViewModel timersVM)
     {
         this.migrationService = migrationService;
+        this.timersVM = timersVM;
+        this.publisher = publisher;
 
         // Sub View Models
-        this.MessageDisplayVM = new MessageDisplayViewModel(publisher);
-        this.TimerDisplayVM = new TimerDisplayViewModel(timerController, progressUpdater);
         this.ServerCredentialsVM = new AuthCredentialsViewModel(TableauEnv.TableauServer);
         this.CloudCredentialsVM = new AuthCredentialsViewModel(TableauEnv.TableauCloud);
         this.UserMappingsVM = new UserMappingsViewModel(
@@ -89,6 +95,7 @@ public partial class MainWindowViewModel : ViewModelBase
             csvParser);
 
         this.progressUpdater = progressUpdater;
+        this.migrationTimer = migrationTimer;
         this.logger = App.ServiceProvider?.GetRequiredService<ILogger<MainWindowViewModel>>();
 
         // Subscribe to the progress updater event and retrigger UI rendering on update
@@ -111,16 +118,6 @@ public partial class MainWindowViewModel : ViewModelBase
     /// Gets the total number of migration states available.
     /// </summary>
     public static int NumMigrationStates => ProgressUpdater.NumMigrationStates;
-
-    /// <summary>
-    /// Gets the progress status Message Display View Model.
-    /// </summary>
-    public MessageDisplayViewModel MessageDisplayVM { get; }
-
-    /// <summary>
-    /// Gets the progress status Message Display View Model.
-    /// </summary>
-    public TimerDisplayViewModel TimerDisplayVM { get; }
 
     /// <summary>
     /// Gets the ViewModel for the Tableau Server Credentials.
@@ -239,9 +236,11 @@ public partial class MainWindowViewModel : ViewModelBase
         }
 
         this.IsMigrating = true;
-        this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
-        this.MessageDisplayVM.AddMessage("Migration Started");
+        this.publisher.PublishProgressMessage("Migration Started");
         this.logger?.LogInformation("Migration Started");
+        this.migrationTimer.Reset();
+        this.migrationTimer.UpdateMigrationTimes(MigrationTimerEventType.MigrationStarted);
+        this.timersVM.Start();
         await this.RunMigrationTask().ConfigureAwait(false);
     }
 
@@ -251,20 +250,10 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private async Task ResumeMigration()
     {
-        if (!this.AreFieldsValid())
-        {
-            this.logger?.LogInformation("Migration Run failed due to validation errors.");
-            return;
-        }
-
         var filePath = await this.SelectManifestFileAsync();
         if (filePath != null)
         {
-            this.IsMigrating = true;
-            this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
-            this.MessageDisplayVM.AddMessage("Migration Started");
-            this.logger?.LogInformation("Migration Started");
-            await this.RunMigrationTask().ConfigureAwait(false);
+            await this.RunMigration();
         }
     }
 
@@ -372,8 +361,10 @@ public partial class MainWindowViewModel : ViewModelBase
             this.SetNotification("Migration plan building failed.", color: Brushes.Red);
         }
 
-        this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
+        this.publisher.PublishProgressMessage($"{Environment.NewLine}Total Elapsed Time: {this.migrationTimer.GetTotalMigrationTime}");
+        this.publisher.PublishProgressMessage(MigrationMessagesSessionSeperator);
         this.IsMigrating = false;
+        this.timersVM.Stop();
         this.progressUpdater.Reset();
     }
 

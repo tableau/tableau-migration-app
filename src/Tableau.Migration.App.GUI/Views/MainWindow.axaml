@@ -97,7 +97,7 @@
 					PrimaryButtonText="Start Migration"
 					SecondaryButtonText="Resume Migration"/>
 				<local:HelpButton
-				  	HelpText="START MIGRATION;&#10;&#9;will start a new migration from Tableau Server to Tableau Cloud.&#10;&#10;RESUME MIGRATION;&#10;&#9;allows you to continue a previously started migration. To resume, you need to select a manifest file that contains the saved migration state. This enables the migration to continue from where it last stopped, using the configurations and progress saved in the manifest file."/>
+					HelpText="START MIGRATION;&#10;&#9;will start a new migration from Tableau Server to Tableau Cloud.&#10;&#10;RESUME MIGRATION;&#10;&#9;allows you to continue a previously started migration. To resume, you need to select a manifest file that contains the saved migration state. This enables the migration to continue from where it last stopped, using the configurations and progress saved in the manifest file."/>
 			</StackPanel>
 
 			<Button
@@ -114,7 +114,7 @@
 				IsVisible="{Binding !IsMigrating}"
 				Text="{Binding NotificationMessage}"
 				Foreground="{Binding NotificationColor}"/>
-			
+
 			<!-- Progress Bar -->
 			<Grid IsVisible="{Binding IsMigrating}">
 				<ProgressBar
@@ -136,14 +136,7 @@
 			</Grid>
 
 			<!-- Migration Progress Status -->
-			<local:MessageDisplay
-				DataContext="{Binding MessageDisplayVM}"/>
-
-			<StackPanel IsVisible="{Binding IsMigrating}">
-				<local:TimerDisplay
-					DataContext="{Binding TimerDisplayVM}"
-					HorizontalAlignment="Right"/>
-			</StackPanel>
+			<local:MessageDisplay />
 
 		</StackPanel>
 

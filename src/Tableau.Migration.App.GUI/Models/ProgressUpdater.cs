@@ -17,8 +17,11 @@
 
 namespace Tableau.Migration.App.GUI.Models;
 
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Tableau.Migration.App.Core.Entities;
 using Tableau.Migration.App.Core.Interfaces;
 
@@ -27,15 +30,26 @@ using Tableau.Migration.App.Core.Interfaces;
 /// </summary>
 public class ProgressUpdater : IProgressUpdater
 {
+    private readonly string separator = "──────────────────────";
     private int currentMigrationStateIndex = -1;
     private List<string> actions;
+    private ILogger<ProgressUpdater>? logger;
+    private IMigrationTimer? migrationTimer;
+    private IProgressMessagePublisher? publisher;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ProgressUpdater" /> class.
     /// </summary>
-    public ProgressUpdater()
+    /// <param name="migrationTimer">The migration timer.</param>
+    /// <param name="publisher">The progress message publisher.</param>
+    public ProgressUpdater(IMigrationTimer? migrationTimer = null, IProgressMessagePublisher? publisher = null)
     {
         this.actions = MigrationActions.Actions;
+        this.logger = App.ServiceProvider?.GetService(typeof(ILogger<ProgressUpdater>)) as ILogger<ProgressUpdater>;
+        string migrationActions = string.Join(", ", this.actions);
+        this.logger?.LogInformation($"Migration Actions: {migrationActions}");
+        this.migrationTimer = migrationTimer;
+        this.publisher = publisher;
     }
 
     /// <summary>
@@ -103,7 +117,17 @@ public class ProgressUpdater : IProgressUpdater
     /// </remarks>
     public void Update()
     {
+        var oldState = this.CurrentMigrationStateName;
         this.CurrentMigrationStateIndex++;
+        this.logger?.LogInformation($"Migration Progress updated! Changing from [{oldState}] → [{this.CurrentMigrationStateName}]");
+
+        // Update migration action timers
+        this.migrationTimer?.UpdateMigrationTimes(
+            MigrationTimerEventType.MigrationActionCompleted,
+            this.CurrentMigrationStateName);
+
+        // Publish messages
+        this.PublishProgressMessage(oldState);
     }
 
     /// <summary>
@@ -112,5 +136,25 @@ public class ProgressUpdater : IProgressUpdater
     public void Reset()
     {
         this.CurrentMigrationStateIndex = -1;
+    }
+
+    private void PublishProgressMessage(string completedAction)
+    {
+        StringBuilder sb = new StringBuilder();
+        string actionTime = this.migrationTimer?.GetMigrationActionTime(completedAction) ?? string.Empty;
+
+        if (actionTime != string.Empty)
+        {
+            sb.Append($"{Environment.NewLine}\tCompleted in {actionTime}{Environment.NewLine}");
+        }
+        else
+        {
+            this.logger?.LogInformation($"Message publishing for [{completedAction}] skipped!");
+        }
+
+        sb.Append(this.separator);
+        sb.Append(Environment.NewLine);
+        sb.Append($"{this.CurrentMigrationStateName}");
+        this.publisher?.PublishProgressMessage(sb.ToString());
     }
 }

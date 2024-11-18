@@ -124,14 +124,18 @@ public partial class App : Application
     /// </summary>
     private void ConfigureServices(IServiceCollection services)
     {
+        string logTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}";
         Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
+            .Enrich.FromLogContext()
+            .WriteTo.Console(
+            outputTemplate: logTemplate)
             .WriteTo.File(
                 "Logs/migration-app.log",
                 fileSizeLimitBytes: 20 * 1024 * 1024, // 20 MB file size limit
                 rollOnFileSizeLimit: true,
                 retainedFileCountLimit: 10,
-                shared: true)
+                shared: true,
+                outputTemplate: logTemplate)
             .CreateLogger();
 
         services.AddLogging(loggingBuilder =>
@@ -154,7 +158,9 @@ public partial class App : Application
 
         services.AddSingleton<IProgressUpdater, ProgressUpdater>();
         services.AddSingleton<IProgressMessagePublisher, ProgressMessagePublisher>();
-        services.AddSingleton<IProgressTimerController, ProgressTimerController>();
+        services.AddSingleton<IMigrationTimer, MigrationTimer>();
+        services.AddScoped<MessageDisplayViewModel>();
+        services.AddScoped<TimersViewModel>();
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<MainWindow>(provider =>
         {

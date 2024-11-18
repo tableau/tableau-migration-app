@@ -15,105 +15,88 @@
 // limitations under the License.
 // </copyright>
 
-namespace MigrationApp.Tests.ViewModels
+namespace MigrationApp.Tests.ViewModels;
+
+using Microsoft.Extensions.Logging;
+using Moq;
+using Tableau.Migration.App.Core.Entities;
+using Tableau.Migration.App.Core.Interfaces;
+using Tableau.Migration.App.GUI.ViewModels;
+using Xunit;
+using Xunit.Abstractions;
+
+public class MessageDisplayViewModelTests
 {
-    using Moq;
-    using Tableau.Migration.App.Core.Entities;
-    using Tableau.Migration.App.Core.Interfaces;
-    using Tableau.Migration.App.GUI.ViewModels;
-    using Xunit;
-    using Xunit.Abstractions;
+    private readonly Mock<IProgressMessagePublisher> publisherMock;
+    private readonly ITestOutputHelper output; // Output helper for logging
+    private readonly Mock<ILogger<MessageDisplayViewModel>> loggerMock;
+    private readonly Mock<IMigrationTimer> migrationTimerMock;
+    private readonly MessageDisplayViewModel viewModel;
+    private Action<ProgressEventArgs>? onProgressMessage = null;
 
-    public class MessageDisplayViewModelTests
+    public MessageDisplayViewModelTests(ITestOutputHelper output)
     {
-        private readonly Mock<IProgressMessagePublisher> publisherMock;
-        private readonly ITestOutputHelper output; // Output helper for logging
+        this.publisherMock = new Mock<IProgressMessagePublisher>();
 
-        public MessageDisplayViewModelTests(ITestOutputHelper output)
+        // Capture the event handler during mock setup
+        this.publisherMock
+            .SetupAdd(p => p.OnProgressMessage += It.IsAny<Action<ProgressEventArgs>>())
+            .Callback<Action<ProgressEventArgs>>(handler => this.onProgressMessage = handler);
+
+        this.loggerMock = new Mock<ILogger<MessageDisplayViewModel>>();
+        this.migrationTimerMock = new Mock<IMigrationTimer>();
+        this.viewModel = new MessageDisplayViewModel(
+            this.migrationTimerMock.Object,
+            this.publisherMock.Object,
+            this.loggerMock.Object);
+        this.output = output;
+    }
+
+    [Fact]
+    public void Constructor_ShouldInitializeCorrectly()
+    {
+        Assert.NotNull(this.viewModel);
+
+        // Verify initial message.
+        Assert.Equal("Migration output will be displayed here.", this.viewModel.Messages);
+
+        // Verify that we can register a callback to the event without issue
+        this.publisherMock.VerifyAdd(p => p.OnProgressMessage += It.IsAny<Action<ProgressEventArgs>>(), Times.Once);
+    }
+
+    [Fact]
+    public void HandleProgressMessage_ShouldUpdateMessages()
+    {
+        // Ensure the event handler is properly assigned
+        Assert.NotNull(this.onProgressMessage);
+
+        var progressEventArgs = new ProgressEventArgs("ActionMessage");
+
+        // Manually invoke the captured event handler to simulate an event
+        this.onProgressMessage?.Invoke(progressEventArgs);
+
+        // Verify that the message was added
+        var expectedMessage = "ActionMessage" + Environment.NewLine;
+        Assert.Equal(expectedMessage, this.viewModel.Messages);
+    }
+
+    [Fact]
+    public void HandleProgressMessage_ShouldRespectMaxQueueSize()
+    {
+        // Ensure the event handler is properly assigned
+        Assert.NotNull(this.onProgressMessage);
+
+        // Fill the queue beyond its max size
+        for (int i = 0; i < 2000; i++)
         {
-            this.publisherMock = new Mock<IProgressMessagePublisher>();
-            this.output = output;
+            var progressEventArgs = new ProgressEventArgs($"Message{i}");
+            this.onProgressMessage?.Invoke(progressEventArgs);
         }
 
-        [Fact]
-        public void Constructor_ShouldInitializeCorrectly()
-        {
-            var viewModel = new MessageDisplayViewModel(this.publisherMock.Object);
+        // Split the message up by lines
+        var messages = this.viewModel.Messages.Split('\n');
 
-            Assert.NotNull(viewModel);
-
-            // Verify initial message.
-            Assert.Equal("Migration output will be displayed here.", viewModel.Messages);
-
-            // Verify that we can register a callback to the event without issue
-            this.publisherMock.VerifyAdd(p => p.OnProgressMessage += It.IsAny<Action<ProgressEventArgs>>(), Times.Once);
-        }
-
-        [Fact]
-        public void HandleProgressMessage_ShouldUpdateMessages()
-        {
-            var progressEventArgs = new ProgressEventArgs("ActionName", "ActionMessage");
-            Action<ProgressEventArgs>? onProgressMessage = null;
-
-            // Capture the event handler subscription
-            this.publisherMock
-                .SetupAdd(p => p.OnProgressMessage += It.IsAny<Action<ProgressEventArgs>>())
-                .Callback<Action<ProgressEventArgs>>(handler => onProgressMessage = handler);
-
-            var viewModel = new MessageDisplayViewModel(this.publisherMock.Object);
-
-            // Manually invoke to trigger the event handling
-            onProgressMessage?.Invoke(progressEventArgs);
-
-            // Verify that the message was added
-            var expectedMessage = "ActionName" + Environment.NewLine + "ActionMessage" + Environment.NewLine;
-            Assert.Equal(expectedMessage, viewModel.Messages);
-        }
-
-        [Fact]
-        public void HandleProgressMessage_ShouldRespectMaxQueueSize()
-        {
-            Action<ProgressEventArgs>? onProgressMessage = null;
-
-            // Capture the event handler subscription
-            this.publisherMock
-                .SetupAdd(p => p.OnProgressMessage += It.IsAny<Action<ProgressEventArgs>>())
-                .Callback<Action<ProgressEventArgs>>(handler => onProgressMessage = handler);
-
-            var viewModel = new MessageDisplayViewModel(this.publisherMock.Object);
-
-            // Fill the queue beyond its max size
-            for (int i = 0; i < 2000; i++)
-            {
-                var progressEventArgs = new ProgressEventArgs($"Action{i}", $"Message{i}");
-                onProgressMessage?.Invoke(progressEventArgs);
-            }
-
-            // Split the message up by lines
-            var messages = viewModel.Messages.Split("\n");
-
-            // Number of messages should be trimmed to the limit
-            Assert.Equal(MessageDisplayViewModel.MaxQueueSize, messages.Length);
-        }
-
-        [Fact]
-        public void HandleProgressMessage_EmptyProgressMessage_ShouldSkip()
-        {
-            var progressEventArgs = new ProgressEventArgs(string.Empty, string.Empty);
-            Action<ProgressEventArgs>? onProgressMessage = null;
-
-            // Capture the event handler subscription
-            this.publisherMock
-                .SetupAdd(p => p.OnProgressMessage += It.IsAny<Action<ProgressEventArgs>>())
-                .Callback<Action<ProgressEventArgs>>(handler => onProgressMessage = handler);
-
-            var viewModel = new MessageDisplayViewModel(this.publisherMock.Object);
-
-            onProgressMessage?.Invoke(progressEventArgs);
-
-            // Verify that the event message with no action is skipped.
-            var expectedMessage = "Migration output will be displayed here.";
-            Assert.Equal(expectedMessage, viewModel.Messages);
-        }
+        // Number of messages should be trimmed to the limit
+        Assert.Equal(MessageDisplayViewModel.MaxQueueSize, messages.Length);
     }
 }

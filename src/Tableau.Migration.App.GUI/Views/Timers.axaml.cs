@@ -1,4 +1,4 @@
-// <copyright file="ProgressEventArgs.cs" company="Salesforce, Inc.">
+// <copyright file="Timers.axaml.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -15,25 +15,24 @@
 // limitations under the License.
 // </copyright>
 
-namespace Tableau.Migration.App.Core.Entities;
-using System;
+namespace Tableau.Migration.App.GUI.Views;
+using Avalonia.Controls;
+using Microsoft.Extensions.DependencyInjection;
+
+// using Avalonia;
+using Tableau.Migration.App.GUI.ViewModels;
 
 /// <summary>
-/// Definition of migration progress event messages.
+/// View for Tableau Server to Cloud User Mappings.
 /// </summary>
-public class ProgressEventArgs : EventArgs
+public partial class Timers : UserControl
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ProgressEventArgs" /> class.
+    /// Initializes a new instance of the <see cref="Timers" /> class.
     /// </summary>
-    /// <param name="message">The message.</param>
-    public ProgressEventArgs(string message)
+    public Timers()
     {
-        this.Message = message;
+        this.InitializeComponent();
+        this.DataContext = App.ServiceProvider?.GetRequiredService<TimersViewModel>();
     }
-
-    /// <summary>
-    /// Gets something.
-    /// </summary>
-    public string Message { get; }
 }

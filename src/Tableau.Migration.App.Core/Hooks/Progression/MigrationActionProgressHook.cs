@@ -42,6 +42,7 @@ namespace Tableau.Migration.App.Core.Hooks.Progression
         public Task<IMigrationActionResult?> ExecuteAsync(IMigrationActionResult ctx, CancellationToken cancel)
         {
             this.progressUpdater?.Update();
+
             return Task.FromResult<IMigrationActionResult?>(ctx);
         }
     }

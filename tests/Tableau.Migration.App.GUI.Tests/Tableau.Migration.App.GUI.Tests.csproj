@@ -39,6 +39,7 @@
   </ItemGroup>
 
     <ItemGroup>
+    <Folder Include="Models\"/>
       <Folder Include="src\" />
     </ItemGroup>
 

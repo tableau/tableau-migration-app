@@ -45,13 +45,18 @@ public partial class MessageDisplayViewModel : ViewModelBase
     /// Initializes a new instance of the <see cref="MessageDisplayViewModel"/> class.
     /// </summary>
     /// <param name="publisher">The message publisher.</param>
-    public MessageDisplayViewModel(IProgressMessagePublisher publisher)
+    /// <param name="migrationTimer">The migration timer.</param>
+    /// <param name="logger">The logger.</param>
+    public MessageDisplayViewModel(
+        IMigrationTimer migrationTimer,
+        IProgressMessagePublisher publisher,
+        ILogger<MessageDisplayViewModel>? logger)
     {
         this.Messages = "Migration output will be displayed here.";
         this.publisher = publisher;
         this.messageQueue = new Queue<string>();
         this.publisher.OnProgressMessage += this.HandleProgressMessage;
-        this.logger = App.ServiceProvider?.GetRequiredService<ILogger<MessageDisplayViewModel>>();
+        this.logger = logger;
         this.ToggleDetailsCommand = new RelayCommand(this.ToggleDetails);
     }
 
@@ -110,14 +115,6 @@ public partial class MessageDisplayViewModel : ViewModelBase
 
     private void HandleProgressMessage(ProgressEventArgs progressEvent)
     {
-        // Skip the message if no associated action is present
-        if (progressEvent.Action == string.Empty)
-        {
-            return;
-        }
-
-        this.messageQueue.Enqueue($"{progressEvent.Action}");
-
         // Enqueue each line individually
         var splitMessages = progressEvent.Message.Split("\n");
         foreach (var message in splitMessages)
@@ -142,5 +139,6 @@ public partial class MessageDisplayViewModel : ViewModelBase
         }
 
         this.Messages = sb.ToString();
+        this.OnPropertyChanged(nameof(this.Messages));
     }
 }
