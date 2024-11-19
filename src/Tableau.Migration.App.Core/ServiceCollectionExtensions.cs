@@ -19,6 +19,7 @@ namespace Tableau.Migration.App.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tableau.Migration;
+using Tableau.Migration.App.Core.Entities;
 using Tableau.Migration.App.Core.Hooks.Mappings;
 using Tableau.Migration.App.Core.Hooks.Progression;
 using Tableau.Migration.App.Core.Interfaces;

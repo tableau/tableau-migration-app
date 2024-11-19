@@ -1,143 +1,156 @@
 <Window xmlns="https://github.com/avaloniaui"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:vm="clr-namespace:Tableau.Migration.App.GUI.ViewModels"
-	xmlns:enums="clr-namespace:Tableau.Migration.App.GUI.Models"
-	xmlns:local="clr-namespace:Tableau.Migration.App.GUI.Views"
-	xmlns:converters="clr-namespace:Tableau.Migration.App.GUI.Views.Converters"
-	mc:Ignorable="d"
-	x:Class="Tableau.Migration.App.GUI.Views.MainWindow"
-	x:DataType="vm:MainWindowViewModel"
-	Icon="avares://TableauMigrationApp/Assets/tableau-migration-app.ico"
-	Title="Tableau Migration App"
-	Width="820" Height="680"
-	MaxWidth="820"
-	Background="#F0F9F9"
-	SizeToContent="Height"
-	CanResize="True">
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:vm="clr-namespace:Tableau.Migration.App.GUI.ViewModels"
+  xmlns:enums="clr-namespace:Tableau.Migration.App.GUI.Models"
+  xmlns:local="clr-namespace:Tableau.Migration.App.GUI.Views"
+  xmlns:converters="clr-namespace:Tableau.Migration.App.GUI.Views.Converters"
+  mc:Ignorable="d"
+  x:Class="Tableau.Migration.App.GUI.Views.MainWindow"
+  x:DataType="vm:MainWindowViewModel"
+  Icon="avares://TableauMigrationApp/Assets/tableau-migration-app.ico"
+  Title="{x:Static local:ViewConstants.AppNameVersion}"
+  Width="774"
+  MinWidth="774"
+  Height="780"
+  Background="#F0F9F9"
+  CanResize="True">
 
-	<Window.Resources>
-		<converters:StringIsNullOrEmptyConverter x:Key="StringIsNullOrEmptyConverter" />
-	</Window.Resources>
+  <Window.Resources>
+    <converters:StringIsNullOrEmptyConverter x:Key="StringIsNullOrEmptyConverter" />
+  </Window.Resources>
 
-	<ScrollViewer HorizontalScrollBarVisibility="Auto"
-		  VerticalScrollBarVisibility="Auto">
+  <ScrollViewer HorizontalScrollBarVisibility="Auto"
+      VerticalScrollBarVisibility="Auto">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+    <StackPanel MinWidth="750" MaxWidth="1200" Grid.Column="1" Grid.Row="0" Margin="10">
 
-		<StackPanel Width="800" Margin="10">
+      <!-- Configurations -->
+      <StackPanel IsEnabled="{Binding !IsMigrating}">
+        <TextBlock
+          Text="Migration Authentication"
+          FontWeight="Bold"
+          FontSize="16"
+          HorizontalAlignment="Center" />
 
-			<!-- Configurations -->
-			<StackPanel IsEnabled="{Binding !IsMigrating}">
-				<TextBlock
-					Text="Migration Authentication"
-					FontWeight="Bold"
-					FontSize="16"
-					HorizontalAlignment="Center" />
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
 
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
+          <!-- Tableau Server and Cloud Credentials -->
+          <Border
+            Grid.Column="0"
+            Margin="5"
+            CornerRadius="8"
+            Padding="10"
+            BorderThickness="0"
+            Background="#E2F0F1" >
 
-					<!-- Tableau Server and Cloud Credentials -->
-					<Border
-						Grid.Column="0"
-						Margin="5"
-						CornerRadius="8"
-						Padding="10"
-						BorderThickness="0"
-						Background="#E2F0F1" >
+            <local:AuthCredentials
+            Name="ServerCredentials"
+            DataContext="{Binding ServerCredentialsVM}" />
+          </Border>
+          <Border
+            Grid.Column="1"
+            Margin="5"
+            CornerRadius="8"
+            Padding="10"
+            BorderThickness="0"
+            Background="#E2F0F1" >
+            <local:AuthCredentials
+            Name="CloudCredentials"
+            TableauEnv="TableauCloud"
+            DataContext="{Binding CloudCredentialsVM}" />
+          </Border>
+        </Grid>
 
-						<local:AuthCredentials
-						Name="ServerCredentials"
-						DataContext="{Binding ServerCredentialsVM}" />
-					</Border>
-					<Border
-						Grid.Column="1"
-						Margin="5"
-						CornerRadius="8"
-						Padding="10"
-						BorderThickness="0"
-						Background="#E2F0F1" >
-						<local:AuthCredentials
-						Name="CloudCredentials"
-						TableauEnv="TableauCloud"
-						DataContext="{Binding CloudCredentialsVM}" />
-					</Border>
-				</Grid>
+        <!-- User Mappings -->
+        <TextBlock
+          Text="Migration Username Configuration"
+          HorizontalAlignment="Center"
+          FontSize="16"
+          FontWeight="Bold"
+          Margin="0,0,0,5"
+          Grid.Column="1" />
+        <Border
+          Margin="5"
+          CornerRadius="8"
+          Padding="10"
+          BorderThickness="0"
+          Background="#E7EEEE" >
+          <local:UserMappings
+            Margin="2"
+            DataContext="{Binding UserMappingsVM}" />
+        </Border>
 
-				<!-- User Mappings -->
-				<TextBlock
-					Text="Migration Username Configuration"
-					HorizontalAlignment="Center"
-					FontSize="16"
-					FontWeight="Bold"
-					Margin="0,0,0,5"
-					Grid.Column="1" />
-				<Border
-					Margin="5"
-					CornerRadius="8"
-					Padding="10"
-					BorderThickness="0"
-					Background="#E7EEEE" >
-					<local:UserMappings
-						Margin="2"
-						DataContext="{Binding UserMappingsVM}" />
-				</Border>
+      </StackPanel>
+      <!-- Run Migration Button -->
+      <StackPanel
+          Orientation="Horizontal"
+          Margin="0,5,0,0"
+          IsVisible="{Binding !IsMigrating}"
+          IsEnabled="{Binding !IsMigrating}"
+          HorizontalAlignment="Center">
+        <local:SplitButton
+          PrimaryCommand="{Binding RunMigrationCommand}"
+          SecondaryCommand="{Binding ResumeMigrationCommand}"
+          PrimaryButtonText="Start Migration"
+          SecondaryButtonText="Resume Migration"/>
+        <local:HelpButton
+            HelpText="{x:Static local:ViewConstants.MigrationButtonHelpText}" />
+      </StackPanel>
+      <Button
+        Content="Stop Migration"
+        HorizontalAlignment="Center"
+        IsVisible="{Binding IsMigrating}"
+        Click="StopMigrationOnClick"
+        IsEnabled="{Binding IsMigrating}"
+        VerticalAlignment="Bottom" />
+      <TextBlock
+          Margin="0,0,0,0"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Bottom"
+          IsVisible="{Binding IsNotificationVisible}"
+          Text="{Binding NotificationMessage}"
+          Foreground="{Binding NotificationColor}"/>
 
-			</StackPanel>
-			<!-- Run Migration Button -->
+      <!-- Progress Bar -->
+      <Grid
+          Margin="0,10,0,0"
+          IsVisible="{Binding IsMigrating}">
+        <ProgressBar
+          Name="progressBar"
+          Minimum="0"
+          Maximum="{Binding NumMigrationStates}"
+          Height="20"
+          Width="300"
+          Value="{Binding CurrentMigrationStateIndex}"/>
 
-			<Separator Margin="0,0,0,10" />
-			<StackPanel Orientation="Horizontal" IsVisible="{Binding !IsMigrating}" IsEnabled="{Binding !IsMigrating}" HorizontalAlignment="Center" Spacing="10">
-				<local:SplitButton
-					PrimaryCommand="{Binding RunMigrationCommand}"
-					SecondaryCommand="{Binding ResumeMigrationCommand}"
-					PrimaryButtonText="Start Migration"
-					SecondaryButtonText="Resume Migration" />
-			</StackPanel>
+        <!-- TextBlock overlay on the progress bar to display current state -->
+        <TextBlock
+          Name="progressStateText"
+          VerticalAlignment="Center"
+          HorizontalAlignment="Center"
+          Text="{Binding CurrentMigrationMessage}"
+          FontSize="16"
+          Foreground="Black" />
+      </Grid>
 
-			<Button
-				Content="Stop Migration"
-				HorizontalAlignment="Center"
-				IsVisible="{Binding IsMigrating}"
-				Click="StopMigrationOnClick"
-				IsEnabled="{Binding IsMigrating}"
-				VerticalAlignment="Bottom" />
+      <!-- Migration Progress Status -->
+      <local:MessageDisplay Margin="0,10,0,0"/>
 
-			<TextBlock
-				HorizontalAlignment="Center"
-				VerticalAlignment="Bottom"
-				IsVisible="{Binding !IsMigrating}"
-				Text="{Binding NotificationMessage}"
-				Foreground="{Binding NotificationColor}"/>
-
-			<!-- Progress Bar -->
-			<Grid IsVisible="{Binding IsMigrating}">
-				<ProgressBar
-					Name="progressBar"
-					Minimum="0"
-					Maximum="{Binding NumMigrationStates}"
-					Height="20"
-					Width="300"
-					Value="{Binding CurrentMigrationStateIndex}"/>
-
-				<!-- TextBlock overlay on the progress bar to display current state -->
-				<TextBlock
-					Name="progressStateText"
-					VerticalAlignment="Center"
-					HorizontalAlignment="Center"
-					Text="{Binding CurrentMigrationMessage}"
-					FontSize="16"
-					Foreground="Black" />
-			</Grid>
-
-			<!-- Migration Progress Status -->
-			<local:MessageDisplay
-			DataContext="{Binding MessageDisplayVM}"/>
-
-		</StackPanel>
-
-	</ScrollViewer>
+    </StackPanel>
+    </Grid>
+  </ScrollViewer>
 </Window>

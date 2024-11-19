@@ -26,7 +26,8 @@ Currently we have the following defined service interfaces:
 The top level view used to hold all visible elements is located in the [MainWindow](/api/Tableau.Migration.App.GUI.Views.MainWindow.html) view.
 
 ## View Models
-All ViewModels are named based on their appropriate View name. i.e. the [MainWindow](/api/Tableau.Migration.App.GUI.Views.MainWindow.html) view has an associatedv [MainWindowViewModel](api/Tableau.Migration.App.GUI.ViewModels.MainWindowViewModel.html).
+All ViewModels are named based on their appropriate View name. i.e. the [MainWindow](/api/Tableau.Migration.App.GUI.Views.MainWindow.html) view has an associatedv [MainWindowViewModel](/api/Tableau.Migration.App.GUI.ViewModels.MainWindowViewModel.html)
+
 
 There exist 2 abstract classes defined in the ViewModel folder:
 - [**ViewModelBase**](/api/Tableau.Migration.App.GUI.ViewModels.ViewModelBase.html) - The base class of a ViewModel.

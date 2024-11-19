@@ -29,16 +29,5 @@ public partial class UserDomainMapping : UserControl
     public UserDomainMapping()
     {
         this.InitializeComponent();
-
-        // Attach an event callback when to Checkbox evetns to disable the Textbox
-        this.DisableMapping.PropertyChanged += this.CheckBox_PropertyChanged;
-    }
-
-    private void CheckBox_PropertyChanged(object? sender, Avalonia.AvaloniaPropertyChangedEventArgs e)
-    {
-        if (e.Property == CheckBox.IsCheckedProperty)
-        {
-            this.UserCloudDomain.IsEnabled = !this.DisableMapping.IsChecked ?? true;
-        }
     }
 }

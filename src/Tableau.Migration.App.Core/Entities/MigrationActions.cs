@@ -29,6 +29,8 @@ using Tableau.Migration.Engine.Pipelines;
 /// </summary>
 public class MigrationActions
 {
+    private static List<string> actionsCache = new List<string>();
+
     /// <summary>
     /// Gets the list of actions available from the Tableau Migration SDK and the order in which they are migrated.
     /// </summary>
@@ -36,12 +38,37 @@ public class MigrationActions
     {
         get
         {
-            var result = ServerToCloudMigrationPipeline
+            if (actionsCache.Count > 0)
+            {
+                return actionsCache;
+            }
+
+            actionsCache = ServerToCloudMigrationPipeline
                 .ContentTypes
                 .Select(
                     contentType => GetActionTypeName(contentType.ContentType)).ToList();
-            return result;
+            actionsCache.Insert(0, "Setup");
+
+            return actionsCache;
         }
+    }
+
+    /// <summary>
+    /// Get the index of a migration action.
+    /// </summary>
+    /// <param name="action">The migration action name.</param>
+    /// <returns>The migration index for the provided action.</returns>
+    public static int GetActionIndex(string action)
+    {
+        for (int i = 0; i < Actions.Count; i++)
+        {
+            if (action == Actions[i])
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     /// <summary>

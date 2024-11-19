@@ -1,4 +1,4 @@
-// <copyright file="ProgressUpdaterTests.cs" company="Salesforce, Inc.">
+// <copyright file="ProgressUpdater.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -42,7 +42,7 @@ public class ProgressUpdaterTests
         progressUpdater.Update();
 
         Assert.Equal(0, progressUpdater.CurrentMigrationStateIndex);
-        Assert.Equal("User", progressUpdater.CurrentMigrationStateName);
+        Assert.Equal("Setup", progressUpdater.CurrentMigrationStateName);
         progressUpdater.CurrentMigrationStateIndex = ProgressUpdater.NumMigrationStates + 1;
         Assert.Equal(0, progressUpdater.CurrentMigrationStateIndex); // Don't update if state index is out of bounds
 
@@ -62,5 +62,44 @@ public class ProgressUpdaterTests
         progressUpdater.Update();
 
         Assert.True(eventFired);
+    }
+
+    [Fact]
+    public void ProgressUpdater_Reset_ShouldSetStateIndex()
+    {
+        var progressUpdater = new ProgressUpdater();
+        Assert.Equal(-1, progressUpdater.CurrentMigrationStateIndex);
+        progressUpdater.Update();
+        Assert.Equal(0, progressUpdater.CurrentMigrationStateIndex);
+        progressUpdater.Reset();
+        Assert.Equal(-1, progressUpdater.CurrentMigrationStateIndex);
+    }
+
+    [Fact]
+    public void ProgressUpdater_MigrationMessageEmpty_WhenNotMigrating()
+    {
+        var progressUpdater = new ProgressUpdater();
+        Assert.Empty(progressUpdater.CurrentMigrationMessage);
+    }
+
+    [Fact]
+    public void ProgressUpdater_MigrationMessageNotEmpty_WhenMigrating()
+    {
+        var progressUpdater = new ProgressUpdater();
+        progressUpdater.Update();
+        Assert.NotEmpty(progressUpdater.CurrentMigrationMessage);
+        Assert.Equal(progressUpdater.CurrentMigrationStateName, progressUpdater.CurrentMigrationMessage);
+    }
+
+    [Fact]
+    public void ProgressUpdater_MigrationMessageFinished_WhenMigrationCompleted()
+    {
+        var progressUpdater = new ProgressUpdater();
+        for (int i = 0; i <= ProgressUpdater.NumMigrationStates; i++)
+        {
+            progressUpdater.Update();
+        }
+
+        Assert.Equal("Migration Finished.", progressUpdater.CurrentMigrationMessage);
     }
 }

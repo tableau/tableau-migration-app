@@ -27,9 +27,11 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Tableau.Migration.App.Core;
 using Tableau.Migration.App.Core.Hooks.Mappings;
 using Tableau.Migration.App.Core.Interfaces;
+using Tableau.Migration.App.GUI;
 using Tableau.Migration.App.GUI.Models;
 using Tableau.Migration.App.GUI.Services.Implementations;
 using Tableau.Migration.App.GUI.Services.Interfaces;
@@ -39,12 +41,27 @@ using Tableau.Migration.App.GUI.Views;
 /// <summary>
 /// Main application definition.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public partial class App : Application
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="App"/> class.
+    /// Constructor.
+    /// </summary>
+    public App()
+    {
+        this.Name = Constants.AppName;
+    }
+
     /// <summary>
     /// Gets the service provider.
     /// </summary>
     public static IServiceProvider? ServiceProvider { get; private set; }
+
+    /// <summary>
+    /// Gets the application name and version number.
+    /// </summary>
+    public string AppNameVersion { get => Constants.AppNameVersion; }
 
     /// <summary>
     /// Initializes the app.
@@ -52,6 +69,7 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        this.DataContext = this;
     }
 
     /// <summary>
@@ -124,14 +142,18 @@ public partial class App : Application
     /// </summary>
     private void ConfigureServices(IServiceCollection services)
     {
+        string logTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}";
         Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
+            .Enrich.FromLogContext()
+            .WriteTo.Console(
+            outputTemplate: logTemplate)
             .WriteTo.File(
                 "Logs/migration-app.log",
                 fileSizeLimitBytes: 20 * 1024 * 1024, // 20 MB file size limit
                 rollOnFileSizeLimit: true,
                 retainedFileCountLimit: 10,
-                shared: true)
+                shared: true,
+                outputTemplate: logTemplate)
             .CreateLogger();
 
         services.AddLogging(loggingBuilder =>
@@ -154,6 +176,12 @@ public partial class App : Application
 
         services.AddSingleton<IProgressUpdater, ProgressUpdater>();
         services.AddSingleton<IProgressMessagePublisher, ProgressMessagePublisher>();
+        services.AddSingleton<IMigrationTimer, MigrationTimer>();
+        services.AddScoped<MessageDisplayViewModel>();
+        services.AddScoped<TimersViewModel>();
+        services.AddScoped<UserMappingsViewModel>();
+        services.AddScoped<UserDomainMappingViewModel>();
+        services.AddScoped<UserFileMappingsViewModel>();
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<MainWindow>(provider =>
         {

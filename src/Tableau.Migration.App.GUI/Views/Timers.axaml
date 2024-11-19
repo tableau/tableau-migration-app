@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+	     xmlns:AvalonEdit="using:AvaloniaEdit"
+	     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	     xmlns:vm="clr-namespace:Tableau.Migration.App.GUI.ViewModels"
+	     xmlns:converters="clr-namespace:Tableau.Migration.App.GUI.Views.Converters"
+	     xmlns:local="clr-namespace:Tableau.Migration.App.GUI.Views"
+	     x:Name="root"
+	     x:Class="Tableau.Migration.App.GUI.Views.Timers"
+	     x:DataType="vm:TimersViewModel">
+  <UserControl.Resources>
+    <converters:StringIsNullOrEmptyToBooleanConverter x:Key="StringIsNullOrEmptyToBooleanConverter"/>
+  </UserControl.Resources>
+
+  <Grid Margin="0,8,10,0">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+    <TextBlock
+	IsVisible="{Binding TotalElapsedTime, Converter={StaticResource StringIsNullOrEmptyToBooleanConverter}}"
+	Grid.Column="0" Text="⏳" />
+    <StackPanel
+	IsVisible="{Binding ShowActionTimer}"
+	Margin="0,0,10,0"
+	Grid.Column="1"
+	Orientation="Horizontal">
+      <TextBlock Text="{Binding CurrentActionLabel}" />
+      <TextBlock Text="{Binding CurrentActionTime}" />
+    </StackPanel>
+    <StackPanel
+	Grid.Column="2"
+	IsVisible="{Binding TotalElapsedTime, Converter={StaticResource StringIsNullOrEmptyToBooleanConverter}}"
+	Orientation="Horizontal">
+      <TextBlock Text="Total Elapsed: " />
+      <TextBlock Text="{Binding TotalElapsedTime}" />
+    </StackPanel>
+  </Grid>
+</UserControl>

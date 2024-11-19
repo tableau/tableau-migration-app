@@ -1,4 +1,4 @@
-// <copyright file="DictionaryUserMappingTests.cs" company="Salesforce, Inc.">
+// <copyright file="DictionaryUserMapping.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -15,7 +15,7 @@
 // limitations under the License.
 // </copyright>
 
-namespace Tableau.Migration.App.Core.Tests.Hooks.Mappings;
+namespace DictionaryUserMappingTests;
 
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -32,7 +32,6 @@ public class DictionaryUserMappingTests
     [Fact]
     public async Task MapAsync_ShouldMapUserDefinition_WhenDictionaryEntryExists()
     {
-        // Setup
         const string sourceUserName = "testUsername";
         const string destinationUserName = "TestUser@destination.com";
         Dictionary<string, string> userMappings =
@@ -55,17 +54,14 @@ public class DictionaryUserMappingTests
         // Apply the mapping to the user context
         var result = await mapping.MapAsync(userMappingContext, default);
 
-        // Assert
         Assert.NotNull(result);
 
-        // User should be mapped to new definition from dictionary
         Assert.Equal(destinationUserName, result.MappedLocation.ToString());
     }
 
     [Fact]
     public async Task MapAsync_ShouldNotMapUserDefinition_WhenDictionaryEntryDoesNotExist()
     {
-        // Setup
         const string sourceUserName = "testUsername";
         const string destinationUserName = "TestUser@destination.com";
         Dictionary<string, string> userMappings =
@@ -88,10 +84,39 @@ public class DictionaryUserMappingTests
         // Apply the mapping to the user context
         var result = await mapping.MapAsync(userMappingContext, default);
 
-        // Assert
         Assert.NotNull(result);
 
-        // Mapping for user is unaffected
+        Assert.Equal("local", result.MappedLocation.ToString());
+    }
+
+    [Fact]
+    public async Task MapAsync_NoOpOnIncorrectEmailFormatting()
+    {
+        const string sourceUserName = "testUsername";
+        const string destinationUserName = "NonEmailFormatUsername";
+        Dictionary<string, string> userMappings =
+            new Dictionary<string, string> { { sourceUserName, destinationUserName } };
+        var optionsMock = new Mock<IMigrationPlanOptionsProvider<DictionaryUserMappingOptions>>();
+        optionsMock.Setup(o => o.Get()).Returns(new DictionaryUserMappingOptions { UserMappings = userMappings });
+
+        var mapping = new DictionaryUserMapping(
+            optionsMock.Object,
+            Mock.Of<ISharedResourcesLocalizer>(),
+            Mock.Of<ILogger<DictionaryUserMapping>>());
+
+        var contentItem = new Mock<IUser>();
+        contentItem.Setup(c => c.Name).Returns(sourceUserName);
+
+        var userMappingContext = new ContentMappingContext<IUser>(
+            contentItem.Object,
+            new ContentLocation("local"));
+
+        // Apply the mapping to the user context
+        var result = await mapping.MapAsync(userMappingContext, default);
+
+        Assert.NotNull(result);
+
+        // User mapping will not have changed due to invalid destination formatting
         Assert.Equal("local", result.MappedLocation.ToString());
     }
 }

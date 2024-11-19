@@ -31,21 +31,14 @@ public partial class UserMappingsViewModel
     /// <summary>
     /// Initializes a new instance of the <see cref="UserMappingsViewModel" /> class.
     /// </summary>
-    /// <param name="emailOptions">Email Domain options to be used for setting Default domain hook.</param>
-    /// <param name="dictionaryUserMappingOptions">The User Mapping Options.</param>
-    /// <param name="filePicker">The filepicker.</param>
-    /// <param name="csvParser">The CSV parser.</param>
+    /// <param name="userDomainMappingVM">The User Domain Mapping ViewModel.</param>
+    /// <param name="userFileMappingsVM">The User File Mapping View Model.</param>
     public UserMappingsViewModel(
-        IOptions<EmailDomainMappingOptions> emailOptions,
-        IOptions<DictionaryUserMappingOptions> dictionaryUserMappingOptions,
-        IFilePicker filePicker,
-        ICsvParser csvParser)
+        UserDomainMappingViewModel userDomainMappingVM,
+        UserFileMappingsViewModel userFileMappingsVM)
     {
-        this.UserDomainMappingVM = new UserDomainMappingViewModel(emailOptions);
-        this.UserFileMappingsVM = new UserFileMappingsViewModel(
-            dictionaryUserMappingOptions,
-            filePicker,
-            csvParser);
+        this.UserDomainMappingVM = userDomainMappingVM;
+        this.UserFileMappingsVM = userFileMappingsVM;
     }
 
     /// <summary>
@@ -62,6 +55,7 @@ public partial class UserMappingsViewModel
     public override void ValidateAll()
     {
         this.UserDomainMappingVM.ValidateAll();
+        this.UserFileMappingsVM.ValidateAll();
     }
 
     /// <inheritdoc/>
@@ -69,7 +63,8 @@ public partial class UserMappingsViewModel
     {
         return
             base.GetErrorCount()
-            + this.UserDomainMappingVM.GetErrorCount();
+            + this.UserDomainMappingVM.GetErrorCount()
+            + this.UserFileMappingsVM.GetErrorCount();
     }
 
     /// <inheritdoc/>
@@ -78,6 +73,7 @@ public partial class UserMappingsViewModel
         List<string> errors = new List<string>();
         errors.AddRange(base.GetErrors(propertyName).Cast<string>());
         errors.AddRange(this.UserDomainMappingVM.GetErrors(propertyName).Cast<string>());
+        errors.AddRange(this.UserFileMappingsVM.GetErrors(propertyName).Cast<string>());
         return errors;
     }
 }

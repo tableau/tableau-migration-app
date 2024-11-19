@@ -59,14 +59,7 @@ public partial class TokenDetails : UserControl
 
         this.TokenNameLabel.Text = $"Tableau {env} PAT Name";
         this.TokenSecretLabel.Text = $"Tableau {env} PAT Secret";
-        this.InfoHelp.HelpText =
-            $"Personal Access Tokens (PATs) are used for authentication."
-            + Environment.NewLine +
-            "Enter the Personal Access Token Name."
-            + Environment.NewLine +
-            "Then, provide the Personal Access Token."
-            + Environment.NewLine +
-            $"Tokens can be managed in your Tableau {env} account's user settings.";
+        this.InfoHelp.HelpText = string.Format(ViewConstants.TokenHelpTextTemplate, env);
         this.InfoHelp.DetailsUrl = "https://help.tableau.com/current/online/en-us/security_personal_access_tokens.htm";
     }
 }

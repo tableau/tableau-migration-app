@@ -53,6 +53,11 @@ public interface IProgressMessagePublisher
         /// Error message status.
         /// </summary>
         Error,
+
+        /// <summary>
+        /// Unknown message status.
+        /// </summary>
+        Unknown,
     }
 
     /// <summary>
@@ -95,7 +100,6 @@ public interface IProgressMessagePublisher
     /// <summary>
     /// Publish progress message of current Migration Action with its corresponding status messages.
     /// </summary>
-    /// <param name="action">The action.</param>
     /// <param name="message">The message.</param>
-    void PublishProgressMessage(string action, string message);
+    void PublishProgressMessage(string message);
 }
