@@ -18,10 +18,10 @@
 namespace Tableau.Migration.App.GUI.ViewModels;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
-using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;

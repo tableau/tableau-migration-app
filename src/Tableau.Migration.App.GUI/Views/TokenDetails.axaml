@@ -16,6 +16,7 @@
 
     <TextBox
 	Name="TokenName"
+	MaxWidth="{x:Static local:Constants.MaxTextboxWidth}"
 	IsEnabled="{Binding IsEnabled, ElementName=root}"
 	Text="{Binding TokenName, Mode=TwoWay}"
 	Margin="0,0,0,3"
@@ -25,6 +26,7 @@
     <TextBlock Name="TokenSecretLabel" Margin="0,0,0,3"/>
     <TextBox
 	Name="TokenSecret"
+	MaxWidth="{x:Static local:Constants.MaxTextboxWidth}"
 	Classes="revealPasswordButton"
 	Text="{Binding TokenSecret, Mode=TwoWay}"
 	PasswordChar="*"

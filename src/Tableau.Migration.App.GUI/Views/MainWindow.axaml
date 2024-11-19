@@ -108,7 +108,7 @@
 					PrimaryButtonText="Start Migration"
 					SecondaryButtonText="Resume Migration"/>
 				<local:HelpButton
-					HelpText="START MIGRATION&#10;&#9;will start a new migration from Tableau Server to Tableau Cloud.&#10;&#10;RESUME MIGRATION&#10;&#9;allows you to continue a previously started migration. To resume, you need to select a manifest file that contains the saved migration state. This enables the migration to continue from where it last stopped, using the progress saved in the manifest file."/>
+				    HelpText="{x:Static local:Constants.MigrationButtonHelpText}" />
 			</StackPanel>
 			<Button
 				Content="Stop Migration"

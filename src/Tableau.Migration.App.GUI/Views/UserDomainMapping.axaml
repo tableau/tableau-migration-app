@@ -14,12 +14,14 @@
       <TextBlock Name="Label" Text="Tableau Server to Cloud Default User Domain"/>
       <local:HelpButton
 	  Name="InfoHelp"
-	  HelpText="Tableau Cloud usernames must be in an email format. Enter a domain to be appended to usernames when migrating users from Tableau Server to Tableau Cloud if a user does not already have an associated email. The domain will be used to create one in the format: username@&lt;domain&gt;.&#10;&#10;For example:&#10; - 'user1' with domain `domain.com` will become 'user1@domain.com'.&#10; - Users with existing emails, like 'user2@existingdomain.com', will not be affected."/>
+	  HelpText="{x:Static local:Constants.UserDomainMappingHelpText}" />
     </StackPanel>
 
     <!-- Input -->
     <TextBox
 	Name="UserCloudDomain"
+	HorizontalAlignment="Left"
+	Width="{x:Static local:Constants.MaxTextboxWidth}"
 	Text="{Binding CloudUserDomain, Mode=TwoWay}"
 	Watermark="User Cloud Domain"/>
 

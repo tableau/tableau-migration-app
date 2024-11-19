@@ -16,11 +16,10 @@
       </Grid.ColumnDefinitions>
       <local:UserDomainMapping
 	  Grid.Column="0"
-	  Margin="2"
 	  DataContext="{Binding UserDomainMappingVM}" />
       <local:UserFileMappings
-	  Grid.Column="1"
-	  Margin="2"
+	  Margin="15,0,0,0"
+	  Grid.Column="2"
 	  DataContext="{Binding UserFileMappingsVM}"/>
     </Grid>
   </StackPanel>
