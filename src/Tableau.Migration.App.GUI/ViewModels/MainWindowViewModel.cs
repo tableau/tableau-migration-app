@@ -52,7 +52,6 @@ public partial class MainWindowViewModel : ViewModelBase
     private IProgressMessagePublisher publisher;
     private IMigrationTimer migrationTimer;
     private string notificationMessage = string.Empty;
-    private string notificationDetailsMessage = string.Empty;
     private CancellationTokenSource? cancellationTokenSource = null;
     private IImmutableSolidColorBrush notificationColor = Brushes.Black;
     private ILogger<MainWindowViewModel>? logger;
@@ -146,25 +145,30 @@ public partial class MainWindowViewModel : ViewModelBase
             {
                 this.SetProperty(ref this.isMigrating, value);
             }
+
+            this.OnPropertyChanged(nameof(this.IsNotificationVisible));
         }
     }
 
     /// <summary>
-    /// Gets or Sets the notification message at the bottom of the main window.
+    /// Gets or Sets the notification message under the run migration button.
     /// </summary>
     public string NotificationMessage
     {
         get => this.notificationMessage;
-        set => this.SetProperty(ref this.notificationMessage, value);
+        set
+        {
+            this.SetProperty(ref this.notificationMessage, value);
+            this.OnPropertyChanged(nameof(this.IsNotificationVisible));
+        }
     }
 
     /// <summary>
-    /// Gets or Sets the notification message at the bottom of the main window.
+    /// Gets a value indicating whether notification message should be visible.
     /// </summary>
-    public string NotificationDetailsMessage
+    public bool IsNotificationVisible
     {
-        get => this.notificationDetailsMessage;
-        set => this.SetProperty(ref this.notificationDetailsMessage, value);
+        get => !string.IsNullOrEmpty(this.NotificationMessage) && !this.IsMigrating;
     }
 
     /// <summary>
@@ -374,7 +378,6 @@ public partial class MainWindowViewModel : ViewModelBase
     private void SetNotification(string message, string? detailsMessage = null, IImmutableSolidColorBrush? color = null)
     {
         this.NotificationMessage = message;
-        this.NotificationDetailsMessage = detailsMessage ?? string.Empty;
         this.NotificationColor = color ?? Brushes.Black;
     }
 

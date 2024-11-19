@@ -62,6 +62,7 @@ public partial class UserMappingsViewModel
     public override void ValidateAll()
     {
         this.UserDomainMappingVM.ValidateAll();
+        this.UserFileMappingsVM.ValidateAll();
     }
 
     /// <inheritdoc/>

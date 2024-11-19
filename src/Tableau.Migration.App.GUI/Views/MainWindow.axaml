@@ -96,18 +96,20 @@
 
 			</StackPanel>
 			<!-- Run Migration Button -->
-
-			<Separator Margin="0,0,0,10" />
-			<StackPanel Orientation="Horizontal" IsVisible="{Binding !IsMigrating}" IsEnabled="{Binding !IsMigrating}" HorizontalAlignment="Center">
+			<StackPanel
+			    Orientation="Horizontal"
+			    Margin="0,5,0,0"
+			    IsVisible="{Binding !IsMigrating}"
+			    IsEnabled="{Binding !IsMigrating}"
+			    HorizontalAlignment="Center">
 				<local:SplitButton
 					PrimaryCommand="{Binding RunMigrationCommand}"
 					SecondaryCommand="{Binding ResumeMigrationCommand}"
 					PrimaryButtonText="Start Migration"
 					SecondaryButtonText="Resume Migration"/>
 				<local:HelpButton
-					HelpText="START MIGRATION;&#10;&#9;will start a new migration from Tableau Server to Tableau Cloud.&#10;&#10;RESUME MIGRATION;&#10;&#9;allows you to continue a previously started migration. To resume, you need to select a manifest file that contains the saved migration state. This enables the migration to continue from where it last stopped, using the configurations and progress saved in the manifest file."/>
+					HelpText="START MIGRATION&#10;&#9;will start a new migration from Tableau Server to Tableau Cloud.&#10;&#10;RESUME MIGRATION&#10;&#9;allows you to continue a previously started migration. To resume, you need to select a manifest file that contains the saved migration state. This enables the migration to continue from where it last stopped, using the progress saved in the manifest file."/>
 			</StackPanel>
-
 			<Button
 				Content="Stop Migration"
 				HorizontalAlignment="Center"
@@ -115,16 +117,18 @@
 				Click="StopMigrationOnClick"
 				IsEnabled="{Binding IsMigrating}"
 				VerticalAlignment="Bottom" />
-
 			<TextBlock
-				HorizontalAlignment="Center"
-				VerticalAlignment="Bottom"
-				IsVisible="{Binding !IsMigrating}"
-				Text="{Binding NotificationMessage}"
-				Foreground="{Binding NotificationColor}"/>
+			    Margin="0,0,0,0"
+			    HorizontalAlignment="Center"
+			    VerticalAlignment="Bottom"
+			    IsVisible="{Binding IsNotificationVisible}"
+			    Text="{Binding NotificationMessage}"
+			    Foreground="{Binding NotificationColor}"/>
 
 			<!-- Progress Bar -->
-			<Grid IsVisible="{Binding IsMigrating}">
+			<Grid
+			    Margin="0,10,0,0"
+			    IsVisible="{Binding IsMigrating}">
 				<ProgressBar
 					Name="progressBar"
 					Minimum="0"
@@ -144,7 +148,7 @@
 			</Grid>
 
 			<!-- Migration Progress Status -->
-			<local:MessageDisplay />
+			<local:MessageDisplay Margin="0,10,0,0"/>
 
 		</StackPanel>
 	  </Grid>

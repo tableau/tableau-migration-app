@@ -68,9 +68,7 @@ public class UserFileMappingsViewModelTests
 
         await viewModel.LoadUserFileCommand.ExecuteAsync(null);
 
-        Assert.Equal("Could not find file.", viewModel.CSVLoadStatus);
-        Assert.Equal(Brushes.Red, viewModel.CSVLoadStatusColor);
-        Assert.False(viewModel.IsUserMappingFileLoaded);
+        Assert.False(viewModel.IsUserMappingFileLoaded, "User mappings file should not be considered loaded if the csv file does not exist.");
     }
 
     [AvaloniaFact]
@@ -94,9 +92,7 @@ public class UserFileMappingsViewModelTests
 
         await viewModel.LoadUserFileCommand.ExecuteAsync(null);
 
-        Assert.Equal("Failed to load invalid.csv.\nInvalid CSV format.", viewModel.CSVLoadStatus);
-        Assert.Equal(Brushes.Red, viewModel.CSVLoadStatusColor);
-        Assert.False(viewModel.IsUserMappingFileLoaded);
+        Assert.False(viewModel.IsUserMappingFileLoaded, "User mapping should not be considered loaded if the CSV could not be parsed.");
     }
 
     [AvaloniaFact]

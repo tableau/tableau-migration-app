@@ -18,8 +18,10 @@
 namespace Tableau.Migration.App.GUI.ViewModels;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,7 +33,7 @@ using Tableau.Migration.App.GUI.Services.Interfaces;
 /// ViewModel for the URI Details component.
 /// </summary>
 public partial class UserFileMappingsViewModel
-    : ViewModelBase
+    : ValidatableViewModelBase
 {
     private readonly IOptions<DictionaryUserMappingOptions> dictionaryUserMappingOptions;
     private Dictionary<string, string> userMappings = new Dictionary<string, string>();
@@ -42,6 +44,7 @@ public partial class UserFileMappingsViewModel
     private bool isUserMappingFileLoaded = false;
     private IImmutableSolidColorBrush notificationColor = Brushes.Black;
     private IImmutableSolidColorBrush csvLoadStatusColor = Brushes.Black;
+    private ILogger<UserFileMappingsViewModel>? logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserFileMappingsViewModel" /> class.
@@ -57,6 +60,10 @@ public partial class UserFileMappingsViewModel
         this.dictionaryUserMappingOptions = dictionaryUserMappingOptions;
         this.filePicker = filePicker;
         this.csvParser = csvParser;
+        this.logger = App.ServiceProvider?
+            .GetService(
+                typeof(ILogger<UserFileMappingsViewModel>))
+            as ILogger<UserFileMappingsViewModel>;
     }
 
     /// <summary>
@@ -128,16 +135,12 @@ public partial class UserFileMappingsViewModel
 
             if (file is null)
             {
-                this.CSVLoadStatusColor = Brushes.Red;
-                this.CSVLoadStatus = "Could not find file.";
                 return;
             }
 
             string? localPath = file.TryGetLocalPath();
             if (localPath == null)
             {
-                this.CSVLoadStatusColor = Brushes.Red;
-                this.CSVLoadStatus = "Could not find file.";
                 return;
             }
 
@@ -145,34 +148,37 @@ public partial class UserFileMappingsViewModel
             {
                 this.userMappings = await this.csvParser.ParseAsync(localPath);
                 this.dictionaryUserMappingOptions.Value.UserMappings = this.userMappings;
+                this.RemoveError(nameof(this.LoadedCSVFilename), $"Failed to load file.");
                 this.LoadedCSVFilename = file.Name;
                 this.IsUserMappingFileLoaded = true;
                 this.CSVLoadStatusColor = Brushes.Black;
                 this.CSVLoadStatus = $"{this.userMappings.Count} user mappings loaded.";
             }
-            catch (InvalidDataException e)
+            catch (Exception e) when (e is InvalidDataException || e is CsvHelper.MissingFieldException || e is FileNotFoundException)
             {
-                this.CSVLoadStatusColor = Brushes.Red;
-                this.CSVLoadStatus = $"Failed to load {file.Name}.\n{e.Message}";
-                this.ClearCSVLoadedValues();
-            }
-            catch (FileNotFoundException)
-            {
-                this.CSVLoadStatusColor = Brushes.Red;
-                this.CSVLoadStatus = "Could not find file.";
-                this.CSVLoadStatusColor = Brushes.Red;
+                this.AddError(nameof(this.LoadedCSVFilename), $"Failed to load file.");
+                this.logger?.LogInformation($"Failed to load CSV Mapping: {file.Name}.\n{e.Message}");
                 this.ClearCSVLoadedValues();
             }
         }
         catch (Exception e)
         {
-            this.CSVLoadStatusColor = Brushes.Red;
-            this.CSVLoadStatus = $"Encountered an unexpected error with file picker.\n{e.Message}";
-            this.CSVLoadStatusColor = Brushes.Red;
+            this.AddError(nameof(this.LoadedCSVFilename), $"Failed to load file.");
+            this.logger?.LogError($"Encountered n unknown error loading a user mapping file.\n{e}");
             this.ClearCSVLoadedValues();
         }
 
         return;
+    }
+
+    /// <inheritdoc/>
+    public override void ValidateAll()
+    {
+        // Validate that a file is available if designaged that mapping has been loaded
+        if (this.IsUserMappingFileLoaded)
+        {
+            this.ValidateRequired(this.LoadedCSVFilename, nameof(this.LoadedCSVFilename), "Failed to load file.");
+        }
     }
 
     private void ClearCSVLoadedValues()

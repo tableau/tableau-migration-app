@@ -9,27 +9,35 @@
 	     x:DataType="vm:UserFileMappingsViewModel">
 
   <StackPanel>
-    <StackPanel Orientation="Horizontal">
-      <TextBlock Text="User Mapping File" VerticalAlignment="Center" />
+    <StackPanel Orientation="Horizontal"  Margin="0,0,0,3">
+      <!-- Label  -->
+      <TextBlock Text="User Mapping File" VerticalAlignment="Center"/>
       <local:HelpButton
 	  HelpText="Upload a CSV file defining Tableau Server to Tableau Cloud username mappings."/>
     </StackPanel>
     <StackPanel>
-      <DockPanel>
-	<Button Content="Load file"
-		Command="{Binding LoadUserFileCommand}"
-		IsVisible="{Binding !IsUserMappingFileLoaded}"
-		DockPanel.Dock="Right" />
-	<Button Content="X"
-		Command="{Binding UnLoadUserFileCommand}"
-		IsVisible="{Binding IsUserMappingFileLoaded}"
-		DockPanel.Dock="Right" />
+      <Grid>
+	<Grid.ColumnDefinitions>
+	  <ColumnDefinition Width="*" />
+	  <ColumnDefinition Width="Auto" />
+	</Grid.ColumnDefinitions>
 	<TextBox
+	    Grid.Column="0"
 	    IsEnabled="False"
 	    Text="{Binding LoadedCSVFilename, Mode=TwoWay}"
 	    VerticalAlignment="Center"
 	    Margin="0,0,5,0"/>
-      </DockPanel>
+	<DockPanel Grid.Column="1">
+	  <Button Content="Load file"
+		  Command="{Binding LoadUserFileCommand}"
+		  IsVisible="{Binding !IsUserMappingFileLoaded}"
+		  DockPanel.Dock="Top" />
+	  <Button Content="X"
+		  Command="{Binding UnLoadUserFileCommand}"
+		  IsVisible="{Binding IsUserMappingFileLoaded}"
+		  DockPanel.Dock="Top" />
+	</DockPanel>
+	</Grid>
 
       <!-- CSV Loading Status message -->
       <TextBlock

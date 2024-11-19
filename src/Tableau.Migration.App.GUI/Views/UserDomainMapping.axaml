@@ -10,7 +10,7 @@
 
   <StackPanel>
     <!-- Label -->
-    <StackPanel Orientation="Horizontal">
+    <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
       <TextBlock Name="Label" Text="Tableau Server to Cloud Default User Domain"/>
       <local:HelpButton
 	  Name="InfoHelp"
