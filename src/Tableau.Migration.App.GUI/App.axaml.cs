@@ -27,6 +27,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Tableau.Migration.App.Core;
 using Tableau.Migration.App.Core.Hooks.Mappings;
 using Tableau.Migration.App.Core.Interfaces;
@@ -39,6 +40,7 @@ using Tableau.Migration.App.GUI.Views;
 /// <summary>
 /// Main application definition.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public partial class App : Application
 {
     /// <summary>

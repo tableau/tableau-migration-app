@@ -1,4 +1,4 @@
-// <copyright file="DetailedMigrationResult.cs" company="Salesforce, Inc.">
+// <copyright file="AuthCredentialsViewModel.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -15,15 +15,23 @@
 // limitations under the License.
 // </copyright>
 
-namespace Tableau.Migration.App.Core.Entities;
+namespace AuthCredentialsViewModelTests;
 
-using System;
+using Avalonia.Headless.XUnit;
+using Moq;
 using System.Collections.Generic;
-using Tableau.Migration.App.Core.Interfaces;
+using System.Linq;
+using Tableau.Migration.App.GUI.Models;
+using Tableau.Migration.App.GUI.ViewModels;
+using Xunit;
 
-/// <summary>
-/// Represents the detailed result of a migration run.
-/// </summary>
-public record struct DetailedMigrationResult(
-    ITableauMigrationService.MigrationStatus status,
-    IReadOnlyList<Exception> errors);
+public class AuthCredentialsViewModelTests
+{
+    [AvaloniaFact]
+    public void Constructor_InitializesUriAndTokenDetailsViewModels()
+    {
+        var viewModel = new AuthCredentialsViewModel();
+        Assert.NotNull(viewModel.UriDetailsVM);
+        Assert.NotNull(viewModel.TokenDetailsVM);
+    }
+}

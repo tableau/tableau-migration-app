@@ -15,6 +15,8 @@
 // limitations under the License.
 // </copyright>
 
+namespace Tableau.Migration.App.Core.Entities;
+
 /// <summary>
 /// App settings to be loaded.
 /// </summary>

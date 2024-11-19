@@ -19,10 +19,12 @@ namespace Tableau.Migration.App.GUI;
 
 using Avalonia;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// The main program.
 /// </summary>
+[ExcludeFromCodeCoverage]
 internal sealed class Program
 {
     // Initialization code. Don't use any Avalonia, third-party APIs or any

@@ -53,6 +53,11 @@ public interface IProgressMessagePublisher
         /// Error message status.
         /// </summary>
         Error,
+
+        /// <summary>
+        /// Unknown message status.
+        /// </summary>
+        Unknown,
     }
 
     /// <summary>

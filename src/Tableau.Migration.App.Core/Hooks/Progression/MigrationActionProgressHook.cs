@@ -33,7 +33,7 @@ namespace Tableau.Migration.App.Core.Hooks.Progression
         /// Action hook set to trigger migration progress visualizations.
         /// </summary>
         /// <param name="progressUpdater">The object to track the migration progress.</param>
-        public MigrationActionProgressHook(IProgressUpdater? progressUpdater)
+        public MigrationActionProgressHook(IProgressUpdater? progressUpdater = null)
         {
             this.progressUpdater = progressUpdater;
         }

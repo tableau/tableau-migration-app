@@ -44,3 +44,9 @@ TestResults/
 
 # Docs
 _site
+
+# Coverage files
+CoreCoverage.xml
+GUICoverage.xml
+coverage-report/
+coverage.opencover.xml

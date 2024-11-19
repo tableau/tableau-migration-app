@@ -1,4 +1,4 @@
-// <copyright file="DetailedMigrationResult.cs" company="Salesforce, Inc.">
+// <copyright file="TestAppBuilder.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -15,15 +15,15 @@
 // limitations under the License.
 // </copyright>
 
-namespace Tableau.Migration.App.Core.Entities;
+using Avalonia;
+using Avalonia.Headless;
+using Avalonia.Markup.Xaml;
+using Tableau.Migration.App.GUI.Tests;
 
-using System;
-using System.Collections.Generic;
-using Tableau.Migration.App.Core.Interfaces;
+[assembly: AvaloniaTestApplication(typeof(TestAppBuilder))]
 
-/// <summary>
-/// Represents the detailed result of a migration run.
-/// </summary>
-public record struct DetailedMigrationResult(
-    ITableauMigrationService.MigrationStatus status,
-    IReadOnlyList<Exception> errors);
+public class TestAppBuilder
+{
+    public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>()
+        .UseHeadless(new AvaloniaHeadlessPlatformOptions());
+}

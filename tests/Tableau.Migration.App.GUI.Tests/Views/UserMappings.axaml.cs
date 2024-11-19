@@ -1,4 +1,4 @@
-// <copyright file="DetailedMigrationResult.cs" company="Salesforce, Inc.">
+// <copyright file="UserMappings.axaml.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -15,15 +15,24 @@
 // limitations under the License.
 // </copyright>
 
-namespace Tableau.Migration.App.Core.Entities;
+namespace UserMappingsTest;
 
-using System;
-using System.Collections.Generic;
-using Tableau.Migration.App.Core.Interfaces;
+using Avalonia.Controls;
+using Avalonia.Headless.XUnit;
+using Avalonia.Input;
+using Avalonia.Threading;
+using Moq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Tableau.Migration.App.GUI.Views;
+using Xunit;
 
-/// <summary>
-/// Represents the detailed result of a migration run.
-/// </summary>
-public record struct DetailedMigrationResult(
-    ITableauMigrationService.MigrationStatus status,
-    IReadOnlyList<Exception> errors);
+public class UserMappingsTests
+{
+    [AvaloniaFact]
+    public void UserMappings_ctr()
+    {
+        var um = new UserMappings();
+        Assert.NotNull(um);
+    }
+}

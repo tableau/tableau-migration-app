@@ -24,8 +24,16 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Generate coverage report
+        env:
+          PATH: $PATH:/home/runner/.dotnet/tools  # Adds dotnet tools to PATH
+          run: reportgenerator -reports:**/coverage.opencover.xml -targetdir:./coverage-report
+
       - name: Test
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet test --no-build --configuration Release --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
         env:
           TABLEAU_CLOUD_URL: ${{ secrets.TABLEAU_CLOUD_URL }}
           TABLEAU_CLOUD_SITE: ${{ secrets.TABLEAU_CLOUD_SITE }}
@@ -35,6 +43,7 @@ jobs:
           TABLEAU_SERVER_SITE: ""
           TABLEAU_SERVER_TOKEN_NAME: ${{ secrets.TABLEAU_SERVER_TOKEN_NAME }}
           TABLEAU_SERVER_TOKEN: ${{ secrets.TABLEAU_SERVER_TOKEN }}
+
 
       - name: Run dotnet format
         run: dotnet format --verbosity diagnostic

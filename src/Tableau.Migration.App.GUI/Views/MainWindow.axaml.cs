@@ -28,8 +28,6 @@ using Tableau.Migration.App.GUI.ViewModels;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private bool isDialogOpen = false;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow" /> class.
     /// </summary>
@@ -39,6 +37,11 @@ public partial class MainWindow : Window
         this.Closing += this.OnWindowClosing;
     }
 
+    /// <summary>
+    /// Gets a value indicating whether a stop migration confirmation dialog has been opened.
+    /// </summary>
+    public bool IsDialogOpen { get; private set; } = false;
+
     private async void StopMigrationOnClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         await this.HandleMigrationCancellation("Stop Migration", "Are you sure you want to stop the migration?");
@@ -46,7 +49,7 @@ public partial class MainWindow : Window
 
     private async void OnWindowClosing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
-        if (this.isDialogOpen)
+        if (this.IsDialogOpen)
         {
             e.Cancel = true;
             return;
@@ -57,11 +60,11 @@ public partial class MainWindow : Window
             if (viewModel.IsMigrating)
             {
                 e.Cancel = true;
-                this.isDialogOpen = true;
+                this.IsDialogOpen = true;
 
                 await this.HandleMigrationCancellation("Quit", "A migration is running! Are you sure you want to stop the migration and exit?");
 
-                this.isDialogOpen = false;
+                this.IsDialogOpen = false;
 
                 if (!viewModel.IsMigrating)
                 {

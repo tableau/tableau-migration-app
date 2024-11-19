@@ -43,11 +43,6 @@ public interface IProgressUpdater
     string CurrentMigrationMessage { get; }
 
     /// <summary>
-    /// Gets the total number of migration states available.
-    /// </summary>
-    static int NumMigrationStates { get; }
-
-    /// <summary>
     /// Updates the visual representation of the migration progress.
     /// </summary>
     void Update();

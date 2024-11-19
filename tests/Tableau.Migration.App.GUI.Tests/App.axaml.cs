@@ -1,4 +1,4 @@
-// <copyright file="DetailedMigrationResult.cs" company="Salesforce, Inc.">
+// <copyright file="App.axaml.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -15,15 +15,15 @@
 // limitations under the License.
 // </copyright>
 
-namespace Tableau.Migration.App.Core.Entities;
+namespace Tableau.Migration.App.GUI.Tests;
+using Avalonia;
+using Avalonia.Headless;
+using Avalonia.Markup.Xaml;
 
-using System;
-using System.Collections.Generic;
-using Tableau.Migration.App.Core.Interfaces;
-
-/// <summary>
-/// Represents the detailed result of a migration run.
-/// </summary>
-public record struct DetailedMigrationResult(
-    ITableauMigrationService.MigrationStatus status,
-    IReadOnlyList<Exception> errors);
+public class App : Application
+{
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+}
