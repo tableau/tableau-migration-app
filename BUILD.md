@@ -12,10 +12,6 @@ Requirements doc can be found [here](https://docs.google.com/document/d/1DXrYdTb
 * Tableau.Migration.App.GUI - Gui implementation using Avalonia framework.
 
 # Building
-## From Container
-The dockerfile is defined in the `Dockerfile` from the project root.
-```
-docker build .
 ```
 ## From Source Root
 ```

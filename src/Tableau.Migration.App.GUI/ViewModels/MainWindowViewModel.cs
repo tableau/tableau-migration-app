@@ -208,20 +208,11 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Callback to update fields when error state is changed.
-    /// </summary>
-    /// <param name="propertyName">The name of the property that changed.</param>
-    protected virtual void OnErrorsChanged(string propertyName)
-    {
-        this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-    }
-
-    /// <summary>
     /// Validates fields and starts the migration process if valid.
     /// </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    /// <returns>A <see cref="Task"/> representing the migration.</returns>
     [RelayCommand]
-    private async Task RunMigration()
+    public async Task RunMigration()
     {
         if (!this.AreFieldsValid())
         {
@@ -241,14 +232,24 @@ public partial class MainWindowViewModel : ViewModelBase
     /// <summary>
     /// Asynchronously resumes migration by selecting a manifest file and calling RunResumeMigration with the file path.
     /// </summary>
+    /// <returns>A <see cref="Task" /> representing the async migration.</returns>
     [RelayCommand]
-    private async Task ResumeMigration()
+    public async Task ResumeMigration()
     {
         var filePath = await this.SelectManifestFileAsync();
         if (filePath != null)
         {
             await this.RunMigration();
         }
+    }
+
+    /// <summary>
+    /// Callback to update fields when error state is changed.
+    /// </summary>
+    /// <param name="propertyName">The name of the property that changed.</param>
+    protected virtual void OnErrorsChanged(string propertyName)
+    {
+        this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
     }
 
     /// <summary>
