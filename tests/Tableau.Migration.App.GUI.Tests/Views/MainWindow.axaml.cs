@@ -1,4 +1,4 @@
-// <copyright file="AuthCredentials.axaml.cs" company="Salesforce, Inc.">
+// <copyright file="MainWindow.axaml.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -15,29 +15,22 @@
 // limitations under the License.
 // </copyright>
 
-namespace AuthCredentialsTest;
+namespace MainWindowTests;
 
-using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Avalonia.Threading;
+using Microsoft.Extensions.Logging;
 using Moq;
-using Tableau.Migration.App.GUI.Models;
+using Tableau.Migration.App.Core.Interfaces;
 using Tableau.Migration.App.GUI.Views;
 using Xunit;
 
-public class AuthCredentialsTest
+public class MainWindowTests
 {
     [AvaloniaFact]
-    public void SetProperties_ShouldUpdateSubProperties()
+    public void Constructor_initial_state()
     {
-        var serverEnv = TableauEnv.TableauServer;
-        var cloudEnv = TableauEnv.TableauCloud;
-        var serverAuth = new AuthCredentials();
-        var cloudAuth = new AuthCredentials();
-        serverAuth.TableauEnv = serverEnv;
-        cloudAuth.TableauEnv = cloudEnv;
-
-        Assert.Equal(serverEnv, serverAuth.TableauEnv);
-        Assert.Equal(cloudEnv, cloudAuth.TableauEnv);
+        var window = new MainWindow();
+        Assert.False(window.IsDialogOpen);
     }
 }

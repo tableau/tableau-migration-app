@@ -24,6 +24,6 @@ using Tableau.Migration.App.GUI.Tests;
 
 public class TestAppBuilder
 {
-    public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>()
+    public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<TestApp>()
         .UseHeadless(new AvaloniaHeadlessPlatformOptions());
 }

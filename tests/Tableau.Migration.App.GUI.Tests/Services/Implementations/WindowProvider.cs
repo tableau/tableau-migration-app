@@ -31,7 +31,7 @@ public class WindowProviderTests
     [AvaloniaFact]
     public void GetMainWindow_ShouldReturnMainWindow_WhenApplicationLifetimeIsClassicDesktop()
     {
-        var appBuilder = AppBuilder.Configure<App>().UseHeadless(new AvaloniaHeadlessPlatformOptions());
+        var appBuilder = AppBuilder.Configure<TestApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions());
         var lifetime = new ClassicDesktopStyleApplicationLifetime { MainWindow = new Window() };
         appBuilder.SetupWithLifetime(lifetime);
 
@@ -45,7 +45,7 @@ public class WindowProviderTests
     [AvaloniaFact(Skip = "AppBuilder singleton conflict between tests. Skipped until that is resolved.")]
     public void GetMainWindow_ShouldReturnMainWindow_2()
     {
-        var appBuilder = AppBuilder.Configure<App>().UseHeadless(new AvaloniaHeadlessPlatformOptions());
+        var appBuilder = AppBuilder.Configure<TestApp>().UseHeadless(new AvaloniaHeadlessPlatformOptions());
         var lifetime = new ClassicDesktopStyleApplicationLifetime();
         appBuilder.SetupWithLifetime(lifetime);
 

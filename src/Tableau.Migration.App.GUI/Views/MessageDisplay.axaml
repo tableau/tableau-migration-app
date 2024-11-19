@@ -21,7 +21,7 @@
     <StackPanel Grid.Row="1" IsVisible="{Binding IsDetailsVisible}">
       <TextBox
 	  Classes="message-textbox"
-	  MaxWidth="{x:Static local:Constants.MessageDisplayTextboxMaxWidth}"
+	  MaxWidth="{x:Static local:ViewConstants.MessageDisplayTextboxMaxWidth}"
 	  Name="MessageTextBox"
 	  IsReadOnly="True"
 	  Text="{Binding Messages}"

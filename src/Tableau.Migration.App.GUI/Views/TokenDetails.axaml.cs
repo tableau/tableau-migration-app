@@ -59,7 +59,7 @@ public partial class TokenDetails : UserControl
 
         this.TokenNameLabel.Text = $"Tableau {env} PAT Name";
         this.TokenSecretLabel.Text = $"Tableau {env} PAT Secret";
-        this.InfoHelp.HelpText = string.Format(Constants.TokenHelpTextTemplate, env);
+        this.InfoHelp.HelpText = string.Format(ViewConstants.TokenHelpTextTemplate, env);
         this.InfoHelp.DetailsUrl = "https://help.tableau.com/current/online/en-us/security_personal_access_tokens.htm";
     }
 }

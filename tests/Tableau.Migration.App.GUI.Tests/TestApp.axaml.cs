@@ -1,4 +1,4 @@
-// <copyright file="App.axaml.cs" company="Salesforce, Inc.">
+// <copyright file="TestApp.axaml.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -15,20 +15,15 @@
 // limitations under the License.
 // </copyright>
 
-namespace AppTests;
+namespace Tableau.Migration.App.GUI.Tests;
+using Avalonia;
+using Avalonia.Headless;
+using Avalonia.Markup.Xaml;
 
-using Avalonia.Headless.XUnit;
-using Tableau.Migration.App.GUI;
-using Xunit;
-
-public class AppTests
+public class TestApp : Application
 {
-    [AvaloniaFact]
-    public void App_NativeMenuItem_AppNameVersion()
+    public override void Initialize()
     {
-        // Verify that the proper constant values are being set to the App menu binding values
-        var app = new App();
-        Assert.Equal(Constants.AppName, app.Name);
-        Assert.Equal(Constants.AppNameVersion, app.AppNameVersion);
+        AvaloniaXamlLoader.Load(this);
     }
 }

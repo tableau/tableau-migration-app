@@ -1,4 +1,4 @@
-// <copyright file="App.axaml.cs" company="Salesforce, Inc.">
+// <copyright file="Constants.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -15,20 +15,25 @@
 // limitations under the License.
 // </copyright>
 
-namespace AppTests;
+namespace Tableau.Migration.App.GUI;
 
-using Avalonia.Headless.XUnit;
-using Tableau.Migration.App.GUI;
-using Xunit;
-
-public class AppTests
+/// <summary>
+/// Constants to be used in the code.
+/// </summary>
+public static class Constants
 {
-    [AvaloniaFact]
-    public void App_NativeMenuItem_AppNameVersion()
-    {
-        // Verify that the proper constant values are being set to the App menu binding values
-        var app = new App();
-        Assert.Equal(Constants.AppName, app.Name);
-        Assert.Equal(Constants.AppNameVersion, app.AppNameVersion);
-    }
+    /// <summary>
+    /// The App name.
+    /// </summary>
+    public const string AppName = "Tableau Migration App";
+
+    /// <summary>
+    /// The App version number.
+    /// </summary>
+    public const string Version = "v1.0.2";
+
+    /// <summary>
+    /// The App name with version.
+    /// </summary>
+    public const string AppNameVersion = $"{AppName} {Version}";
 }

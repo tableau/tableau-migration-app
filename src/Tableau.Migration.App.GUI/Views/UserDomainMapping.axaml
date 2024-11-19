@@ -11,25 +11,18 @@
   <StackPanel>
     <!-- Label -->
     <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
-      <TextBlock Name="Label" Text="Tableau Server to Cloud Default User Domain"/>
+      <TextBlock Name="Label" Text="(Optional) Default User Domain"/>
       <local:HelpButton
 	  Name="InfoHelp"
-	  HelpText="{x:Static local:Constants.UserDomainMappingHelpText}" />
+	  HelpText="{x:Static local:ViewConstants.UserDomainMappingHelpText}" />
     </StackPanel>
 
-    <!-- Input -->
     <TextBox
 	Name="UserCloudDomain"
 	HorizontalAlignment="Left"
-	Width="{x:Static local:Constants.MaxTextboxWidth}"
+	Width="{x:Static local:ViewConstants.MaxTextboxWidth}"
 	Text="{Binding CloudUserDomain, Mode=TwoWay}"
 	Watermark="User Cloud Domain"/>
-
-    <!-- Disable -->
-    <CheckBox
-	Name="DisableMapping"
-	IsChecked="{Binding IsMappingDisabled, Mode=TwoWay}"
-	Content="Disable Default Domain Mapping" />
 
   </StackPanel>
 

@@ -1,4 +1,4 @@
-// <copyright file="Constants.cs" company="Salesforce, Inc.">
+// <copyright file="ViewConstants.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -17,12 +17,28 @@
 
 namespace Tableau.Migration.App.GUI.Views;
 using System;
+using Tableau.Migration.App.GUI;
 
 /// <summary>
 /// Constant values used for the App Views.
 /// </summary>
-public static class Constants
+public static class ViewConstants
 {
+    /// <summary>
+    /// Gets the App Name.
+    /// </summary>
+    public static string AppName => Constants.AppName;
+
+    /// <summary>
+    /// Gets the App Version.
+    /// </summary>
+    public static string AppVersion => Constants.Version;
+
+    /// <summary>
+    /// Gets the App Name And Version.
+    /// </summary>
+    public static string AppNameVersion => Constants.AppNameVersion;
+
     /// <summary>
     /// Gets the maximum width for all Configuration textboxes in the app.
     /// </summary>

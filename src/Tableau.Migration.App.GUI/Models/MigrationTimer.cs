@@ -41,7 +41,6 @@ public class MigrationTimer : IMigrationTimer
     public MigrationTimer(ILogger<MigrationTimer>? logger = null)
     {
         this.startActionTimes = new Dictionary<string, DateTime>();
-        this.startMigrationTime = DateTime.Now; // remove this later
         this.logger = logger;
     }
 
@@ -119,7 +118,7 @@ public class MigrationTimer : IMigrationTimer
 
                 if (this.startActionTimes.ContainsKey(migrationAction))
                 {
-                    this.logger?.LogError($"Attempted to log a completed migration action time when one already exists: {migrationAction}");
+                    this.logger?.LogInformation($"Attempted to log a completed migration action time when one already exists: {migrationAction}");
                     return;
                 }
 

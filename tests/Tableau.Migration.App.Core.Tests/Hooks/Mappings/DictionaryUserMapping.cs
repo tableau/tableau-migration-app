@@ -1,4 +1,4 @@
-// <copyright file="DictionaryUserMappingTests.cs" company="Salesforce, Inc.">
+// <copyright file="DictionaryUserMapping.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
@@ -15,7 +15,7 @@
 // limitations under the License.
 // </copyright>
 
-namespace Tableau.Migration.App.Core.Tests.Hooks.Mappings;
+namespace DictionaryUserMappingTests;
 
 using Microsoft.Extensions.Logging;
 using Moq;

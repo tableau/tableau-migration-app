@@ -11,9 +11,9 @@
   <StackPanel>
     <StackPanel Orientation="Horizontal"  Margin="0,0,0,3">
       <!-- Label  -->
-      <TextBlock Text="User Mapping File" VerticalAlignment="Center"/>
+      <TextBlock Text="(Optional) User Mapping File" VerticalAlignment="Center"/>
       <local:HelpButton
-	  HelpText="{x:Static local:Constants.UserFileMappingHelpText}"/>
+	  HelpText="{x:Static local:ViewConstants.UserFileMappingHelpText}"/>
     </StackPanel>
     <StackPanel>
       <Grid>
@@ -22,8 +22,8 @@
 	  <ColumnDefinition Width="Auto" />
 	</Grid.ColumnDefinitions>
 	<TextBox
-	    MinWidth="{x:Static local:Constants.FileMappingTextboxMinWidth}"
-	    MaxWidth="{x:Static local:Constants.FileMappingTextboxMaxWidth}"
+	    MinWidth="{x:Static local:ViewConstants.FileMappingTextboxMinWidth}"
+	    MaxWidth="{x:Static local:ViewConstants.FileMappingTextboxMaxWidth}"
 	    Grid.Column="0"
 	    IsEnabled="False"
 	    Text="{Binding LoadedCSVFilename, Mode=TwoWay}"

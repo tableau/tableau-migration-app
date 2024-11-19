@@ -27,3 +27,35 @@ using Tableau.Migration.App.Core.Interfaces;
 public record struct DetailedMigrationResult(
     ITableauMigrationService.MigrationStatus status,
     IReadOnlyList<Exception> errors);
+
+/// <summary>
+/// Builder to build a <see cref="DetailedMigrationResult" />.
+/// </summary>
+public static class DetailedMigrationResultBuilder
+{
+    /// <summary>
+    /// Build a Detailed Migration Result.
+    /// </summary>
+    /// <param name="status">The Tableau Migration SDK Status.</param>
+    /// <param name="errors">The errors from migration.</param>
+    /// <returns>The <see cref="DetailedMigrationResult" />.</returns>
+    public static DetailedMigrationResult Build(
+        MigrationCompletionStatus status, IReadOnlyList<Exception> errors)
+    {
+        ITableauMigrationService.MigrationStatus newStatus;
+        switch (status)
+        {
+            case MigrationCompletionStatus.Completed:
+                newStatus = ITableauMigrationService.MigrationStatus.SUCCESS;
+                break;
+            case MigrationCompletionStatus.Canceled:
+                newStatus = ITableauMigrationService.MigrationStatus.CANCELED;
+                break;
+            default: // ITableauMigrationService.MigrationStatus.FAILURE
+                newStatus = ITableauMigrationService.MigrationStatus.FAILURE;
+                break;
+        }
+
+        return new DetailedMigrationResult(newStatus, errors);
+    }
+}

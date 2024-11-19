@@ -45,7 +45,6 @@ public class TableauMigrationServiceTests
     private readonly Mock<IMigrator> mockMigrator;
     private readonly Mock<ILogger<TableauMigrationService>> mockLogger;
     private readonly Mock<IProgressUpdater> mockProgressUpdater;
-    private readonly Mock<IProgressMessagePublisher> mockPublisher;
     private readonly Mock<MigrationManifestSerializer> mockManifestSerializer;
     private readonly AppSettings appSettings;
     private readonly TableauMigrationService service;
@@ -84,7 +83,6 @@ public class TableauMigrationServiceTests
         this.mockMigrator = new Mock<IMigrator>();
         this.mockLogger = new Mock<ILogger<TableauMigrationService>>();
         this.mockProgressUpdater = new Mock<IProgressUpdater>();
-        this.mockPublisher = new Mock<IProgressMessagePublisher>();
         this.mockFileSystem = new Mock<IFileSystem>();
         this.mockLocalizer = new Mock<ISharedResourcesLocalizer>();
         this.mockLoggerFactory = new Mock<ILoggerFactory>();
@@ -97,8 +95,7 @@ public class TableauMigrationServiceTests
             this.mockLogger.Object,
             this.appSettings,
             provider.GetRequiredService<MigrationManifestSerializer>(),
-            this.mockProgressUpdater.Object,
-            this.mockPublisher.Object)
+            this.mockProgressUpdater.Object)
         { CallBase = true };
 
         this.service = this.mockTableauMigrationService.Object;

@@ -1,4 +1,4 @@
-// <copyright file="MessageDisplayViewModelTests.cs" company="Salesforce, Inc.">
+// <copyright file="MessageDisplayViewModel.cs" company="Salesforce, Inc.">
 // Copyright (c) 2024, Salesforce, Inc. All rights reserved.
 // SPDX-License-Identifier: Apache-2
 //
