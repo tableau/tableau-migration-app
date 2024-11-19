@@ -27,13 +27,10 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
-      - name: Generate coverage report
-        env:
-          PATH: $PATH:/home/runner/.dotnet/tools  # Adds dotnet tools to PATH
-          run: reportgenerator -reports:**/coverage.opencover.xml -targetdir:./coverage-report
-
       - name: Test
-        run: dotnet test --no-build --configuration Release --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+        run: |
+          dotnet test --configuration Release tests/Tableau.Migration.App.Core.Tests/ /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../CoreCoverage.xml
+          dotnet test --configuration Release tests/Tableau.Migration.App.GUI.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../GUICoverage.xml
         env:
           TABLEAU_CLOUD_URL: ${{ secrets.TABLEAU_CLOUD_URL }}
           TABLEAU_CLOUD_SITE: ${{ secrets.TABLEAU_CLOUD_SITE }}
@@ -44,10 +41,44 @@ jobs:
           TABLEAU_SERVER_TOKEN_NAME: ${{ secrets.TABLEAU_SERVER_TOKEN_NAME }}
           TABLEAU_SERVER_TOKEN: ${{ secrets.TABLEAU_SERVER_TOKEN }}
 
+      - name: Generate coverage report
+        env:
+          PATH: $PATH:/home/runner/.dotnet/tools  # Adds dotnet tools to PATH
+        run: reportgenerator -reports:"./*Coverage.xml" -targetdir:./coverage-report -reporttypes:"Html;TextSummary"
 
-      - name: Run dotnet format
-        run: dotnet format --verbosity diagnostic
+      - name: Comment coverage summary on PR
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('./coverage-report/Summary.txt', 'utf8');
+            // Split the summary by lines and get the first 18
+            const topSummary = summary.split('\n').slice(0, 18).join('\n');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## Code Coverage Summary\n\`\`\`\n${topSummary}\n\`\`\``
+            });
 
-      - name: Check format results
-        if: failure()
-        run: echo "Formatting issues found. Please run 'dotnet format' locally and fix the issues."
+# Skipping for now due to line ending mismatches
+      # - name: Run dotnet format
+      #   id: format
+      #   run: |
+      #     dotnet format --verbosity diagnostic > format.log
+      #     grep -q 'Formatted code file' format.log || exit 0
+      #     exit 1
+
+      # - name: Check format results
+      #   if: failure()
+      #   uses: actions/github-script@v6
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       github.rest.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: "Formatting issues were found and fixed. Please run 'dotnet format' locally to ensure your code is properly formatted."
+      #       })

@@ -17,8 +17,8 @@
 
 namespace Tableau.Migration.App.GUI.Tests.ViewModels;
 
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Tableau.Migration.App.Core.Hooks.Mappings;
 using Tableau.Migration.App.Core.Interfaces;

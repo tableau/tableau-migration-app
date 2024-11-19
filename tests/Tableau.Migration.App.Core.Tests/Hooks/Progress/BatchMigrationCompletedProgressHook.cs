@@ -64,9 +64,7 @@ public class BatchMigrationCompletedProgressHookTests
         result.Setup(ctx => ctx.ItemResults).Returns(itemResults);
 
         hook.ExecuteAsync(result.Object, CancellationToken.None);
-        Assert.Single(publisher.Actions);
         Assert.Single(publisher.Messages);
-        Assert.Equal(["User"], publisher.Actions);
         Assert.Contains(" \U0001F7E2 [sourceSegmentTwo] to [destSegmentTwo] → Migrated", publisher.Messages[0]);
     }
 
@@ -96,9 +94,7 @@ public class BatchMigrationCompletedProgressHookTests
         result.Setup(ctx => ctx.ItemResults).Returns(itemResults);
 
         hook.ExecuteAsync(result.Object, CancellationToken.None);
-        Assert.Single(publisher.Actions);
         Assert.Single(publisher.Messages);
-        Assert.Equal(["User"], publisher.Actions);
         Assert.Contains("Could not parse error message: \nTest Exception Message", publisher.Messages[0]);
     }
 
@@ -127,9 +123,7 @@ public class BatchMigrationCompletedProgressHookTests
         result.Setup(ctx => ctx.ItemResults).Returns(itemResults);
 
         hook.ExecuteAsync(result.Object, CancellationToken.None);
-        Assert.Single(publisher.Actions);
         Assert.Single(publisher.Messages);
-        Assert.Equal(["User"], publisher.Actions);
         Assert.DoesNotContain("123", publisher.Messages[0]);
         Assert.DoesNotContain("testurl", publisher.Messages[0]);
         Assert.DoesNotContain("Some summary.", publisher.Messages[0]);
@@ -201,14 +195,12 @@ public class BatchMigrationCompletedProgressHookTests
 #pragma warning disable CS0067, SA1401, CS1696
     internal class TestPublisher : IProgressMessagePublisher
     {
-        public List<string> Actions = new List<string> { };
         public List<string> Messages = new List<string> { };
 
         public event Action<ProgressEventArgs>? OnProgressMessage;
 
-        public void PublishProgressMessage(string action, string message)
+        public void PublishProgressMessage(string message)
         {
-            this.Actions.Add(action);
             this.Messages.Add(message);
             return;
         }

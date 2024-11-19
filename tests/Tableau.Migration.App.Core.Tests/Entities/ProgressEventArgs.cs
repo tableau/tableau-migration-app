@@ -25,8 +25,7 @@ public class ProgressEventArgsTests
     [Fact]
     public void ProgressEventArgs_constructor_getters()
     {
-        var progressEventArgs = new ProgressEventArgs("actionName", "eventMessage");
-        Assert.Equal("actionName", progressEventArgs.Action);
+        var progressEventArgs = new ProgressEventArgs("eventMessage");
         Assert.Equal("eventMessage", progressEventArgs.Message);
     }
 }
