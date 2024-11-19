@@ -365,8 +365,17 @@ public partial class MainWindowViewModel : ViewModelBase
             this.SetNotification("Migration plan building failed.", color: Brushes.Red);
         }
 
+        string path = AppContext.BaseDirectory;
+        bool isManifestSaved = await this.migrationService.SaveManifestAsync($"{path}/manifest.json");
+
+        if (isManifestSaved)
+        {
+            this.publisher.PublishProgressMessage($"Manifest saved to '{path}manifest.json'");
+        }
+
         this.publisher.PublishProgressMessage($"{Environment.NewLine}Total Elapsed Time: {this.migrationTimer.GetTotalMigrationTime}");
         this.publisher.PublishProgressMessage(MigrationMessagesSessionSeperator);
+
         this.IsMigrating = false;
         this.timersVM.Stop();
         this.progressUpdater.Reset();
