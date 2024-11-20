@@ -24,6 +24,7 @@ using Avalonia.VisualTree;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using Tableau.Migration.App.GUI.ViewModels;
 
 /// <summary>
 /// View control for Message Display.
@@ -39,6 +40,7 @@ public partial class MessageDisplay : UserControl
     public MessageDisplay()
     {
         this.InitializeComponent();
+        this.DataContext = App.ServiceProvider?.GetRequiredService<MessageDisplayViewModel>();
         this.logger = App.ServiceProvider?.GetRequiredService<ILogger<MessageDisplay>>();
 
         // Setup for "Scroll to bottom" behaviour

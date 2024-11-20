@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -45,49 +46,46 @@ using Tableau.Migration.App.GUI.Views;
 /// </summary>
 public partial class MainWindowViewModel : ViewModelBase
 {
-    private const string MigrationMessagesSessionSeperator = "--------------------------------------------";
+    private const string MigrationMessagesSessionSeperator = "─────────────────────────────";
     private readonly ITableauMigrationService migrationService;
     private bool isMigrating = false;
     private IProgressUpdater progressUpdater;
+    private IProgressMessagePublisher publisher;
+    private IMigrationTimer migrationTimer;
     private string notificationMessage = string.Empty;
-    private string notificationDetailsMessage = string.Empty;
-    private string? manifestSaveFilePath = null;
     private CancellationTokenSource? cancellationTokenSource = null;
     private IImmutableSolidColorBrush notificationColor = Brushes.Black;
     private ILogger<MainWindowViewModel>? logger;
+    private TimersViewModel timersVM;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindowViewModel" /> class.
     /// </summary>
     /// <param name="migrationService">The migration service.</param>
-    /// <param name="emailDomainOptions">The default domain mapping to apply to users who do not have an existing email, or mapping present.</param>
-    /// <param name="dictionaryUserMappingOptions">The user-specific mappings to be used if provided through CSV.</param>
     /// <param name="progressUpdater">The object to track the migration progress from the migration service.</param>
+    /// <param name="migrationTimer">The object to track the migration times.</param>
     /// <param name="publisher">The progress publisher for progress status messages.</param>
-    /// <param name="filePicker">The file picker service to use for CSV loaded user mappings.</param>
-    /// <param name="csvParser">The csv parser to load and parser user mappings.</param>
+    /// <param name="timersVM">The Timers view model.</param>
+    /// <param name="userMappingsVM">The User Mappings view model.</param>
     public MainWindowViewModel(
         ITableauMigrationService migrationService,
-        IOptions<EmailDomainMappingOptions> emailDomainOptions,
-        IOptions<DictionaryUserMappingOptions> dictionaryUserMappingOptions,
         IProgressUpdater progressUpdater,
         IProgressMessagePublisher publisher,
-        IFilePicker filePicker,
-        ICsvParser csvParser)
+        IMigrationTimer migrationTimer,
+        TimersViewModel timersVM,
+        UserMappingsViewModel userMappingsVM)
     {
         this.migrationService = migrationService;
+        this.publisher = publisher;
+        this.timersVM = timersVM;
+        this.UserMappingsVM = userMappingsVM;
 
-        // Sub View Models
-        this.MessageDisplayVM = new MessageDisplayViewModel(publisher);
+        // Sub View Models for Authentication Credentials
         this.ServerCredentialsVM = new AuthCredentialsViewModel(TableauEnv.TableauServer);
         this.CloudCredentialsVM = new AuthCredentialsViewModel(TableauEnv.TableauCloud);
-        this.UserMappingsVM = new UserMappingsViewModel(
-            emailDomainOptions,
-            dictionaryUserMappingOptions,
-            filePicker,
-            csvParser);
 
         this.progressUpdater = progressUpdater;
+        this.migrationTimer = migrationTimer;
         this.logger = App.ServiceProvider?.GetRequiredService<ILogger<MainWindowViewModel>>();
 
         // Subscribe to the progress updater event and retrigger UI rendering on update
@@ -110,11 +108,6 @@ public partial class MainWindowViewModel : ViewModelBase
     /// Gets the total number of migration states available.
     /// </summary>
     public static int NumMigrationStates => ProgressUpdater.NumMigrationStates;
-
-    /// <summary>
-    /// Gets the progress status Message Display View Model.
-    /// </summary>
-    public MessageDisplayViewModel MessageDisplayVM { get; }
 
     /// <summary>
     /// Gets the ViewModel for the Tableau Server Credentials.
@@ -143,25 +136,30 @@ public partial class MainWindowViewModel : ViewModelBase
             {
                 this.SetProperty(ref this.isMigrating, value);
             }
+
+            this.OnPropertyChanged(nameof(this.IsNotificationVisible));
         }
     }
 
     /// <summary>
-    /// Gets or Sets the notification message at the bottom of the main window.
+    /// Gets or Sets the notification message under the run migration button.
     /// </summary>
     public string NotificationMessage
     {
         get => this.notificationMessage;
-        set => this.SetProperty(ref this.notificationMessage, value);
+        set
+        {
+            this.SetProperty(ref this.notificationMessage, value);
+            this.OnPropertyChanged(nameof(this.IsNotificationVisible));
+        }
     }
 
     /// <summary>
-    /// Gets or Sets the notification message at the bottom of the main window.
+    /// Gets a value indicating whether notification message should be visible.
     /// </summary>
-    public string NotificationDetailsMessage
+    public bool IsNotificationVisible
     {
-        get => this.notificationDetailsMessage;
-        set => this.SetProperty(ref this.notificationDetailsMessage, value);
+        get => !string.IsNullOrEmpty(this.NotificationMessage) && !this.IsMigrating;
     }
 
     /// <summary>
@@ -186,12 +184,63 @@ public partial class MainWindowViewModel : ViewModelBase
     /// <summary>
     /// Cancels the ongoing migration.
     /// </summary>
-    /// <param name="manifestSaveFilePath">The path of manifest file to save.</param>
-    public void CancelMigration(string? manifestSaveFilePath)
+    public void CancelMigration()
     {
-        this.manifestSaveFilePath = manifestSaveFilePath;
         this.cancellationTokenSource?.Cancel();
         return;
+    }
+
+    /// <summary>
+    /// Saves the migration manifest if a save file path is provided.
+    /// </summary>
+    /// <param name="manifestSaveFilePath">The file path where the manifest should be saved, or null if saving is not required.</param>
+    /// <returns>A task that represents the asynchronous save operation.</returns>
+    public async Task SaveManifestIfRequiredAsync(string? manifestSaveFilePath)
+    {
+        if (string.IsNullOrEmpty(manifestSaveFilePath))
+        {
+            this.NotificationMessage += " Manifest was not saved.";
+            return;
+        }
+
+        bool isSaved = await this.migrationService.SaveManifestAsync(manifestSaveFilePath);
+        this.NotificationMessage += isSaved ? " Manifest saved." : " Failed to save manifest.";
+    }
+
+    /// <summary>
+    /// Validates fields and starts the migration process if valid.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the migration.</returns>
+    [RelayCommand]
+    public async Task RunMigration()
+    {
+        if (!this.AreFieldsValid())
+        {
+            this.logger?.LogInformation("Migration Run failed due to validation errors.");
+            return;
+        }
+
+        this.IsMigrating = true;
+        this.publisher.PublishProgressMessage("Migration Started");
+        this.logger?.LogInformation("Migration Started");
+        this.migrationTimer.Reset(); // Setup migration timer to store progress timing states
+        this.migrationTimer.UpdateMigrationTimes(MigrationTimerEventType.MigrationStarted);
+        this.timersVM.Start(); // Triggers for the Timer View to start polling for information
+        await this.RunMigrationTask().ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Asynchronously resumes migration by selecting a manifest file and calling RunResumeMigration with the file path.
+    /// </summary>
+    /// <returns>A <see cref="Task" /> representing the async migration.</returns>
+    [RelayCommand]
+    public async Task ResumeMigration()
+    {
+        var filePath = await this.SelectManifestFileAsync();
+        if (filePath != null)
+        {
+            await this.RunMigration();
+        }
     }
 
     /// <summary>
@@ -201,49 +250,6 @@ public partial class MainWindowViewModel : ViewModelBase
     protected virtual void OnErrorsChanged(string propertyName)
     {
         this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-    }
-
-    /// <summary>
-    /// Validates fields and starts the migration process if valid.
-    /// </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    [RelayCommand]
-    private async Task RunMigration()
-    {
-        if (!this.AreFieldsValid())
-        {
-            this.logger?.LogInformation("Migration Run failed due to validation errors.");
-            return;
-        }
-
-        this.IsMigrating = true;
-        this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
-        this.MessageDisplayVM.AddMessage("Migration Started");
-        this.logger?.LogInformation("Migration Started");
-        await this.RunMigrationTask().ConfigureAwait(false);
-    }
-
-    /// <summary>
-    /// Asynchronously resumes migration by selecting a manifest file and calling RunResumeMigration with the file path.
-    /// </summary>
-    [RelayCommand]
-    private async Task ResumeMigration()
-    {
-        if (!this.AreFieldsValid())
-        {
-            this.logger?.LogInformation("Migration Run failed due to validation errors.");
-            return;
-        }
-
-        var filePath = await this.SelectManifestFileAsync();
-        if (filePath != null)
-        {
-            this.IsMigrating = true;
-            this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
-            this.MessageDisplayVM.AddMessage("Migration Started");
-            this.logger?.LogInformation("Migration Started");
-            await this.RunMigrationTask().ConfigureAwait(false);
-        }
     }
 
     /// <summary>
@@ -263,6 +269,7 @@ public partial class MainWindowViewModel : ViewModelBase
         },
         };
 
+        // Retrieve the active application window to access the file picker
         var window = App.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop
             ? desktop.MainWindow
             : null;
@@ -273,8 +280,8 @@ public partial class MainWindowViewModel : ViewModelBase
             return null;
         }
 
+        // Open file picker and return the selected file path
         var result = await window.StorageProvider.OpenFilePickerAsync(options);
-
         if (result == null || result.Count == 0)
         {
             this.logger?.LogInformation("No file selected in file picker dialog.");
@@ -325,51 +332,30 @@ public partial class MainWindowViewModel : ViewModelBase
 
         if (planBuilt)
         {
+            // If we have a plan, then run the migration
             this.cancellationTokenSource = new CancellationTokenSource();
             DetailedMigrationResult migrationResult = await migrationTaskFunc(this.cancellationTokenSource.Token);
-
-            switch (migrationResult.status)
-            {
-                case ITableauMigrationService.MigrationStatus.SUCCESS:
-                    this.SetNotification("Migration Completed.", color: Brushes.Green);
-                    break;
-
-                case ITableauMigrationService.MigrationStatus.CANCELLED:
-                    var details = this.BuildErrorDetails(migrationResult.errors);
-                    this.SetNotification("Migration Cancelled.", details, Brushes.Red);
-                    await this.SaveManifestIfRequiredAsync();
-                    break;
-
-                default:
-                    var failureDetails = this.BuildErrorDetails(migrationResult.errors);
-                    this.SetNotification("Migration Failed.", failureDetails, Brushes.Red);
-                    break;
-            }
+            this.PublishMigrationResult(migrationResult);
         }
         else
         {
             this.SetNotification("Migration plan building failed.", color: Brushes.Red);
         }
 
-        this.MessageDisplayVM.AddMessage(MigrationMessagesSessionSeperator);
-        this.IsMigrating = false;
-        this.progressUpdater.Reset();
-    }
+        string path = AppContext.BaseDirectory;
+        bool isManifestSaved = await this.migrationService.SaveManifestAsync($"{path}/manifest.json");
 
-    /// <summary>
-    /// Saves the migration manifest if a save file path is provided.
-    /// </summary>
-    private async Task SaveManifestIfRequiredAsync()
-    {
-        if (!string.IsNullOrEmpty(this.manifestSaveFilePath))
+        if (isManifestSaved)
         {
-            bool isSaved = await this.migrationService.SaveManifestAsync(this.manifestSaveFilePath);
-            this.NotificationMessage += isSaved ? " Manifest saved." : " Failed to save manifest.";
+            this.publisher.PublishProgressMessage($"Manifest saved to '{path}manifest.json'");
         }
-        else
-        {
-            this.NotificationMessage += " Manifest was not saved.";
-        }
+
+        this.publisher.PublishProgressMessage($"{Environment.NewLine}Total Elapsed Time: {this.migrationTimer.GetTotalMigrationTime}");
+        this.publisher.PublishProgressMessage(MigrationMessagesSessionSeperator);
+
+        this.IsMigrating = false;
+        this.timersVM.Stop();
+        this.progressUpdater.Reset();
     }
 
     /// <summary>
@@ -378,7 +364,6 @@ public partial class MainWindowViewModel : ViewModelBase
     private void SetNotification(string message, string? detailsMessage = null, IImmutableSolidColorBrush? color = null)
     {
         this.NotificationMessage = message;
-        this.NotificationDetailsMessage = detailsMessage ?? string.Empty;
         this.NotificationColor = color ?? Brushes.Black;
     }
 
@@ -416,5 +401,55 @@ public partial class MainWindowViewModel : ViewModelBase
         }
 
         return errorCount == 0;
+    }
+
+    private void PublishMigrationResult(DetailedMigrationResult migrationResult)
+    {
+        switch (migrationResult.status)
+        {
+            case ITableauMigrationService.MigrationStatus.SUCCESS:
+                this.SetNotification("Migration completed.", color: Brushes.Green);
+                this.publisher.PublishProgressMessage("Migration completed.");
+                break;
+
+            case ITableauMigrationService.MigrationStatus.CANCELED:
+                var details = this.BuildErrorDetails(migrationResult.errors);
+                this.SetNotification("Migration canceled.", details, Brushes.Red);
+                this.publisher.PublishProgressMessage("Migration canceled.");
+                break;
+
+            default:
+                var failureDetails = this.BuildErrorDetails(migrationResult.errors);
+                this.SetNotification("Migration Failed.", failureDetails, Brushes.Red);
+                this.publisher.PublishProgressMessage("Migration failed.");
+                break;
+        }
+
+        this.PublishMigrationErrors(migrationResult.errors);
+    }
+
+    private void PublishMigrationErrors(IReadOnlyList<Exception> errors)
+    {
+        StringBuilder sb = new StringBuilder();
+        var statusIcon =
+            IProgressMessagePublisher
+            .GetStatusIcon(IProgressMessagePublisher.MessageStatus.Error);
+        foreach (var error in errors)
+        {
+            try
+            {
+                ErrorMessage parsedError = new ErrorMessage(error.Message);
+                sb.Append($"\t {statusIcon} {parsedError.Detail}");
+                sb.Append($"\t\t {parsedError.Summary}: {parsedError.URL}");
+            }
+            catch (Exception)
+            {
+                sb.Append(
+                    $"\t {statusIcon} Could not parse error message:{Environment.NewLine}{error.Message}");
+            }
+        }
+
+        string statusMessages = sb.ToString();
+        this.publisher.PublishProgressMessage(statusMessages);
     }
 }

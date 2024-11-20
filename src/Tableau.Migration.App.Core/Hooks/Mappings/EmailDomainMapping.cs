@@ -33,6 +33,7 @@ namespace Tableau.Migration.App.Core.Hooks.Mappings
         ITableauCloudUsernameMapping
     {
         private readonly string domain;
+        private ILogger<EmailDomainMapping>? logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmailDomainMapping"/> class.
@@ -44,10 +45,11 @@ namespace Tableau.Migration.App.Core.Hooks.Mappings
         public EmailDomainMapping(
             IOptions<EmailDomainMappingOptions> options,
             ISharedResourcesLocalizer localizer,
-            ILogger<EmailDomainMapping> logger)
+            ILogger<EmailDomainMapping>? logger)
             : base(localizer, logger)
         {
             this.domain = options.Value.EmailDomain;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -69,6 +71,12 @@ namespace Tableau.Migration.App.Core.Hooks.Mappings
             if (this.IsValidEmail(userMappingContext.ContentItem.Name))
             {
                 return userMappingContext.MapTo(domain.Append(userMappingContext.ContentItem.Name)).ToTask();
+            }
+
+            if (string.IsNullOrEmpty(this.domain))
+            {
+                this.logger?.LogInformation("No domain mapping provided and no email found.");
+                return userMappingContext.ToTask();
             }
 
             // Takes the existing username and appends the domain to build the email

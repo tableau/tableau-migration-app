@@ -34,9 +34,8 @@ public class TableauMigrationService : ITableauMigrationService
     private readonly AppSettings appSettings;
     private readonly IMigrationPlanBuilder planBuilder;
     private readonly IMigrator migrator;
-    private readonly ILogger<TableauMigrationService> logger;
+    private readonly ILogger<TableauMigrationService>? logger;
     private readonly IProgressUpdater? progressUpdater;
-    private readonly IProgressMessagePublisher? publisher;
     private readonly MigrationManifestSerializer manifestSerializer;
     private IMigrationPlan? plan;
     private IMigrationManifest? manifest;
@@ -49,23 +48,20 @@ public class TableauMigrationService : ITableauMigrationService
     /// <param name="logger">The logger to be used.</param>
     /// <param name="appSettings">The application settings to apply to the application.</param>
     /// <param name="progressUpdater">The object to handle the visual migration progress indicator.</param>
-    /// <param name="publisher">The message publisher to broadcast progress updates.</param>
     /// <param name="manifestSerializer">Serializaer class to save and load manifest file.</param>
     public TableauMigrationService(
         IMigrationPlanBuilder planBuilder,
         IMigrator migrator,
-        ILogger<TableauMigrationService> logger,
+        ILogger<TableauMigrationService>? logger,
         AppSettings appSettings,
         MigrationManifestSerializer manifestSerializer,
-        IProgressUpdater? progressUpdater = null,
-        IProgressMessagePublisher? publisher = null)
+        IProgressUpdater? progressUpdater = null)
     {
         this.appSettings = appSettings;
         this.planBuilder = planBuilder;
         this.migrator = migrator;
         this.logger = logger;
         this.progressUpdater = progressUpdater;
-        this.publisher = publisher;
         this.manifestSerializer = manifestSerializer;
     }
 
@@ -95,7 +91,7 @@ public class TableauMigrationService : ITableauMigrationService
 
         if (!validationResult.Success)
         {
-            this.logger.LogError("Migration plan validation failed. {Errors}", validationResult.Errors);
+            this.logger?.LogError("Migration plan validation failed. {Errors}", validationResult.Errors);
             return false;
         }
 
@@ -119,7 +115,7 @@ public class TableauMigrationService : ITableauMigrationService
     {
         if (this.plan == null)
         {
-            this.logger.LogError("Migration plan is not built.");
+            this.logger?.LogError("Migration plan is not built.");
             return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.FAILURE, new List<Exception>());
         }
 
@@ -131,13 +127,13 @@ public class TableauMigrationService : ITableauMigrationService
     {
         if (this.plan == null)
         {
-            this.logger.LogError("Migration plan is not built.");
+            this.logger?.LogError("Migration plan is not built.");
             return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.FAILURE, new List<Exception>());
         }
 
         if (!(await this.LoadManifestAsync(manifestFilepath, cancel)))
         {
-            this.logger.LogError("Migration manifest is null. Unable to resume the migration");
+            this.logger?.LogError("Migration manifest is null. Unable to resume the migration");
             return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.FAILURE, new List<Exception>());
         }
 
@@ -230,41 +226,8 @@ public class TableauMigrationService : ITableauMigrationService
         List<string> messageList = new ();
         this.manifest = result.Manifest;
         IReadOnlyList<Exception> errors = this.manifest.Errors;
-        var statusIcon = IProgressMessagePublisher.GetStatusIcon(IProgressMessagePublisher.MessageStatus.Error);
 
-        foreach (var error in errors)
-        {
-            try
-            {
-                ErrorMessage parsedError = new ErrorMessage(error.Message);
-                messageList.Add($"\t {statusIcon} {parsedError.Detail}");
-                messageList.Add($"\t\t {parsedError.Summary}: {parsedError.URL}");
-            }
-            catch (Exception)
-            {
-                messageList.Add($"\t {statusIcon} Could not parse error message: \n{error.Message}");
-            }
-        }
-
-        string resultErrorMessage = string.Join("\n", messageList);
-
-        if (result.Status == MigrationCompletionStatus.Completed)
-        {
-            this.logger.LogInformation("Migration completed.");
-            this.publisher?.PublishProgressMessage("Migration completed", resultErrorMessage);
-            return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.SUCCESS, errors);
-        }
-        else if (result.Status == MigrationCompletionStatus.Canceled)
-        {
-            this.logger.LogInformation("Migration cancelled.");
-            this.publisher?.PublishProgressMessage("Migration cancelled", resultErrorMessage);
-            return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.CANCELLED, errors);
-        }
-        else
-        {
-            this.logger.LogError("Migration failed with status: {Status}", result.Status);
-            this.publisher?.PublishProgressMessage("Migration failed", resultErrorMessage);
-            return new DetailedMigrationResult(ITableauMigrationService.MigrationStatus.FAILURE, errors);
-        }
+        this.logger?.LogInformation($"Migration Result: {result.Status}");
+        return DetailedMigrationResultBuilder.Build(result.Status, this.manifest.Errors);
     }
 }

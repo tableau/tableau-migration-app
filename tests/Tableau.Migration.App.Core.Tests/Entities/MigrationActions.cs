@@ -30,4 +30,14 @@ public class MigrationActionsTest
         Assert.Equal("User", MigrationActions.GetActionTypeName(typeof(IUser)));
         Assert.Equal("Server Extract Refresh Task", MigrationActions.GetActionTypeName(typeof(IServerExtractRefreshTask)));
     }
+
+    [Fact]
+    public void GetActions_Returns_NonNull()
+    {
+        // Actions are retrieved from the Tableau Migration SDK.
+        // As the SDK increases support of resource types, the returned actions will grow.
+        // So we only verify that that we are indeed receiving actions, and not
+        // the specific action names.
+        Assert.NotEmpty(MigrationActions.Actions);
+    }
 }

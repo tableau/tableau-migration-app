@@ -27,7 +27,6 @@ public partial class UserDomainMappingViewModel : ValidatableViewModelBase
 {
     private readonly IOptions<EmailDomainMappingOptions> emailDomainOptions;
     private string cloudUserDomain = string.Empty;
-    private bool isMappingDisabled = false;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserDomainMappingViewModel" /> class.
@@ -52,19 +51,6 @@ public partial class UserDomainMappingViewModel : ValidatableViewModelBase
         }
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether or not the mapping is disabled.
-    /// </summary>
-    public bool IsMappingDisabled
-    {
-        get => this.isMappingDisabled;
-        set
-        {
-            this.SetProperty(ref this.isMappingDisabled, value);
-            this.ValidateAll();
-        }
-    }
-
     /// <inheritdoc/>
     public override void ValidateAll()
     {
@@ -73,19 +59,13 @@ public partial class UserDomainMappingViewModel : ValidatableViewModelBase
 
     private void ValidateCloudUserDomain()
     {
-        const string requiredMessage = "Tableau Server to Cloud User Domain Mapping is required.";
         const string validityMessage = "The provided value is not a valid domain.";
-        if (this.IsMappingDisabled)
+
+        if (this.cloudUserDomain == string.Empty)
         {
-            this.RemoveError(nameof(this.CloudUserDomain), requiredMessage);
             this.RemoveError(nameof(this.CloudUserDomain), validityMessage);
             return;
         }
-
-        this.ValidateRequired(
-            this.CloudUserDomain,
-            nameof(this.CloudUserDomain),
-            requiredMessage);
 
         // Validate the domain
         if (!Validator.IsDomainNameValid(this.CloudUserDomain))

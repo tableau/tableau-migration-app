@@ -42,7 +42,7 @@ namespace Tableau.Migration.App.Core.Interfaces
             /// <summary>
             /// The migration was stopped while running.
             /// </summary>
-            CANCELLED,
+            CANCELED,
 
             /// <summary>
             /// The migration was resumed after previously being stopped.

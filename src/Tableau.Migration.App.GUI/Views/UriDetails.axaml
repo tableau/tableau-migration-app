@@ -29,6 +29,7 @@
     <!-- URL Input -->
     <TextBox
 	Name="UriFull"
+	MaxWidth="{x:Static local:ViewConstants.MaxTextboxWidth}"
 	Text="{Binding UriFull, Mode=TwoWay}"
 	HorizontalAlignment="Stretch"
 	IsEnabled="{Binding IsEnabled, ElementName=root}" />

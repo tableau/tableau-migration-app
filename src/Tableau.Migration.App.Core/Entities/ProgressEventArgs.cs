@@ -26,21 +26,14 @@ public class ProgressEventArgs : EventArgs
     /// <summary>
     /// Initializes a new instance of the <see cref="ProgressEventArgs" /> class.
     /// </summary>
-    /// <param name="action">The action.</param>
     /// <param name="message">The message.</param>
-    public ProgressEventArgs(string action, string message)
+    public ProgressEventArgs(string message)
     {
         this.Message = message;
-        this.Action = action;
     }
 
     /// <summary>
     /// Gets something.
     /// </summary>
     public string Message { get; }
-
-    /// <summary>
-    /// Gets something.
-    /// </summary>
-    public string Action { get; }
 }

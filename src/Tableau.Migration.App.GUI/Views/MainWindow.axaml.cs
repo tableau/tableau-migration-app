@@ -28,8 +28,6 @@ using Tableau.Migration.App.GUI.ViewModels;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private bool isDialogOpen = false;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow" /> class.
     /// </summary>
@@ -39,6 +37,11 @@ public partial class MainWindow : Window
         this.Closing += this.OnWindowClosing;
     }
 
+    /// <summary>
+    /// Gets a value indicating whether a stop migration confirmation dialog has been opened.
+    /// </summary>
+    public bool IsDialogOpen { get; private set; } = false;
+
     private async void StopMigrationOnClick(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         await this.HandleMigrationCancellation("Stop Migration", "Are you sure you want to stop the migration?");
@@ -46,7 +49,7 @@ public partial class MainWindow : Window
 
     private async void OnWindowClosing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
-        if (this.isDialogOpen)
+        if (this.IsDialogOpen)
         {
             e.Cancel = true;
             return;
@@ -57,11 +60,11 @@ public partial class MainWindow : Window
             if (viewModel.IsMigrating)
             {
                 e.Cancel = true;
-                this.isDialogOpen = true;
+                this.IsDialogOpen = true;
 
                 await this.HandleMigrationCancellation("Quit", "A migration is running! Are you sure you want to stop the migration and exit?");
 
-                this.isDialogOpen = false;
+                this.IsDialogOpen = false;
 
                 if (!viewModel.IsMigrating)
                 {
@@ -87,6 +90,11 @@ public partial class MainWindow : Window
 
         if (result)
         {
+            // Stop migration first
+            MainWindowViewModel? myViewModel = this.DataContext as MainWindowViewModel;
+            myViewModel?.CancelMigration();
+
+            // Ask if the user wants to save the manifest file to resume migration later
             var saveManifestDialog = new ConfirmationDialog(
                 "Save Manifest File",
                 "Do you want to save the manifest to resume migration later?",
@@ -94,7 +102,7 @@ public partial class MainWindow : Window
                 "No");
 
             var resultSaveManifest = await saveManifestDialog.ShowDialog<bool>(this);
-            MainWindowViewModel? myViewModel = this.DataContext as MainWindowViewModel;
+            string? filePath = null;
             if (resultSaveManifest)
             {
                 var window = this;
@@ -102,10 +110,10 @@ public partial class MainWindow : Window
                 {
                     Title = "Save Manifest",
                     FileTypeChoices = new List<FilePickerFileType>
-                    {
-                        new FilePickerFileType("JSON files") { Patterns = new[] { "*.json" } },
-                        new FilePickerFileType("All files") { Patterns = new[] { "*.*" } },
-                    },
+                {
+                    new FilePickerFileType("JSON files") { Patterns = new[] { "*.json" } },
+                    new FilePickerFileType("All files") { Patterns = new[] { "*.*" } },
+                },
                     DefaultExtension = "json",
                 };
 
@@ -113,18 +121,11 @@ public partial class MainWindow : Window
 
                 if (resultFile != null)
                 {
-                    var filePath = resultFile.TryGetLocalPath();
-                    myViewModel?.CancelMigration(filePath ?? string.Empty);
-                }
-                else
-                {
-                    myViewModel?.CancelMigration(string.Empty);
+                    filePath = resultFile.TryGetLocalPath();
                 }
             }
-            else
-            {
-                myViewModel?.CancelMigration(string.Empty);
-            }
+
+            myViewModel?.SaveManifestIfRequiredAsync(filePath);
         }
     }
 }

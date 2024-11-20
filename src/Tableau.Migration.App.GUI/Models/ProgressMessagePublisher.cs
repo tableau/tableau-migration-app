@@ -28,9 +28,9 @@ public class ProgressMessagePublisher : IProgressMessagePublisher
     public event Action<ProgressEventArgs>? OnProgressMessage;
 
     /// <inheritdoc />
-    public void PublishProgressMessage(string action, string message)
+    public void PublishProgressMessage(string message)
     {
-        ProgressEventArgs progressMessage = new ProgressEventArgs(action, message);
+        ProgressEventArgs progressMessage = new ProgressEventArgs(message);
         this.OnProgressMessage?.Invoke(progressMessage);
         return;
     }

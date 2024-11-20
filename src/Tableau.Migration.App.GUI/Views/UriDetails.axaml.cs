@@ -63,14 +63,7 @@ public partial class UriDetails : UserControl
 
         // Full URI Input
         this.UriLabel.Text = $"Tableau {env} URI";
-        this.InfoHelp.HelpText =
-            $"Enter the Tableau {env} URL in one of the following formats:"
-            + Environment.NewLine +
-            $"- For a single-site: http://<{lowerEnv}_address>"
-            + Environment.NewLine +
-            $"- For a multi-site: http://<{lowerEnv}_address>/#/site/<site_name>"
-            + Environment.NewLine +
-            "The site name is parsed from the URL if one is provided.";
+        this.InfoHelp.HelpText = string.Format(ViewConstants.URIDetailsHelpTextTemplate, env, lowerEnv);
         this.InfoHelp.DetailsUrl = "https://help.tableau.com/current/pro/desktop/en-us/embed_structure.htm";
         this.UriFull.Watermark = $"Ex: http://<{lowerEnv}_address>/#/site/<site_name>";
 
