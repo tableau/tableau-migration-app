@@ -1,5 +1,6 @@
 # Tableau Migration App
 ### Table of Contents
+
 - [Tableau Migration App](#tableau-migration-app)
 		- [Table of Contents](#table-of-contents)
 	- [Features](#features)
