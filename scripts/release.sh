@@ -11,4 +11,4 @@ dotnet publish ./src/Tableau.Migration.App.GUI -c Release -r osx-x64 --self-cont
 
 dotnet publish ./src/Tableau.Migration.App.GUI -c Release -r linux-arm64 --self-contained -p:PublishSingleFile=true /p:DebugType=None /p:GenerateDocumentationFile=false -o ${PROJECT_DIR}/build/linux_arm64
 
-dotnet publish ./src/Tableau.Migration.App.GUI -c Release -r linux-arm64 --self-contained -p:PublishSingleFile=true /p:DebugType=None /p:GenerateDocumentationFile=false -o ${PROJECT_DIR}/build/linux_x64
+dotnet publish ./src/Tableau.Migration.App.GUI -c Release -r linux-x64 --self-contained -p:PublishSingleFile=true /p:DebugType=None /p:GenerateDocumentationFile=false -o ${PROJECT_DIR}/build/linux_x64
