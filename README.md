@@ -2,25 +2,26 @@
 ### Table of Contents
 
 - [Tableau Migration App](#tableau-migration-app)
-		- [Table of Contents](#table-of-contents)
-	- [Features](#features)
-	- [Usage](#usage)
-		- [Tableau Server and Cloud URLs](#tableau-server-and-cloud-urls)
-		- [Personal Access Tokens](#personal-access-tokens)
-		- [User Mappings](#user-mappings)
-			- [Username already in email format](#username-already-in-email-format)
-			- [User has an associated email](#user-has-an-associated-email)
-			- [Default Domain Mapping](#default-domain-mapping)
-			- [CSV Mapping](#csv-mapping)
-		- [Outputs](#outputs)
-		- [Logging](#logging)
-		- [Canceling a Migration](#canceling-a-migration)
-		- [Resuming a Migration](#resuming-a-migration)
-		- [FAQ](#faq)
-			- [The application is taking a long time, is it stuck?!](#the-application-is-taking-a-long-time-is-it-stuck)
-			- [How do I migrate items with more specific logic rules?](#how-do-i-migrate-items-with-more-specific-logic-rules)
-			- [How do I exclude certain items from being migrated?](#how-do-i-exclude-certain-items-from-being-migrated)
-			- [What order will my resources get migrated in?](#what-order-will-my-resources-get-migrated-in)
+        - [Table of Contents](#table-of-contents)
+    - [Features](#features)
+    - [Usage](#usage)
+        - [Tableau Server and Cloud URLs](#tableau-server-and-cloud-urls)
+        - [Personal Access Tokens](#personal-access-tokens)
+        - [User Mappings](#user-mappings)
+            - [Username already in email format](#username-already-in-email-format)
+            - [User has an associated email](#user-has-an-associated-email)
+            - [Default Domain Mapping](#default-domain-mapping)
+            - [CSV Mapping](#csv-mapping)
+        - [Outputs](#outputs)
+        - [Logging](#logging)
+        - [Canceling a Migration](#canceling-a-migration)
+        - [Resuming a Migration](#resuming-a-migration)
+        - [FAQ](#faq)
+            - [The application is taking a long time, is it stuck?!](#the-application-is-taking-a-long-time-is-it-stuck)
+            - [How do I migrate items with more specific logic rules?](#how-do-i-migrate-items-with-more-specific-logic-rules)
+            - [How do I exclude certain items from being migrated?](#how-do-i-exclude-certain-items-from-being-migrated)
+            - [What order will my resources get migrated in?](#what-order-will-my-resources-get-migrated-in)
+        - [Support](#support)
 
 ## Features
 **You can download the Tableau Migration App from the [releases](https://github.com/tableau/tableau-migration-app/releases) page of this repo.**
@@ -28,18 +29,18 @@
 The purpose of the Tableau Migration App is to provide users with a method to perform simple migrations from their Tableau Server to Tableau Cloud. This app is meant to accompany the [Tableau Manual Migration Guide](https://help.tableau.com/current/guides/migration/en-us/emg_intro.htm) and replace the work required for the migration steps.
 
 <div align="center">
-	<img src="/screenshots/TableauMigrationApp.png" alt="Tableau Migration App" width=400>
+    <img src="/screenshots/TableauMigrationApp.png" alt="Tableau Migration App" width=400>
 </div>
 
 * The migration app uses the [Tableau Migration SDK](https://github.com/tableau/tableau-migration-sdk) under the hood, and supports all migration resources that the Migration SDK offers.
   * The Migration SDK currently includes:
-	*  Users
-	*  Groups
-	*  Projects
-	*  Data Sources
-	*  Workbooks
-	*  Extract Refresh Tasks
-	*  Custom Views
+    *  Users
+    *  Groups
+    *  Projects
+    *  Data Sources
+    *  Workbooks
+    *  Extract Refresh Tasks
+    *  Custom Views
 
 * Basic mapping options are provided in the app for username migrations.
 * A simplified view of ongoing migration progress.
@@ -176,3 +177,8 @@ If you have a manifest file saved from a previous run, you can resume a migratio
 
 #### What order will my resources get migrated in?
 > Resources are first sorted from largest to smallest, and migrated in that order.
+
+### Support
+The Tableau Migration App is community supported. Using it you can accidentally modify or delete your content, just as you can accidentally do so in the user interface. Despite efforts to write good and useful code there may be bugs that cause unexpected and undesirable behavior. The software is strictly “use at your own risk.”
+
+The good news: This is intended to be a self-service tool. You are free to modify it in any way to meet your needs.
