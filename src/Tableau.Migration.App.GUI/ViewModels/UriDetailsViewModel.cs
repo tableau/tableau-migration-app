@@ -99,7 +99,7 @@ public partial class UriDetailsViewModel
     {
         if (Uri.TryCreate(uri, UriKind.Absolute, out var parsedUri))
         {
-            return $"{parsedUri.Scheme}://{parsedUri.Host}/";
+            return $"{parsedUri.Scheme}://{parsedUri.Authority}/";
         }
 
         return string.Empty;
@@ -116,8 +116,8 @@ public partial class UriDetailsViewModel
             for (int i = 0; i < fragmentSegments.Length; i++)
             {
                 if (fragmentSegments[i].Equals(
-                        "site",
-                        StringComparison.OrdinalIgnoreCase)
+                    "site",
+                    StringComparison.OrdinalIgnoreCase)
                     && i + 1 < fragmentSegments.Length)
                 {
                     return fragmentSegments[i + 1];

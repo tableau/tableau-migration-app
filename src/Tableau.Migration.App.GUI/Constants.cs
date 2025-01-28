@@ -30,7 +30,7 @@ public static class Constants
     /// <summary>
     /// The App version number.
     /// </summary>
-    public const string Version = "v1.0.2";
+    public const string Version = "v1.0.3";
 
     /// <summary>
     /// The App name with version.
