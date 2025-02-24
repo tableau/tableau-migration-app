@@ -37,6 +37,18 @@ public class UriDetailsViewModelTests
     }
 
     [AvaloniaFact]
+    public void UriFull_SetValidUri_PreservesPort()
+    {
+        var viewModel = new UriDetailsViewModel();
+        var testUri = "https://example.com:1234/#/site/mysite";
+
+        viewModel.UriFull = testUri;
+
+        Assert.Equal("https://example.com:1234/", viewModel.UriBase);
+        Assert.Equal("mysite", viewModel.SiteContent);
+    }
+
+    [AvaloniaFact]
     public void UriFull_SetInvalidUri_AddsUriFormatError()
     {
         var viewModel = new UriDetailsViewModel();

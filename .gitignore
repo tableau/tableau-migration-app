@@ -2,6 +2,7 @@
 bin/
 obj/
 build/
+Logs/
 
 # Ignore Visual Studio Code directories and files
 .vscode/
@@ -44,9 +45,3 @@ TestResults/
 
 # Docs
 _site
-
-# Coverage files
-CoreCoverage.xml
-GUICoverage.xml
-coverage-report/
-coverage.opencover.xml
