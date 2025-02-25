@@ -1,6 +1,6 @@
 # Contributing Guide For Tableau MIgration App
 
-This page lists the operational governance model of this project, as well as the recommendations and requirements for how to best contribute to Tableau Migration App. We strive to obey these as best as possible. As always, thanks for contributing – we hope these guidelines make it easier and shed some light on our approach and processes.
+This page lists the operational governance model of this project, as well as the recommendations and requirements for how to best contribute to Tableau Migration App. We strive to obey these as best as possible. As always, thanks for contributing ï¿½ we hope these guidelines make it easier and shed some light on our approach and processes.
 
 # Governance Model
 ## Salesforce Sponsored
@@ -9,7 +9,10 @@ The intent and goal of open sourcing this project is to increase the contributor
 
 # Getting started
 
-Please join the community here: [Tableau Developer Community](https://tabsoft.co/JoinTableauDev)]
+Please join the community here: [Tableau Developer Community](https://tabsoft.co/JoinTableauDev)
+
+# Tableau Migration App to SDK Sequence Diagram
+![Sequence Diagram](./screenshots/TableauMigrationSequenceDiagram.png)
 
 # Issues, requests & ideas
 
