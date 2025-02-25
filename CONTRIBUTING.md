@@ -12,7 +12,7 @@ The intent and goal of open sourcing this project is to increase the contributor
 Please join the community here: [Tableau Developer Community](https://tabsoft.co/JoinTableauDev)
 
 # Tableau Migration App to SDK Sequence Diagram
-![Sequence Diagram](./docs/screenshots/TableauMigrationSequenceDiagram.png)
+![Sequence Diagram](./screenshots/TableauMigrationSequenceDiagram.png)
 
 # Issues, requests & ideas
 
