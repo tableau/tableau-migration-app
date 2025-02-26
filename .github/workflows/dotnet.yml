@@ -29,8 +29,8 @@ jobs:
 
       - name: Test
         run: |
-          dotnet test --configuration Release tests/Tableau.Migration.App.Core.Tests/ /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../CoreCoverage.xml
-          dotnet test --configuration Release tests/Tableau.Migration.App.GUI.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../GUICoverage.xml
+          dotnet test --configuration Release tests/Tableau.Migration.App.Core.Tests/ /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=../../TestResults/CoreCoverage.xml
+          dotnet test --configuration Release tests/Tableau.Migration.App.GUI.Tests /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=../../TestResults/GUICoverage.xml
         env:
           TABLEAU_CLOUD_URL: ${{ secrets.TABLEAU_CLOUD_URL }}
           TABLEAU_CLOUD_SITE: ${{ secrets.TABLEAU_CLOUD_SITE }}
@@ -44,7 +44,7 @@ jobs:
       - name: Generate coverage report
         env:
           PATH: $PATH:/home/runner/.dotnet/tools  # Adds dotnet tools to PATH
-        run: reportgenerator -reports:"./*Coverage.xml" -targetdir:./coverage-report -reporttypes:"Html;TextSummary"
+        run: reportgenerator -reports:TestResults/*.xml -targetdir:coverage-report -reporttypes:"Html;TextSummary"
 
       - name: Comment coverage summary on PR
         uses: actions/github-script@v6
