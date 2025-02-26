@@ -47,20 +47,22 @@ jobs:
         run: reportgenerator -reports:TestResults/*.xml -targetdir:coverage-report -reporttypes:"Html;TextSummary"
 
       - name: Comment coverage summary on PR
+        if: github.event_name == 'pull_request'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
-            const summary = fs.readFileSync('./coverage-report/Summary.txt', 'utf8');
-            // Split the summary by lines and get the first 18
-            const topSummary = summary.split('\n').slice(0, 18).join('\n');
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `## Code Coverage Summary\n\`\`\`\n${topSummary}\n\`\`\``
-            });
+            const path = './coverage-report/Summary.txt';
+            if (fs.existsSync(path)) {
+              const summary = fs.readFileSync(path, 'utf8');
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## Code Coverage Summary\n\`\`\`\n${summary}\n\`\`\``
+              });
+            }
 
 # Skipping for now due to line ending mismatches
       # - name: Run dotnet format
