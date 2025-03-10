@@ -1,0 +1,101 @@
+﻿name: Build and Sign
+
+on:
+  push
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+  #  - name: Setup .NET
+  #   uses: actions/setup-dotnet@v3
+  #   with:
+  #      dotnet-version: '8.x'
+
+    - name: Restore dependencies
+      run: dotnet restore ./src/Tableau.Migration.App.GUI
+
+    - name: Build
+      run: dotnet build  ./src/Tableau.Migration.App.GUI --configuration Release --no-restore
+
+    - name: Create Releases for Winx64, OSX-x64, OSX-arm64, Linux-x64, Linux-arm64
+      run: |
+        ./scripts/release.ps1
+
+    - name: Package up OSX files into .app format
+      run: |
+        ./scripts/macos.sh --x64 &&
+        ./scripts/macos.sh --arm64
+
+    - name: Sign .app
+      env: 
+        ARTIFACTORY_APIKEY: ${{ secrets.ARTIFACTORY_APIKEY }}
+        ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+        ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
+        GITLAB_APIKEY: ${{ secrets.GITLAB_APIKEY }}
+        GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        TEAMCITY_APIKEY: ${{ secrets.TEAMCITY_APIKEY }}
+      run: |
+        ./build-migration-app.ps1 &&
+        codesign --deep --force --verify --verbose --sign - ./build/osx_arm64_macapp/TableauMigration.app &&
+        codesign --deep --force --verify --verbose --sign - ./build/osx_x64_macapp/TableauMigration.app
+
+    - name: Create ZIP files
+      run: |
+        Compress-Archive -Path ./build/win_x64/* -DestinationPath TableauMigrationApp_win-x64.zip &&
+        Compress-Archive -Path ./build/osx_arm64_macapp/ -DestinationPath TableauMigrationApp_osx-arm64.zip &&
+        Compress-Archive -Path ./build/osx_x64_macapp/ -DestinationPath TableauMigrationApp_osx-x64.zip &&
+        Compress-Archive -Path./build/linux_arm64/* -DestinationPath TableauMigrationApp_linux-arm64.zip &&
+        Compress-Archive -Path ./build/linux_x64/* -DestinationPath TableauMigrationApp_linux-x64.zip
+        
+#    - name: Upload Release Asset Win-x64
+#      uses: actions/upload-release-asset@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        upload_url: ${{ github.event.release.upload_url }}
+#        asset_path: ./TableauMigrationApp_win-x64.zip
+#        asset_name: TableauMigrationApp_win-x64.zip
+#        asset_content_type: application/zip
+#
+#    - name: Upload Release Asset OSX-arm64
+#      uses: actions/upload-release-asset@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        upload_url: ${{ github.event.release.upload_url }}
+#        asset_path: ./TableauMigrationApp_osx-arm64.zip
+#        asset_name: TableauMigrationApp_osx-arm64.zip
+#        asset_content_type: application/zip
+#
+#    - name: Upload Release Asset OSX-x64
+#      uses: actions/upload-release-asset@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        upload_url: ${{ github.event.release.upload_url }}
+#        asset_path: ./TableauMigrationApp_osx-x64.zip
+#        asset_name: TableauMigrationApp_osx-x64.zip
+#        asset_content_type: application/zip
+#
+#    - name: Upload Release Asset Linux-arm64
+#      uses: actions/upload-release-asset@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        upload_url: ${{ github.event.release.upload_url }}
+#        asset_path: ./TableauMigrationApp_linux-arm64.zip
+#        asset_name: TableauMigrationApp_linux-arm64.zip
+#        asset_content_type: application/zip
+#
+#    - name: Upload Release Asset Linux-x64
+#      uses: actions/upload-release-asset@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        upload_url: ${{ github.event.release.upload_url }}
+#        asset_path: ./TableauMigrationApp_linux-x64.zip
+#        asset_name: TableauMigrationApp_linux-x64.zip
+#        asset_content_type: application/zip
