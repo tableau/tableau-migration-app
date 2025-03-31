@@ -42,7 +42,7 @@ function getCommandPath {
         [Parameter(Mandatory = $true)]
         [string] $ExecutableName,
         [Parameter(Mandatory = $true)]
-        [string[]] $OtherDirs
+        [string[]] $OtherDirs 
     )
 
     foreach ($dir in , '' + $OtherDirs) {
