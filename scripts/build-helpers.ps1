@@ -101,8 +101,8 @@ function signRemote {
         [string] $SessionId = (& { if ($env:CI_JOB_ID -eq $null) { [Guid]::NewGuid().ToString('D') } else { $env:CI_JOB_ID } }),
         [string] $TeamcityApiKey = $env:TEAMCITY_APIKEY,
         [string] $ArtifactoryApiKey = $env:ARTIFACTORY_APIKEY,
-        [string] $ArtifactoryUrl = (& { if ($env:ARTIFACTORY_URL -eq $null) { "https://artifactory.prod.tableautools.com/artifactory" } else { $env:ARTIFACTORY_URL } }),
-        [string] $TeamcityUrl = (& { if ($env:TeamcityUrl -eq $null) { "https://teamcity.prod.tableautools.com" } else { $env:TeamcityUrl } })
+        [string] $ArtifactoryUrl = $env:ARTIFACTORY_URL,
+        [string] $TeamcityUrl = $env:TeamcityUrl
     )
 
     $fileName = Split-Path -Path $Path -Leaf -Resolve
