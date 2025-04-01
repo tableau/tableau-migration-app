@@ -38,6 +38,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="System.Private.Uri" Version="4.3.2" />
     <PackageReference Include="Tableau.Migration" Version="5.0.*" />
   </ItemGroup>
 
