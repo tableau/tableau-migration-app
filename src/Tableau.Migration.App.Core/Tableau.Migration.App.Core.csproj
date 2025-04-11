@@ -39,7 +39,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
-    <PackageReference Include="Tableau.Migration" Version="5.1.1" />
+    <PackageReference Include="Tableau.Migration" Version="5.1.*" />
   </ItemGroup>
 
   <ItemGroup>
