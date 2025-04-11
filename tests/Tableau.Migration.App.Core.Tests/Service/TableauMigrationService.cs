@@ -197,10 +197,9 @@ public class TableauMigrationServiceTests
         var planId = Guid.NewGuid();
         var migrationId = Guid.NewGuid();
         var mockManifest = new Mock<MigrationManifest>(
-            this.mockLocalizer.Object,
-            this.mockLoggerFactory.Object,
             planId,
             migrationId,
+            PipelineProfile.ServerToCloud,
             (IMigrationManifest?)null!);
         var manifestTask = Task.FromResult(mockManifest.Object);
 
