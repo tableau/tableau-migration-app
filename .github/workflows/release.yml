@@ -1,8 +1,6 @@
 ﻿name: Build and Release
 
-on:
-  release:
-    types: [created]
+on: push
 jobs:
   build:
     runs-on: self-hosted
@@ -33,6 +31,7 @@ jobs:
           GITLAB_APIKEY: ${{ secrets.GITLAB_APIKEY }}
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
           TEAMCITY_APIKEY: ${{ secrets.TEAMCITY_APIKEY }}
+          TeamcityUrl: ${{ secrets.TEAMCITY_URL }}
         run: pwsh ./scripts/SignWindowsExecutable.ps1
       
       - name: Create ZIP files
