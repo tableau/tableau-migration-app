@@ -22,7 +22,7 @@ jobs:
       run: dotnet tool install -g docfx
 
     - name: Add .dotnet/tools to PATH
-      run: echo "::add-path::${HOME}/.dotnet/tools"
+      run: echo "${HOME}/.dotnet/tools" >> $GITHUB_PATH
 
     - name: Build DocFX site
       working-directory: ./docs

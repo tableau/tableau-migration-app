@@ -14,7 +14,7 @@ Requirements doc can be found [here](https://docs.google.com/document/d/1DXrYdTb
 # Building
 ## From Source Root
 ```
-dotnet build Tableau.Migration.App.sln
+dotnet build MigrationApp.sln
 ```
 
 ## Documentation
@@ -34,7 +34,7 @@ dotnet run
 
 # Testing
 ```
-dotnet test Tableau.Migration.App.sln
+dotnet test MigrationApp.sln
 ```
 # Releasing
 There are bash scripts found in the `/scripts` folder that details out the commands to publish the release files for the project.
