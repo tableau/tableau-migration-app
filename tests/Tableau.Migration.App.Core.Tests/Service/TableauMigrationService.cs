@@ -68,18 +68,20 @@ public class TableauMigrationServiceTests
                 It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<string>(),
-                It.IsAny<bool>())).Returns(
-                (Uri url, string site, string tokenName, string token, bool useSim)
-                => planBuilder.FromSourceTableauServer(url, site, tokenName, token, true));
+                It.IsAny<bool>(),
+                It.IsAny<string>())).Returns(
+                (Uri url, string site, string tokenName, string token, bool useSim, string? contentUrl)
+                => planBuilder.FromSourceTableauServer(url, site, tokenName, token, true, contentUrl ?? string.Empty));
         this.mockPlanBuilder.Setup(
             pb => pb.ToDestinationTableauCloud(
                 It.IsAny<Uri>(),
                 It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<string>(),
-                It.IsAny<bool>())).Returns(
-                (Uri url, string site, string tokenName, string token, bool useSim)
-                => planBuilder.ToDestinationTableauCloud(url, site, tokenName, token, true));
+                It.IsAny<bool>(),
+                It.IsAny<string>())).Returns(
+                (Uri url, string site, string tokenName, string token, bool useSim, string? contentUrl)
+                => planBuilder.ToDestinationTableauCloud(url, site, tokenName, token, true, contentUrl ?? string.Empty));
         this.mockMigrator = new Mock<IMigrator>();
         this.mockLogger = new Mock<ILogger<TableauMigrationService>>();
         this.mockProgressUpdater = new Mock<IProgressUpdater>();

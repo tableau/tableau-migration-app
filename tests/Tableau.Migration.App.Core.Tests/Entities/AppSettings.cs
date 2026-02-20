@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Threading;
+using System.Threading.Tasks;
 using Tableau.Migration;
 using Tableau.Migration.App.Core.Entities;
 using Tableau.Migration.App.Core.Hooks.Mappings;
@@ -33,7 +34,7 @@ using Xunit;
 public class AppSettingsTest
 {
     [Fact]
-    public async void AppSettings_UseSimulator_True()
+    public async Task AppSettings_UseSimulator_True()
     {
         var services = new ServiceCollection();
         var appSettings = new AppSettings();
@@ -61,7 +62,7 @@ public class AppSettingsTest
     }
 
     [Fact(Skip = "Skipped since SDK Retries will make this test take several minutes to complete.")]
-    public async void AppSettings_UseSimulator_False()
+    public async Task AppSettings_UseSimulator_False()
     {
         var services = new ServiceCollection();
         services.AddLogging(configure => configure.AddConsole());
